@@ -18,23 +18,27 @@ include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS})
 
 #--- Define the headers list
-include_directories(include src dict ${CMAKE_SOURCE_DIR})
+include_directories(include src dict external/json/single_include ${CMAKE_SOURCE_DIR})
+
+#--- Add json
+add_subdirectory(external/json)
 
 #--- Define the headers and src directories
 file(GLOB_RECURSE sources src/*.cpp)
 file(GLOB_RECURSE headers include/*.h)
+file(GLOB_RECURSE json external/json/single_include/*)
 
 ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} LINKDEF dict/${PACKAGE}LinkDef.h)
 
 #--- Generate ROOT library from dictionary
-add_library(ROOT${PACKAGE} SHARED ${sources} G__${PACKAGE}.cxx)
+add_library(HYDRA SHARED ${sources} G__${PACKAGE}.cxx)
 
 #-- Generate general library
 add_library(${PACKAGE} SHARED ${sources} ${headers})
 
-
-target_link_libraries(ROOT${PACKAGE} ${ROOT_LIBRARIES})
-target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES})
+# Link libraries
+target_link_libraries(HYDRA ${ROOT_LIBRARIES} nlohmann_json::nlohmann_json)
+target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} nlohmann_json::nlohmann_json)
 
 #---Create an executable
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
