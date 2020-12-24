@@ -2,7 +2,7 @@
 #include "generator.h"
 #include "efficiency.h"
 #include "amplitude.h"
-#include "configuration.h"
+#include "sequence.h"
 #include "algorithm.h"
 
 #include <iostream>
@@ -18,7 +18,7 @@ int main()
   Efficiency eff3("Efficiency3");
   Amplitude amp("Amplitude");
 
-  Configuration flow(eff,eff1,eff2,amp,eff3);
+  Sequence flow(eff,eff1,eff2,amp,eff3);
 
   Algorithm* head = flow.head;
   head->operator()(ev);
