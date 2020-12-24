@@ -15,12 +15,7 @@ public:
   {
     addAlgorithm(inputs...);
 
-    std::cout << "Have configured algorithms:" << std::endl; 
-    Algorithm* tmp = head;
-    while ( tmp->next != nullptr ) {
-      std::cout << tmp->name() << "," << std::endl;
-      tmp = tmp->next;
-    }
+    printAlgorithmSequence();
   }
   ~Configuration() {};
 
@@ -36,9 +31,9 @@ public:
       while ( tmp->next != nullptr ) {
         tmp = tmp->next;
       }
-      tmp->next = reinterpret_cast<Algorithm*>(&input);  //gAlgorithmStore.getAlgorithm(input.name());
+      tmp->next = gAlgorithmStore.getAlgorithm(input.name());
     }
-
+    printAlgorithmSequence();
     addAlgorithm(inputs...);
   }
 
@@ -47,6 +42,7 @@ public:
   {
     gAlgorithmStore.addToStore(input);
     if ( head == nullptr ) {
+      std::cout << "here" << std::endl;
       head = reinterpret_cast<Algorithm*>(&input);  //gAlgorithmStore.getAlgorithm(input.name());
       gAlgorithmStore.head = head;
     } else {
@@ -54,8 +50,22 @@ public:
       while ( tmp->next != nullptr ) {
         tmp = tmp->next;
       }
-      tmp->next = reinterpret_cast<Algorithm*>(&input);  //gAlgorithmStore.getAlgorithm(input.name());
+      tmp->next = gAlgorithmStore.getAlgorithm(input.name());
     }
+
+    printAlgorithmSequence();
+    return;
+  }
+
+  void printAlgorithmSequence()
+  {
+    std::cout << "Algorithm sequence:" << std::endl; 
+    Algorithm* tmp = gAlgorithmStore.head;
+    while ( tmp != nullptr ) {
+      std::cout << tmp->name() << "," << std::endl;
+      tmp = tmp->next;
+    }
+    return;
   }
   
   AlgorithmStore gAlgorithmStore;
