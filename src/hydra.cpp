@@ -2,7 +2,7 @@
 
 void Hydra::runSequence()
 {
-  m_counter = 0;
+  unsigned int counter = 0;
 
   while ( m_counter < m_configuration.EvtMax ) {
     Event* ev = new Event();
@@ -11,7 +11,7 @@ void Hydra::runSequence()
       algo->operator()(*ev);
       algo = algo->next;
     }
-    if ( ev->Accept ) m_counter++;
+    if ( ev->Accept ) counter++;
     addToList(*ev);
   }
 }

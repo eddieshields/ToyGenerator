@@ -4,6 +4,7 @@
 #include "event.h"
 #include "algorithm.h"
 #include "sequence.h"
+#include "threads.h"
 
 #include <vector>
 
@@ -19,9 +20,10 @@ TODO:
 class Hydra
 {
 public:
-  Hydra() {WelcomeMessage();}
+  Hydra() : m_runner( this ) {WelcomeMessage();}
   ~Hydra() {}
 
+  // Struct for configuration.
   struct Configuration {
     int EvtMax = {1000};
     std::string TreeName = {"DecayTree"};
@@ -30,10 +32,23 @@ public:
     Sequence AlgoSequence;
   };
 
-  Configuration m_configuration;
-  Configuration& operator()() { return m_configuration; }
+  // Wrapper struct that is passed to threads for execution.
+  struct Exec {
+    Exec(Hydra* _base) : base( _base ) {}
+    ~Exec() {}
 
-  void run() { runSequence(); }
+    void operator()()
+    {
+      base->runSequence();
+    }
+    Hydra* base;
+  };
+
+  Configuration m_configuration;
+  Exec m_runner;
+
+  Configuration& operator()() { return m_configuration; }
+  void run() { return; }
   TTree* tree();
 
 private:
