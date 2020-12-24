@@ -30,7 +30,7 @@ public:
     m_phsp()
   {
     TLorentzVector m_mother(0.,0.,0.,gParticleStore(mother_name,"mass"));
-    addToDaughters(daughter_names...)
+    addToDaughters(daughter_names...);
     m_phsp.SetDecay(m_mother,m_daughters.size(),m_daughters.data());
   }
   Generator(std::string name, const double mM, const double m1, const double m2, const double m3) :
