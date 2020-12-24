@@ -1,10 +1,16 @@
 #ifndef TOYGEN_EVENT_H
 #define TOYGEN_EVENT_H
 
+#include "particle.h"
+
 #include <vector>
-
-#include "TLorentzVector.h"
-
+#include <map>
+#include <string>
+/*
+TODO:
+  Have event include particle classes that can be dealt with seprately.
+  This class should deal with the event as a while and have access to daughter particles.
+*/
 class Event
 {
 friend class Generator;
@@ -14,10 +20,13 @@ public:
 
   double pdf;
   double efficiency;
-  bool   accept;
+  bool   Accept;
+
+  double    operator[](std::string name) { return m_v[name]; }
+  Particle& operator()(std::string name) { return m_particles[name]; }
 private:
-  std::vector<TLorentzVector*> m_p;
-  std::vector<double>          m_v;
+  std::map<std::string,Particle> m_particles;
+  std::map<std::string,double>   m_v;
 };
 
 #endif
