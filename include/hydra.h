@@ -19,7 +19,7 @@ TODO:
 class Hydra
 {
 public:
-  Hydra() {}
+  Hydra() {WelcomeMessage();}
   ~Hydra() {}
 
   struct Configuration {
@@ -41,6 +41,9 @@ private:
   void addToList(Event ev) { m_list.push_back(ev); } 
   void runSequence();
   unsigned int m_counter = {0};
+
+  static void WelcomeMessage();
+  static bool m_welcome;
 };
 
 #endif
