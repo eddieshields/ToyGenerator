@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.4.3 FATAL_ERROR)
 set(PACKAGE ToyGen)
 project(${PACKAGE})
 
-
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 
@@ -36,7 +35,7 @@ add_library(HYDRA SHARED ${sources} G__${PACKAGE}.cxx)
 #-- Generate general library
 add_library(${PACKAGE} SHARED ${sources} ${headers})
 
-# Link libraries
+#--- Link libraries
 target_link_libraries(HYDRA ${ROOT_LIBRARIES} nlohmann_json::nlohmann_json)
 target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} nlohmann_json::nlohmann_json)
 
