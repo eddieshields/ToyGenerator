@@ -1,5 +1,5 @@
-#ifndef TOYGEN_CONFIGURATION_H
-#define TOYGEN_CONFIGURATION_H
+#ifndef TOYGEN_SEQUENCE_H
+#define TOYGEN_SEQUENCE_H
 
 #include "algorithm.h"
 #include "algorithmstore.h"
@@ -7,17 +7,17 @@
 
 #include <iostream>
 
-class Configuration
+class Sequence
 {
 public:
   template <typename... IN_TYPES>
-  Configuration(IN_TYPES... inputs) 
+  Sequence(IN_TYPES... inputs) 
   {
     addAlgorithm(inputs...);
 
     printAlgorithmSequence();
   }
-  ~Configuration() {};
+  ~Sequence() {};
 
   template <class IN, class... IN_TYPES>
   void addAlgorithm(IN input, IN_TYPES... inputs)
