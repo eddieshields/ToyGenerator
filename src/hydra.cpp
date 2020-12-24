@@ -30,3 +30,17 @@ TTree* Hydra::tree()
 
   return tree;
 }
+
+bool Hydra::m_welcome = false;
+void Hydra::WelcomeMessage()
+{
+  if ( !m_welcome ) {
+  std::cout << "\033[1;31m**********************************************************\033[0m\n" << std::endl;
+  //std::cout << "\033[1;31m*                                                        *\033[0m\n" << std::endl;
+  std::cout << "\033[1;31m*                    WELCOME TO HYDRA                    *\033[0m\n" << std::endl;
+  std::cout << "\033[1;31m*                                                        *\033[0m\n" << std::endl;
+  std::cout << "\033[1;31m* Contact: edward.brendan.shields@cern.ch                *\033[0m\n" << std::endl;
+  std::cout << "\033[1;31m**********************************************************\033[0m\n" << std::endl;
+  }
+  m_welcome = true;
+}
