@@ -16,6 +16,6 @@ public:
   void operator()(Event& ev) { m_func(ev); }
 private:
   T m_func;
-}
+};
 
 #endif
