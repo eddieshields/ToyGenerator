@@ -2,6 +2,7 @@
 #define TOYGEN_ALGORITHMSTORE_H
 
 #include "algorithm.h"
+#include "msgservice.h"
 
 #include <stdlib.h>
 #include <iostream>
@@ -13,14 +14,25 @@ struct AlgorithmStore
 {
   std::map<std::string,Algorithm*> m_algos;
 
+  void setHead(Algorithm* algo) { head = algo; }
+  void setHead(std::string name) 
+  {
+    if (m_algos.find(name) != m_algos.end()) {
+      head =  m_algos[name];
+      INFO("Setting algorithm head to: "+head->name());
+    } else {
+      ERROR("Algorithm "+name+" doesn't exists.");
+    }
+    return;
+  }
+
   void addToStore(Algorithm* algo)
   {
     if (m_algos.find(algo->name()) != m_algos.end()) {
-      std::cout << "Algorithm " << algo->name() << " already exists. Please give all algorithms a unique name" << std::endl;
-      exit(EXIT_FAILURE);
+      FATAL("Algorithm "+algo->name()+" already exists. Please give all algorithms a unique name.");
     } else {
       m_algos[algo->name()] = algo;
-      std::cout << "Added " << algo->name() << " to store" << std::endl;
+      DEBUG("Added "+algo->name()+" to store.");
     }
   }
 
@@ -29,11 +41,10 @@ struct AlgorithmStore
   {
     Algorithm* algo = reinterpret_cast<Algorithm*>(&algoT);
     if (m_algos.find(algo->name()) != m_algos.end()) {
-      std::cout << "Algorithm " << algo->name() << " already exists. Please give all algorithms a unique name" << std::endl;
-      exit(EXIT_FAILURE);
+      FATAL("Algorithm "+algo->name()+" already exists. Please give all algorithms a unique name.");
     } else {
       m_algos[algo->name()] = algo;
-      std::cout << "Added " << algo->name() << " to store" << std::endl;
+      DEBUG("Added "+algo->name()+" to store.");
     }
   }
 
@@ -42,7 +53,7 @@ struct AlgorithmStore
     if (m_algos.find(name) != m_algos.end()) {
       return m_algos[name];
     } else {
-      std::cout << "Algorithm " << name << " doesn't exists." << std::endl;
+      ERROR("Algorithm "+name+" doesn't exists.");
     }
     return nullptr;
   }
