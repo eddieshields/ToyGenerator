@@ -10,6 +10,7 @@
 class Sequence
 {
 public:
+  Sequence() = default;
   template <typename... IN_TYPES>
   Sequence(IN_TYPES... inputs) 
   {
