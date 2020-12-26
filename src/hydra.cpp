@@ -3,7 +3,7 @@
 void Hydra::run()
 {
   Clock::Start();
-  m_runner();
+  Threads execute(m_runner);
   Clock::Stop();
   Clock::Print("generate "+std::to_string(m_configuration.EvtMax)+" events");
 }
