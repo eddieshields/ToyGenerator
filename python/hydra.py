@@ -10,6 +10,9 @@ class Hydra:
     def __call__(self):
         return self.hy.m_configuration
 
+    def run(self):
+        self.hy.run()
+
 
     
 
