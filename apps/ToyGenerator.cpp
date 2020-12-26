@@ -30,7 +30,7 @@ int main()
   hy().TreeName = "d02kshh";
   hy().AlgoSequence = flow;
   hy().OutputLocation = "";
-  
+  hy().NThreads = 32;
   hy.run();
 
   TTree* tree = hy.tree();
