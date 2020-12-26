@@ -18,9 +18,9 @@ public:
   Event() {};
   ~Event() {};
 
-  double pdf;
-  double efficiency;
-  bool   Accept;
+  double pdf = {1};
+  double efficiency = {1};
+  bool   Accept = {false};
 
   double    operator[](std::string name) { return m_v[name]; }
   Particle& operator()(std::string name) { return m_particles[name]; }
