@@ -8,7 +8,9 @@
 #include "clock.h"
 
 #include <vector>
+#include <map>
 
+#include "TFile.h"
 #include "TTree.h"
 
 /*
@@ -31,6 +33,7 @@ public:
     std::string TreeName = {"DecayTree"};
     std::string TreeTitle = {"DecayTree"};
     std::string OutputLocation = {""};
+    std::vector<std::string> Variables;
     Sequence AlgoSequence;
   };
 
@@ -39,9 +42,9 @@ public:
     Exec(Hydra* _base) : base( _base ) {}
     ~Exec() {}
 
-    void operator()()
+    std::vector<Event> operator()(int thread)
     {
-      base->runSequence();
+      return base->runSequence(thread);
     }
     Hydra* base;
   };
@@ -56,7 +59,7 @@ public:
 private:
   std::vector<Event> m_list;
   void addToList(Event ev) { m_list.push_back(ev); } 
-  void runSequence();
+  std::vector<Event> runSequence(int thread);
   unsigned int m_counter = {0};
 
   static void WelcomeMessage();

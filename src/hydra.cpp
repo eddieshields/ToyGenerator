@@ -4,14 +4,15 @@ void Hydra::run()
 {
   Clock::Start();
   Threads execute(m_runner,m_configuration.NThreads);
+  m_list = execute.list();
   Clock::Stop();
   Clock::Print("generate "+std::to_string(m_configuration.EvtMax)+" events");
 }
 
-void Hydra::runSequence()
+std::vector<Event> Hydra::runSequence(int thread)
 {
+  std::vector<Event> list;
   unsigned int counter = 0;
-
   while ( counter < m_configuration.EvtMax/m_configuration.NThreads ) {
     Event* ev = new Event();
     Algorithm* algo = m_configuration.AlgoSequence.head;
@@ -19,22 +20,36 @@ void Hydra::runSequence()
       algo->operator()(*ev);
       algo = algo->next;
     }
-    if ( ev->Accept ) counter++;
+    if ( ev->Accept ) {
+      counter++;
+      list.push_back( *ev );
+    }
   }
-  return;
+
+  return list;
 }
 
 TTree* Hydra::tree()
 {
   TTree* tree = new TTree(m_configuration.TreeName.c_str(),m_configuration.TreeTitle.c_str());
-  double pdf;
-  tree->Branch("pdf",&pdf);
+  std::map<std::string,double> m_mapping;
+  for (auto& var : m_configuration.Variables) {
+    m_mapping[var] = 0.0;
+    tree->Branch(var.c_str(),&m_mapping[var]);
+  }
 
   for(auto& ev : m_list) {
     if ( !ev.Accept ) continue;
-    pdf = ev.pdf;
+    for (auto& var : m_configuration.Variables) {
+      m_mapping[var] = ev[var];
+    }
     tree->Fill();
   }
+
+  TFile* file = new TFile(m_configuration.OutputLocation.c_str(),"RECREATE");
+  file->cd();
+  tree->Write();
+  file->Close();
 
   return tree;
 }
