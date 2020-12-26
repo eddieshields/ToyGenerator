@@ -5,6 +5,7 @@
 #include "algorithm.h"
 #include "sequence.h"
 #include "threads.h"
+#include "clock.h"
 
 #include <vector>
 
@@ -48,7 +49,7 @@ public:
   Exec m_runner;
 
   Configuration& operator()() { return m_configuration; }
-  void run() { return; }
+  void run();
   TTree* tree();
 
 private:
