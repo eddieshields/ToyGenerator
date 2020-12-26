@@ -27,6 +27,7 @@ public:
   // Struct for configuration.
   struct Configuration {
     int EvtMax = {1000};
+    int NThreads = {32};
     std::string TreeName = {"DecayTree"};
     std::string TreeTitle = {"DecayTree"};
     std::string OutputLocation = {""};
@@ -47,7 +48,6 @@ public:
 
   Configuration m_configuration;
   Exec m_runner;
-  Threads m_threads;
 
   Configuration& operator()() { return m_configuration; }
   void run();
