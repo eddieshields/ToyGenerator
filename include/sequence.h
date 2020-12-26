@@ -5,7 +5,6 @@
 #include "algorithmstore.h"
 #include "msgservice.h"
 
-
 #include <iostream>
 
 //extern AlgorithmStore gAlgorithmStore;
@@ -17,10 +16,10 @@ public:
   ~Sequence() {};
 
   template <typename IN_TYPE>
-  void addAlgorithm(IN_TYPE input)
+  void addAlgorithm(IN_TYPE& input)
   {
     Algorithm* tmp = NULL;
-    tmp = static_cast<Algorithm*>(&input);
+    tmp = &input;
     tmp->next=NULL;
     if ( head == NULL ) {
       head=tmp;
