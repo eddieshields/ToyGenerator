@@ -1,6 +1,8 @@
 #ifndef TOYGEN_THREADS_H
 #define TOYGEN_THREADS_H
 
+#include "msgservice.h"
+
 #include<thread>
 #include <pthread.h>
 #include <vector>
@@ -9,27 +11,22 @@ class Threads
 {
 public:
   template<typename FUNC, typename... IN_TYPES>
-  Threads(FUNC& function, IN_TYPES... args)
+  Threads(FUNC& function,int& nthreads)
   {
-    m_threads.resize( m_nthreads );
-    for (unsigned int i = 0; i < m_nthreads; i++) {
-      m_threads.push_back( std::thread(function,args...) );
+    INFO("Will use "+std::to_string(nthreads)+" threads");
+    for (int i = 0; i < nthreads; i++) {
+      std::thread t(function);
+      m_threads.push_back(std::move(t));
     }
-
-    for (unsigned int i = 0; i < m_nthreads; i++) {
-      m_threads[i].join();
+    for (auto &th : m_threads) {
+      th.join();
     }
-    
   }
   ~Threads() {};
-
-  void setNThreads(unsigned int n) { m_nthreads = n; }
 
 private:
   std::atomic<bool>        m_complete;
   std::vector<std::thread> m_threads;
-  unsigned int             m_nthreads = {32};
-
 };
 
 #endif

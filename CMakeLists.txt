@@ -46,6 +46,3 @@ target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_LIBRARIES} nlohmann_j
 #---Create an executable
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
 target_link_libraries(ToyGenerator ${PACKAGE})
-
-add_executable(test ${CMAKE_SOURCE_DIR}/apps/test.cpp)
-target_link_libraries(test ${PACKAGE})

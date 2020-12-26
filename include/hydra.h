@@ -27,6 +27,7 @@ public:
   // Struct for configuration.
   struct Configuration {
     int EvtMax = {1000};
+    int NThreads = {32};
     std::string TreeName = {"DecayTree"};
     std::string TreeTitle = {"DecayTree"};
     std::string OutputLocation = {""};
