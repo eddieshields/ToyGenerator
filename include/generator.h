@@ -42,7 +42,7 @@ public:
     m_phsp.SetDecay(m_mother,m_daughters.size(),m_daughters.data());
   }
   ~Generator() {}
-  void operator() (Event& ev);
+  virtual void operator() (Event& ev);
 
   template <typename IN_TYPE, typename... IN_TYPES>
   void addToDaughters(IN_TYPE input, IN_TYPES... inputs) { m_daughters.push_back( input ); addToDaughters(inputs...); }

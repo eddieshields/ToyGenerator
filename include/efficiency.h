@@ -10,7 +10,7 @@ public:
   Efficiency(std::string name) : Algorithm(name) {};
   ~Efficiency() {};
 
-  void operator() (Event& ev);
+  virtual void operator() (Event& ev);
 };
 
 #endif
