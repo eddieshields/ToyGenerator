@@ -27,15 +27,14 @@ public:
   ~Particle() {};
 
   bool isStable() { return m_stable; }
-  TLorentzVector* momentum() { return m_p; }
+  TLorentzVector& momentum() { return m_p; }
 
-private:
   std::string m_name;
 
   const double m_mass;
   const double m_ctau;
-  TLorentzVector* m_p;
-  TLorentzVector* m_true_p;
+  TLorentzVector m_p;
+  TLorentzVector m_true_p;
 
   bool m_stable;
   unsigned int m_flavour;
