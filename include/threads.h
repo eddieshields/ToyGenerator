@@ -8,8 +8,10 @@
 class Threads 
 {
 public:
+  Threads() {};
+  ~Threads() {};
   template<typename FUNC, typename... IN_TYPES>
-  Threads(FUNC& function, IN_TYPES... args)
+  void operator()(FUNC& function, IN_TYPES... args)
   {
     m_threads.resize( m_nthreads );
     for (unsigned int i = 0; i < m_nthreads; i++) {
@@ -20,14 +22,13 @@ public:
       m_threads[i].join();
     }
   }
-  ~Threads() {};
 
-  static void setNThreads(unsigned int n) { m_nthreads = n; }
+  void setNThreads(unsigned int n) { m_nthreads = n; }
 
 private:
   std::atomic<bool>        m_complete;
   std::vector<std::thread> m_threads;
-  static unsigned int      m_nthreads;
+  unsigned int             m_nthreads = {32};
 
 };
 
