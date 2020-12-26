@@ -3,7 +3,7 @@
 void Hydra::run()
 {
   Clock::Start();
-  Threads execute(m_runner);
+  Threads execute(m_runner,m_configuration.NThreads);
   Clock::Stop();
   Clock::Print("generate "+std::to_string(m_configuration.EvtMax)+" events");
 }
@@ -12,7 +12,7 @@ void Hydra::runSequence()
 {
   unsigned int counter = 0;
 
-  while ( counter < m_configuration.EvtMax ) {
+  while ( counter < m_configuration.EvtMax/m_configuration.NThreads ) {
     Event* ev = new Event();
     Algorithm* algo = m_configuration.AlgoSequence.head;
     while ( algo != nullptr ) {
@@ -20,8 +20,8 @@ void Hydra::runSequence()
       algo = algo->next;
     }
     if ( ev->Accept ) counter++;
-    addToList(*ev);
   }
+  return;
 }
 
 TTree* Hydra::tree()
