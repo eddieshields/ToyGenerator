@@ -8,8 +8,10 @@
 class Threads 
 {
 public:
+  Threads() {};
+  ~Threads() {};
   template<typename FUNC, typename... IN_TYPES>
-  Threads(FUNC& function, IN_TYPES... args)
+  void operator()(FUNC& function, IN_TYPES... args)
   {
     m_threads.resize( m_nthreads );
     for (unsigned int i = 0; i < m_nthreads; i++) {
@@ -21,7 +23,6 @@ public:
     }
     
   }
-  ~Threads() {};
 
   void setNThreads(unsigned int n) { m_nthreads = n; }
 
