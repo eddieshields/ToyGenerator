@@ -10,8 +10,6 @@
 class Threads 
 {
 public:
-  Threads() {};
-  ~Threads() {};
   template<typename FUNC, typename... IN_TYPES>
   Threads(FUNC& function,int& nthreads)
   {
@@ -24,7 +22,6 @@ public:
       th.join();
     }
   }
-
   ~Threads() {};
 
 private:
