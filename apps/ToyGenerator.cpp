@@ -2,31 +2,37 @@
 #include "generator.h"
 #include "efficiency.h"
 #include "amplitude.h"
+#include "accept.h"
 #include "sequence.h"
 #include "algorithm.h"
+#include "clock.h"
+#include "hydra.h"
 
 #include <iostream>
 
 int main()
 {
+  Hydra hy;
 
-  Event ev;
   Generator gen("Generator",1.9,0.4,0.4,0.5);
   Efficiency eff("Efficiency");
-  Efficiency eff1("Efficiency1");
-  Efficiency eff2("Efficiency2");
-  Efficiency eff3("Efficiency3");
   Amplitude amp("Amplitude");
+  Accept acc("Accept");
 
-  Sequence flow(eff,eff1,eff2,amp,eff3);
+  Sequence flow;
+  flow.addAlgorithm(gen);
+  flow.addAlgorithm(eff);
+  flow.addAlgorithm(amp);
+  flow.addAlgorithm(acc);
+  flow.printAlgorithmSequence();
 
-  Algorithm* head = flow.head;
-  head->operator()(ev);
-  /*
-  while ( head != nullptr ) {
-      head->operator()(ev);
-  }
-  */
-  std::cout << "Pdf = " << ev.pdf << std::endl;
-  return 0;
+  hy().EvtMax = 100000;
+  hy().TreeName = "d02kshh";
+  hy().AlgoSequence = flow;
+  hy().OutputLocation = "";
+  
+  hy.run();
+
+  TTree* tree = hy.tree();
+  tree->Print();
 }

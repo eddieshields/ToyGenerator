@@ -10,7 +10,7 @@ public:
   Amplitude(std::string name) : Algorithm(name) {};
   ~Amplitude() {};
 
-  void operator() (Event& ev);
+  virtual void operator() (Event& ev);
 };
 
 #endif

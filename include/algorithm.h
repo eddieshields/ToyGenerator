@@ -8,7 +8,7 @@
 struct Algorithm
 {
   Algorithm(std::string name) { m_name = name; }
-  ~Algorithm() {};
+  virtual ~Algorithm() {};
   
   virtual void operator() (Event& ev) = 0;
   Algorithm* next = {nullptr};

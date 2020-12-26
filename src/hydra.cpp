@@ -1,10 +1,18 @@
 #include "hydra.h"
 
+void Hydra::run()
+{
+  Clock::Start();
+  Threads execute(m_runner);
+  Clock::Stop();
+  Clock::Print("generate "+std::to_string(m_configuration.EvtMax)+" events");
+}
+
 void Hydra::runSequence()
 {
   unsigned int counter = 0;
 
-  while ( m_counter < m_configuration.EvtMax ) {
+  while ( counter < m_configuration.EvtMax ) {
     Event* ev = new Event();
     Algorithm* algo = m_configuration.AlgoSequence.head;
     while ( algo != nullptr ) {

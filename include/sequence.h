@@ -3,74 +3,54 @@
 
 #include "algorithm.h"
 #include "algorithmstore.h"
-
+#include "msgservice.h"
 
 #include <iostream>
+
+//extern AlgorithmStore gAlgorithmStore;
 
 class Sequence
 {
 public:
   Sequence() = default;
-  template <typename... IN_TYPES>
-  Sequence(IN_TYPES... inputs) 
-  {
-    addAlgorithm(inputs...);
-
-    printAlgorithmSequence();
-  }
   ~Sequence() {};
 
-  template <class IN, class... IN_TYPES>
-  void addAlgorithm(IN input, IN_TYPES... inputs)
+  template <typename IN_TYPE>
+  void addAlgorithm(IN_TYPE& input)
   {
-    gAlgorithmStore.addToStore(input);
-    if ( head == nullptr ) {
-      head = reinterpret_cast<Algorithm*>(&input);  //gAlgorithmStore.getAlgorithm(input.name());
-      gAlgorithmStore.head = head;
+    Algorithm* tmp = NULL;
+    tmp = &input;
+    tmp->next=NULL;
+    if ( head == NULL ) {
+      head=tmp;
+      tail=tmp;
+      tmp=NULL;
     } else {
-      Algorithm* tmp = head;
-      while ( tmp->next != nullptr ) {
-        tmp = tmp->next;
-      }
-      tmp->next = gAlgorithmStore.getAlgorithm(input.name());
+      tail->next=tmp;
+      tail=tmp;
     }
-    printAlgorithmSequence();
-    addAlgorithm(inputs...);
-  }
-
-  template<class IN>
-  void addAlgorithm(IN input)
-  {
-    gAlgorithmStore.addToStore(input);
-    if ( head == nullptr ) {
-      std::cout << "here" << std::endl;
-      head = reinterpret_cast<Algorithm*>(&input);  //gAlgorithmStore.getAlgorithm(input.name());
-      gAlgorithmStore.head = head;
-    } else {
-      Algorithm* tmp = head;
-      while ( tmp->next != nullptr ) {
-        tmp = tmp->next;
-      }
-      tmp->next = gAlgorithmStore.getAlgorithm(input.name());
-    }
-
-    printAlgorithmSequence();
-    return;
   }
 
   void printAlgorithmSequence()
   {
-    std::cout << "Algorithm sequence:" << std::endl; 
-    Algorithm* tmp = gAlgorithmStore.head;
-    while ( tmp != nullptr ) {
-      std::cout << tmp->name() << "," << std::endl;
-      tmp = tmp->next;
-    }
+    Algorithm* tmp = nullptr;
+    tmp = head;
+    while ( tmp != NULL ){
+				INFO(tmp->name());
+				tmp=tmp->next;
+			}
     return;
   }
   
   AlgorithmStore gAlgorithmStore;
   Algorithm* head;
+  Algorithm* tail;
+
+  void operator=(const Sequence& other) 
+  {
+    gAlgorithmStore = other.gAlgorithmStore;
+    head = other.head;
+  }
 };
 
 #endif
