@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.4.3 FATAL_ERROR)
 set(PACKAGE ToyGen)
 project(${PACKAGE})
 
+option(TOYGEN_DEBUG "AmpGen Debug printout")
+
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 
@@ -11,10 +13,12 @@ find_package(ROOT REQUIRED COMPONENTS Core RIO Hist Graf Graf3d Postscript Gpad
                              RooFit RooFitCore Tree MathCore Foam Physics
                              Proof ProofBench ProofDraw ProofPlayer)
 
-
+find_package(Boost)
+                    
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIRS})
 
 #--- Define the headers list
 include_directories(include src dict external/json/single_include ${CMAKE_SOURCE_DIR})
@@ -36,9 +40,12 @@ add_library(HYDRA SHARED ${sources} G__${PACKAGE}.cxx)
 add_library(${PACKAGE} SHARED ${sources} ${headers})
 
 #--- Link libraries
-target_link_libraries(HYDRA ${ROOT_LIBRARIES} nlohmann_json::nlohmann_json)
-target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} nlohmann_json::nlohmann_json)
+target_link_libraries(HYDRA ${ROOT_LIBRARIES} ${Boost_LIBRARIES} nlohmann_json::nlohmann_json)
+target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_LIBRARIES} nlohmann_json::nlohmann_json)
 
 #---Create an executable
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
 target_link_libraries(ToyGenerator ${PACKAGE})
+
+add_executable(test ${CMAKE_SOURCE_DIR}/apps/test.cpp)
+target_link_libraries(test ${PACKAGE})
