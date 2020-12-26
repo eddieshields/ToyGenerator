@@ -47,6 +47,7 @@ public:
 
   Configuration m_configuration;
   Exec m_runner;
+  Threads m_threads;
 
   Configuration& operator()() { return m_configuration; }
   void run();
