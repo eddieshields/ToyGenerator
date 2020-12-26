@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 
+#include <boost/any.hpp>
 
 struct AlgorithmStore
 {
@@ -44,13 +45,14 @@ struct AlgorithmStore
       FATAL("Algorithm "+algo->name()+" already exists. Please give all algorithms a unique name.");
     } else {
       m_algos[algo->name()] = algo;
-      DEBUG("Added "+algo->name()+" to store.");
+      INFO("Added "+algo->name()+" to store.");
     }
   }
 
   Algorithm* getAlgorithm(std::string name)
   {
     if (m_algos.find(name) != m_algos.end()) {
+      INFO("Found "+m_algos[name]->name());
       return m_algos[name];
     } else {
       ERROR("Algorithm "+name+" doesn't exists.");
