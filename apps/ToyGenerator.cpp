@@ -2,10 +2,11 @@
 #include "generator.h"
 #include "efficiency.h"
 #include "amplitude.h"
+#include "accept.h"
 #include "sequence.h"
 #include "algorithm.h"
+#include "clock.h"
 #include "hydra.h"
-#include "linkedlist.h"
 
 #include <iostream>
 
@@ -15,21 +16,17 @@ int main()
 
   Generator gen("Generator",1.9,0.4,0.4,0.5);
   Efficiency eff("Efficiency");
-  Efficiency eff1("Efficiency1");
-  Efficiency eff2("Efficiency2");
-  Efficiency eff3("Efficiency3");
   Amplitude amp("Amplitude");
+  Accept acc("Accept");
 
   Sequence flow;
   flow.addAlgorithm(gen);
   flow.addAlgorithm(eff);
-  flow.addAlgorithm(eff1);
-  flow.addAlgorithm(eff2);
-  flow.addAlgorithm(eff3);
   flow.addAlgorithm(amp);
+  flow.addAlgorithm(acc);
   flow.printAlgorithmSequence();
 
-  hy().EvtMax = 1000;
+  hy().EvtMax = 100000;
   hy().TreeName = "d02kshh";
   hy().AlgoSequence = flow;
   hy().OutputLocation = "";
