@@ -31,13 +31,17 @@ public:
 
   void updateMasses()
   {  
-    TLorentzVector m12 = m_particles[0].momentum() + m_particles[1].momentum();
-    TLorentzVector m13 = m_particles[0].momentum() + m_particles[2].momentum();
-    TLorentzVector m23 = m_particles[1].momentum() + m_particles[2].momentum();
+    TLorentzVector p1 = m_particles[0].momentum();
+    TLorentzVector p2 = m_particles[1].momentum();
+    TLorentzVector p3 = m_particles[2].momentum();
+
+    TLorentzVector p12 = p1 + p2;
+    TLorentzVector p13 = p1 + p3;
+    TLorentzVector p23 = p2 + p3;
   
-    m_v["mSq12"] = m12.M2();
-    m_v["mSq13"] = m13.M2();
-    m_v["mSq23"] = m23.M2();
+    m_v["mSq12"] = p12.M2();
+    m_v["mSq13"] = p13.M2();
+    m_v["mSq23"] = p23.M2();
   }
 };
 
