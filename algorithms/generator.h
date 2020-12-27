@@ -5,11 +5,13 @@
 #include "algorithm.h"
 #include "particlestore.h"
 #include "msgservice.h"
+#include "random.h"
 
 #include "TGenPhaseSpace.h"
 #include "TLorentzVector.h"
 
 #include <vector>
+#include <random>
 
 extern ParticleStore gParticleStore;
 

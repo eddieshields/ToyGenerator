@@ -11,5 +11,15 @@ void Generator::operator()(Event& ev)
     ev.m_particles.push_back( Particle() );
     ev.m_particles[i].m_p = *phsp.GetDecay(i);
   }
+
+  
+  ev.mother().time() = Random::exponential();
+  
+  if (rand() % 2) {
+    ev.daughter(1).charge() = 1;
+  } else {
+    ev.daughter(1).charge() = -1;
+  }
+  
   return;
 }
