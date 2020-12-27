@@ -33,12 +33,15 @@ public:
 
   void printAlgorithmSequence()
   {
+    std::string alg_str = "Sequence = ";
     Algorithm* tmp = nullptr;
     tmp = head;
     while ( tmp != NULL ){
-				INFO(tmp->name());
-				tmp=tmp->next;
-			}
+      alg_str += tmp->name()+", ";
+			tmp=tmp->next;
+		}
+    alg_str.replace(alg_str.size()-2,2,"");
+    INFO(alg_str);
     return;
   }
   
