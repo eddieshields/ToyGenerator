@@ -10,6 +10,7 @@
 #include "amplitude.h"
 #include "accept.h"
 #include "tupling.h"
+#include "d02k3pi.h"
 
 
 #endif // DICT_TOYGEN_H

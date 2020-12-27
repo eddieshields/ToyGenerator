@@ -13,5 +13,6 @@
 #pragma link C++ class Amplitude+;
 #pragma link C++ class Accept+;
 #pragma link C++ class Tupling+;
+#pragma link C++ class D02K3Pi+;
 
 #endif
