@@ -12,6 +12,7 @@ void Hydra::run()
   TTree* ttree = tree();
   Clock::Stop();
   Clock::Print("fill tree with "+std::to_string(ttree->GetEntries())+" events");
+  ttree->Print();
 }
 
 std::vector<Event> Hydra::runSequence(int thread)
