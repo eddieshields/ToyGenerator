@@ -26,19 +26,22 @@ public:
   {}
   ~Particle() {};
 
-  bool isStable() { return m_stable; }
+  bool& isStable()           { return m_stable; }
+  double& time()             { return m_ctau; }
   TLorentzVector& momentum() { return m_p; }
+  int& charge()              { return m_q; }
+  int& flavour()             { return m_flavour; }
 
   std::string m_name;
 
-  const double m_mass;
-  const double m_ctau;
+  bool m_stable;
+  double m_mass;
+  double m_ctau;
+  int    m_q;
+  int    m_flavour;
+
   TLorentzVector m_p;
   TLorentzVector m_true_p;
-
-  bool m_stable;
-  unsigned int m_flavour;
-
 };
 
 #endif
