@@ -25,7 +25,7 @@ public:
   const double getVariable(Tupling::ParamType& _type, Event& ev);
   const std::string getName(Tupling::ParamType& _type);
   const Tupling::ParamType getParamFromString(std::string name);
-  void setVariables(std::vector<std::string> variables)
+  void setVariables(std::vector<std::string>& variables)
   {
     for (auto& v : variables) {
       ParamType p = getParamFromString(v);
@@ -38,6 +38,7 @@ public:
     }
     vars.replace(vars.size()-2,2,"");
     INFO(vars);
+    return;
   }
 
 private:
