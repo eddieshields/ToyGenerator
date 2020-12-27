@@ -33,7 +33,7 @@ int main()
   hy().TreeName = "d02kshh";
   hy().AlgoSequence = flow;
   hy().OutputLocation = "";
-  hy().NThreads = 32;
+  hy().NThreads = 1;
   hy().OutputLocation = "/Users/eddieshields/Documents/LHCb/ToyGenerator/build/tmp/output.root";
   hy().Variables = {"mSq12","mSq13","mSq23"};
   hy.run();
