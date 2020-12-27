@@ -3,6 +3,7 @@
 
 #include "event.h"
 #include "algorithm.h"
+#include "msgservice.h"
 
 class Tupling : public Algorithm
 {
