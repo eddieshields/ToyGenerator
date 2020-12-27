@@ -7,6 +7,11 @@ void Hydra::run()
   m_list = execute.list();
   Clock::Stop();
   Clock::Print("generate "+std::to_string(m_configuration.EvtMax)+" events");
+
+  Clock::Start();
+  TTree* ttree = tree();
+  Clock::Stop();
+  Clock::Print("fill tree with "+std::to_string(ttree->GetEntries())+" events");
 }
 
 std::vector<Event> Hydra::runSequence(int thread)
