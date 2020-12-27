@@ -24,6 +24,7 @@ public:
   bool   Accept = {false};
 
   std::vector<Particle>& particles() { return m_particles; }
+  Particle& particle(int index)      { return m_particles[index]; }       
   Particle& mother()                 { return m_particles[0]; }
   Particle& daughter(int index)      { return m_particles[index]; }
   double* data()                     { makeData(); return m_data.data(); } 
