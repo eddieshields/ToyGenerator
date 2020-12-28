@@ -3,14 +3,16 @@
 void Tupling::operator()(Event& ev)
 {
   if ( !ev.Accept ) return;
-  //ev.updateMasses();
-
+  for (auto& p : m_variables) {
+    p(ev);
+  }
+  /*
   Param* param = head;
   while ( param != nullptr ) {
     param->operator()(ev);
     param = param->next;
   }
-  
+  */
   return;
 }
 
@@ -63,11 +65,28 @@ void Tupling::addCharge()
   }
 }
 
+std::vector<std::string> Tupling::getVariables()
+{
+  std::vector<std::string> names;
+  for (auto& p : m_variables) {
+    names.push_back( p.name() );
+  }
+  return names;
+}
+
 void Tupling::printParams()
 {
   std::string param_str = "Params = ";
+  for (auto& p : m_variables) {
+    param_str += p.name()+", ";
+  }
+  param_str.replace(param_str.size()-2,2,"");
+  INFO(param_str);
+  /*
+  std::string param_str = "Params = ";
   Param* tmp = nullptr;
   tmp = head;
+  INFO("Head = "+tmp->name());
   while ( tmp != NULL ){
     param_str += tmp->name()+", ";
 		tmp=tmp->next;
@@ -75,4 +94,5 @@ void Tupling::printParams()
   param_str.replace(param_str.size()-2,2,"");
   INFO(param_str);
   return;
+  */
 }

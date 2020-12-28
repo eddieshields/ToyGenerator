@@ -13,14 +13,13 @@
 
 class Tupling : public Algorithm
 {
-public:
-
-  Tupling(std::string name) : Algorithm(name) {}
+public: 
+  Tupling(std::string name) : 
+    Algorithm(name)
+  {}
   ~Tupling() {}
 
   virtual void operator() (Event& ev);
-
-  void setDecay(std::string decay) { gDescriptor.decodeDecayDescriptor( decay ); }
 
   void addMomentum();
   void addCharge();
@@ -28,14 +27,15 @@ public:
   void addParam(Param& param);
   void printParams();
 
+  std::vector<std::string> getVariables();
+
 private:
   void addParamToList(Param& param) { addParamToList(&param); }
   void addParamToList(Param* param);
   std::vector<Param> m_variables;
-  DecayDescriptor gDescriptor;
 
-  Param* head;
-  Param* tail;
+  Param* head = {nullptr};
+  Param* tail = {nullptr};
 };
 
 #endif
