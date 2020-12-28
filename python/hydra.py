@@ -13,6 +13,8 @@ class Hydra:
     def run(self):
         self.hy.run()
 
+    def setDecay(self,decay)
+        self.hy.setDecay(decay)
 
     
 
