@@ -20,4 +20,6 @@ struct ParticleStore {
   double operator()(std::string name, std::string variable) { return m_particles[name][variable].get<double>(); }
 };
 
+extern ParticleStore gParticleStore;
+
 #endif

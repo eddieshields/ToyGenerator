@@ -9,7 +9,7 @@
 
 struct DecayDescriptor
 {
-  DecayDescriptor() = default;
+  DecayDescriptor() {};
   ~DecayDescriptor() {}
   void        decodeDecayDescriptor(std::string decay);
   void        printDecayDescriptor();
@@ -25,11 +25,15 @@ struct DecayDescriptor
   std::vector<int>&          getFlavours()        { return m_flavours; }
   bool&                      getChargeConjugate() { return m_chcnj; }
 
+  void operator()(std::string decay) { decodeDecayDescriptor(decay); }
 private:
   std::vector<std::string>  m_particles;
   std::vector<int>          m_charges;
   std::vector<int>          m_flavours;
   bool                      m_chcnj;
 };
+
+
+extern DecayDescriptor gDescriptor;
 
 #endif
