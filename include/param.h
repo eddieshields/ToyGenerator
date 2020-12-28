@@ -22,7 +22,7 @@ public:
     E      //Energy.
   };
   Param() :
-    Algorithm(),
+    Algorithm(""),
     m_type(Param::Q),
     m_particle_index(-1)
   {}
@@ -30,7 +30,7 @@ public:
     Algorithm(name),
     m_type( getParamFromString(param) ),
     m_particle_index( index )
-  {};
+  {}
   ~Param() {};
 
   virtual void operator()(Event& ev) { ev[m_name] = eval( ev.particle(m_particle_index)); }
