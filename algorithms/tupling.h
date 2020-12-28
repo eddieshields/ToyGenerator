@@ -5,6 +5,7 @@
 #include "algorithm.h"
 #include "msgservice.h"
 #include "param.h"
+#include "compositeparam.h"
 #include "descriptor.h"
 
 #include <vector>
@@ -15,13 +16,16 @@ class Tupling : public Algorithm
 {
 public: 
   Tupling(std::string name) : 
-    Algorithm(name)
+    Algorithm(name),
+    head(nullptr),
+    tail(nullptr)
   {}
   ~Tupling() {}
 
   virtual void operator() (Event& ev);
 
   void addMomentum();
+  void addMass();
   void addCharge();
   void addParam(Param* param);
   void addParam(Param& param);
@@ -29,10 +33,12 @@ public:
 
   std::vector<std::string> getVariables();
 
+  void addCompositeMass();
+  void addCompositeMass(int index1, int index2);
+
 private:
-  void addParamToList(Param& param) { addParamToList(&param); }
   void addParamToList(Param* param);
-  std::vector<Param> m_variables;
+  std::vector<Param*> m_variables;
 
   Param* head = {nullptr};
   Param* tail = {nullptr};
