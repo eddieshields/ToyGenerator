@@ -4,45 +4,38 @@
 #include "event.h"
 #include "algorithm.h"
 #include "msgservice.h"
+#include "param.h"
+#include "descriptor.h"
 
 #include <vector>
+#include <map>
 #include <string>
 
 class Tupling : public Algorithm
 {
 public:
-  enum ParamType {
-    Pdf,       //Pdf value.
-    Weight,    //Weight.
-    T,         //Time.
-    Q,         //Charge.
-	};
+
   Tupling(std::string name) : Algorithm(name) {}
   ~Tupling() {}
 
   virtual void operator() (Event& ev);
 
-  const double getVariable(Tupling::ParamType& _type, Event& ev);
-  const std::string getName(Tupling::ParamType& _type);
-  const Tupling::ParamType getParamFromString(std::string name);
-  void setVariables(std::vector<std::string>& variables)
-  {
-    for (auto& v : variables) {
-      ParamType p = getParamFromString(v);
-      m_variables.push_back( p );
-    }
+  void setDecay(std::string decay) { gDescriptor.decodeDecayDescriptor( decay ); }
 
-    std::string vars = "Variables = ";
-    for (auto& p : m_variables) {
-      vars += getName(p)+", ";
-    }
-    vars.replace(vars.size()-2,2,"");
-    INFO(vars);
-    return;
-  }
+  void addMomentum();
+  void addCharge();
+  void addParam(Param* param);
+  void addParam(Param& param);
+  void printParams();
 
 private:
-  std::vector<Tupling::ParamType> m_variables;
+  void addParamToList(Param& param) { addParamToList(&param); }
+  void addParamToList(Param* param);
+  std::vector<Param> m_variables;
+  DecayDescriptor gDescriptor;
+
+  Param* head;
+  Param* tail;
 };
 
 #endif
