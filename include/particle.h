@@ -24,6 +24,8 @@ public:
   int& charge()              { return m_q; }
   int& flavour()             { return m_flavour; }
 
+  Particle operator+(Particle& part2);
+  Particle operator+=(Particle& part2);
 private:
   std::string m_name;
   bool        m_stable;
