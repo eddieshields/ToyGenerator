@@ -7,6 +7,7 @@
 #include "particlestore.h"
 #include "msgservice.h"
 #include "random.h"
+#include "descriptor.h"
 
 #include "TGenPhaseSpace.h"
 #include "TLorentzVector.h"
@@ -18,12 +19,13 @@
 class Generator : public Algorithm
 {
 public:
-  Generator(std::string name) : Algorithm(name), m_phsp() {}
+  Generator(std::string name) : Algorithm(name), gDescriptor(),m_phsp() {}
   Generator(std::string name, std::string decay) : 
     Algorithm(name),
+    gDescriptor(),
     m_phsp()
   {
-    decodeDecayDescriptor(decay);
+    getDecay( name );
     TLorentzVector m_mother(0.,0.,0.,gParticleStore(m_particles[0],"mass"));
     for (int i = 1; i < m_particles.size(); i++) {
       addToDaughters(m_particles[i]);
@@ -33,15 +35,9 @@ public:
   ~Generator() {}
   virtual void operator() (Event& ev);
 
-  /*
-  template <typename IN_TYPE, typename... IN_TYPES>
-  void addToDaughters(IN_TYPE input, IN_TYPES... inputs) { m_daughters.push_back( input ); addToDaughters(inputs...); }
-  template <typename IN_TYPE>
-  void addToDaughters(IN_TYPE input) { m_daughters.push_back(input); }
-  */
   void setDecay(std::string decay)
   {
-    decodeDecayDescriptor(decay);
+    getDecay( decay );
     TLorentzVector m_mother(0.,0.,0.,gParticleStore(m_particles[0],"mass"));
     for (int i = 1; i < m_particles.size(); i++) {
       addToDaughters(m_particles[i]);
@@ -58,41 +54,19 @@ private:
   std::vector<int>          m_flavours;
   bool                      m_chcnj;
 
-  //template <typename... IN_TYPES>
-  //void addToDaughters(std::string daughter, IN_TYPES... daughters) { m_daughters.push_back( gParticleStore(daughter,"mass") ); addToDaughters(daughters...); }
-  void addToDaughters(std::string daughter) { m_daughters.push_back( gParticleStore(cleanParticle(daughter),"mass") ); }
+  void addToDaughters(std::string daughter) { m_daughters.push_back( gParticleStore(daughter,"mass") ); }
 
-  void        decodeDecayDescriptor(std::string decay);
-  void        printDecayDescriptor();
-  void        getMotherName      (std::string decay);
-  void        getDaughtersNames  (std::string decay);
-  const int   getParticleCharge  (std::string particle);
-  const int   getParticleFlavour (std::string particle);
-  const bool  getChargedConjugate(std::string decay);
-  std::string cleanParticle(std::string particle);
-
-  ParticleStore gParticleStore;
+   void getDecay(std::string decay)
+  {
+    gDescriptor.decodeDecayDescriptor(decay);
+    m_particles = gDescriptor.getParticles();
+    m_charges = gDescriptor.getCharges();
+    m_flavours = gDescriptor.getFlavours();
+    m_chcnj = gDescriptor.getChargeConjugate();
+  }
+  
+  DecayDescriptor gDescriptor;
+  ParticleStore   gParticleStore;
 };
-
-  /*
-  template <typename... IN_TYPES>
-  Generator(std::string name, const double mM, IN_TYPES... inputs) :
-    Algorithm(name),
-    m_phsp()
-  {
-    TLorentzVector m_mother(0.,0.,0.,mM);
-    addToDaughters(inputs...);
-    m_phsp.SetDecay(m_mother,m_daughters.size(),m_daughters.data());
-  }
-  template<typename... IN_TYPES>
-  Generator(std::string name, std::string mother_name, IN_TYPES... daughter_names) :
-    Algorithm(name),
-    m_phsp()
-  {
-    TLorentzVector m_mother(0.,0.,0.,gParticleStore(mother_name,"mass"));
-    addToDaughters(daughter_names...);
-    m_phsp.SetDecay(m_mother,m_daughters.size(),m_daughters.data());
-  }
-  */
 
 #endif
