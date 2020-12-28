@@ -15,7 +15,11 @@ class Event
 {
 friend class Generator;
 public:
-  Event() {};
+  Event() 
+  {
+    m_particles.reserve( 5 );
+    m_data.reserve( ( 5 * 4 ) + 1);
+  };
   ~Event() {};
 
   double pdf = {1};
