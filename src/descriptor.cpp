@@ -14,7 +14,6 @@ void DecayDescriptor::decodeDecayDescriptor(std::string decay)
     m_particles[i] = cleanParticle(m_particles[i]);
   }
   m_chcnj = getChargedConjugate(decay);
-  printDecayDescriptor();
 }
 
 void DecayDescriptor::printDecayDescriptor()
