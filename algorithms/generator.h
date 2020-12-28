@@ -19,13 +19,9 @@
 class Generator : public Algorithm
 {
 public:
-  Generator(std::string name) : Algorithm(name), gDescriptor(),m_phsp() {}
-  Generator(std::string name, std::string decay) : 
-    Algorithm(name),
-    gDescriptor(),
-    m_phsp()
+  Generator(std::string name) : Algorithm(name), m_phsp() 
   {
-    getDecay( name );
+    getDecay();
     TLorentzVector m_mother(0.,0.,0.,gParticleStore(m_particles[0],"mass"));
     for (int i = 1; i < m_particles.size(); i++) {
       addToDaughters(m_particles[i]);
@@ -34,16 +30,6 @@ public:
   }
   ~Generator() {}
   virtual void operator() (Event& ev);
-
-  void setDecay(std::string decay)
-  {
-    getDecay( decay );
-    TLorentzVector m_mother(0.,0.,0.,gParticleStore(m_particles[0],"mass"));
-    for (int i = 1; i < m_particles.size(); i++) {
-      addToDaughters(m_particles[i]);
-    }
-    m_phsp.SetDecay(m_mother,m_daughters.size(),m_daughters.data());
-  }
   
 private:
   TGenPhaseSpace            m_phsp;
@@ -56,17 +42,14 @@ private:
 
   void addToDaughters(std::string daughter) { m_daughters.push_back( gParticleStore(daughter,"mass") ); }
 
-   void getDecay(std::string decay)
+  void getDecay()
   {
-    gDescriptor.decodeDecayDescriptor(decay);
     m_particles = gDescriptor.getParticles();
     m_charges = gDescriptor.getCharges();
     m_flavours = gDescriptor.getFlavours();
     m_chcnj = gDescriptor.getChargeConjugate();
   }
   
-  DecayDescriptor gDescriptor;
-  ParticleStore   gParticleStore;
 };
 
 #endif
