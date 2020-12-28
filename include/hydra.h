@@ -5,6 +5,7 @@
 #include "algorithm.h"
 #include "sequence.h"
 #include "threads.h"
+#include "descriptor.h"
 #include "clock.h"
 
 #include <vector>
@@ -56,6 +57,7 @@ public:
   void run();
   TTree* tree();
 
+  void setDecay(std::string decay) { gDescriptor(decay); }
 private:
   std::vector<Event> m_list;
   void addToList(Event ev) { m_list.push_back(ev); } 
