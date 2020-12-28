@@ -2,10 +2,12 @@
   <class name="Hydra" />
   <class name="Event" />
   <class name="Particle" />
+  <class name="DecayDescriptor" />
   <class name="Generator" />
   <class name="Efficiency" />
   <class name="Amplitude" />
   <class name="Accept" />
   <class name="Tupling" />
+  <class name="Param" />
   <class name="D02K3Pi" />
 </lcgdict>

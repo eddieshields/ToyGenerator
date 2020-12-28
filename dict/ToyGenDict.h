@@ -5,11 +5,13 @@
 #include "hydra.h"
 #include "event.h"
 #include "particle.h"
+#include "descriptor.h"
 #include "generator.h"
 #include "efficiency.h"
 #include "amplitude.h"
 #include "accept.h"
 #include "tupling.h"
+#include "param.h"
 #include "d02k3pi.h"
 
 
