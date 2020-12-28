@@ -6,8 +6,6 @@
 
 #include <iostream>
 
-//extern AlgorithmStore gAlgorithmStore;
-
 class Sequence
 {
 public:
