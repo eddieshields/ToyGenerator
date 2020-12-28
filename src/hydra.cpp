@@ -3,7 +3,8 @@
 void Hydra::run()
 {
   Clock::Start();
-  Threads execute(m_runner,m_configuration.NThreads);
+  Threads<Hydra::Exec> execute(m_runner,m_configuration.NThreads,m_configuration.EvtMax);
+  execute();
   m_list = execute.list();
   Clock::Stop();
   Clock::Print("generate "+std::to_string(m_configuration.EvtMax)+" events");
@@ -28,10 +29,9 @@ std::vector<Event> Hydra::runSequence(int thread)
     }
     if ( ev->Accept ) {
       counter++;
-      list.push_back( *ev );
+      list.push_back( std::move(*ev) );
     }
   }
-
   return list;
 }
 
