@@ -2,31 +2,48 @@
 #define TOYGEN_THREADS_H
 
 #include "msgservice.h"
+#include "event.h"
 
 #include<thread>
 #include <pthread.h>
 #include <vector>
+#include <future>
 
+#include "TROOT.h"
+
+template<typename FUNC>
 class Threads 
 {
 public:
-  template<typename FUNC, typename... IN_TYPES>
-  Threads(FUNC& function,int& nthreads)
+  Threads(FUNC& function,int& nthreads, int& nevents) :
+    m_function(function),
+    m_nthreads( nthreads )
   {
-    INFO("Will use "+std::to_string(nthreads)+" threads");
-    for (int i = 0; i < nthreads; i++) {
-      std::thread t(function);
-      m_threads.push_back(std::move(t));
-    }
-    for (auto &th : m_threads) {
-      th.join();
-    }
+    m_list.reserve( nevents );
+    ROOT::EnableImplicitMT(nthreads);
   }
   ~Threads() {};
 
+  void operator()()
+  {
+    for (int i = 0; i < m_nthreads; i++) {
+      std::future<std::vector<Event>> t = std::async(std::launch::async,m_function,i);
+      m_threads.push_back( std::move(t) );
+    }
+
+    for (int i = 0; i < m_nthreads; i++) {
+      std::vector<Event> tmp = m_threads[i].get();
+      m_list.insert( m_list.end(), tmp.begin(), tmp.end() );
+    }
+  }
+
+  std::vector<Event> list() { return m_list; }
 private:
-  std::atomic<bool>        m_complete;
-  std::vector<std::thread> m_threads;
+  FUNC&                                        m_function;
+  const int                                    m_nthreads;
+  std::atomic<bool>                            m_complete;
+  std::vector<std::future<std::vector<Event>>> m_threads;
+  std::vector<Event>                           m_list;
 };
 
 #endif

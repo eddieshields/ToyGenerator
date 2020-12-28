@@ -2,12 +2,9 @@
 #define TOYGEN_SEQUENCE_H
 
 #include "algorithm.h"
-#include "algorithmstore.h"
 #include "msgservice.h"
 
 #include <iostream>
-
-//extern AlgorithmStore gAlgorithmStore;
 
 class Sequence
 {
@@ -18,13 +15,13 @@ public:
   template <typename IN_TYPE>
   void addAlgorithm(IN_TYPE& input)
   {
-    Algorithm* tmp = NULL;
+    Algorithm* tmp = nullptr ;
     tmp = &input;
-    tmp->next=NULL;
-    if ( head == NULL ) {
+    tmp->next=nullptr ;
+    if ( head == nullptr ) {
       head=tmp;
       tail=tmp;
-      tmp=NULL;
+      tmp=nullptr ;
     } else {
       tail->next=tmp;
       tail=tmp;
@@ -33,22 +30,23 @@ public:
 
   void printAlgorithmSequence()
   {
+    std::string alg_str = "Sequence = ";
     Algorithm* tmp = nullptr;
     tmp = head;
-    while ( tmp != NULL ){
-				INFO(tmp->name());
-				tmp=tmp->next;
-			}
+    while ( tmp != nullptr ){
+      alg_str += tmp->name()+", ";
+			tmp=tmp->next;
+		}
+    alg_str.replace(alg_str.size()-2,2,"");
+    INFO(alg_str);
     return;
   }
   
-  AlgorithmStore gAlgorithmStore;
   Algorithm* head;
   Algorithm* tail;
 
   void operator=(const Sequence& other) 
   {
-    gAlgorithmStore = other.gAlgorithmStore;
     head = other.head;
   }
 };

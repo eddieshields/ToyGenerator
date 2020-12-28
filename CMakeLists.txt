@@ -26,15 +26,17 @@ include_directories(include src dict external/json/single_include ${CMAKE_SOURCE
 #--- Add json
 add_subdirectory(external/json)
 
+include_directories(algorithms)
+
 #--- Define the headers and src directories
-file(GLOB_RECURSE sources src/*.cpp)
-file(GLOB_RECURSE headers include/*.h)
+file(GLOB_RECURSE sources src/*.cpp algorithms/*.cpp)
+file(GLOB_RECURSE headers include/*.h algorithms/*.h)
 file(GLOB_RECURSE json external/json/single_include/*)
 
-ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} LINKDEF dict/${PACKAGE}LinkDef.h)
+ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} ${algos} LINKDEF dict/${PACKAGE}LinkDef.h)
 
 #--- Generate ROOT library from dictionary
-add_library(HYDRA SHARED ${sources} G__${PACKAGE}.cxx)
+add_library(HYDRA SHARED ${sources} ${} G__${PACKAGE}.cxx)
 
 #-- Generate general library
 add_library(${PACKAGE} SHARED ${sources} ${headers})

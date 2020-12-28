@@ -11,35 +11,31 @@ using json = nlohmann::json;
 
 #include "TLorentzVector.h"
 
-extern ParticleStore gParticleStore;
 
 class Particle
 {
 public:
-  Particle() :
-    m_mass( 0. ),
-    m_ctau( 0. )
-  {}
-  Particle(std::string name) :
-    m_mass( gParticleStore(name,"mass") ),
-    m_ctau( gParticleStore(name,"ctau") )
-  {}
+  Particle() {};
   ~Particle() {};
 
-  bool isStable() { return m_stable; }
-  TLorentzVector* momentum() { return m_p; }
+  bool& isStable()           { return m_stable; }
+  double& time()             { return m_ctau; }
+  TLorentzVector& momentum() { return m_p; }
+  int& charge()              { return m_q; }
+  int& flavour()             { return m_flavour; }
 
+  Particle operator+(Particle& part2);
+  Particle operator+=(Particle& part2);
 private:
   std::string m_name;
+  bool        m_stable;
+  double      m_mass;
+  double      m_ctau;
+  int         m_q;
+  int         m_flavour;
 
-  const double m_mass;
-  const double m_ctau;
-  TLorentzVector* m_p;
-  TLorentzVector* m_true_p;
-
-  bool m_stable;
-  unsigned int m_flavour;
-
+  TLorentzVector m_p;
+  TLorentzVector m_true_p;
 };
 
 #endif

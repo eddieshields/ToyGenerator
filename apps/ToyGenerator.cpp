@@ -4,6 +4,8 @@
 #include "amplitude.h"
 #include "accept.h"
 #include "sequence.h"
+#include "d02k3pi.h"
+#include "tupling.h"
 #include "algorithm.h"
 #include "clock.h"
 #include "hydra.h"
@@ -13,26 +15,28 @@
 int main()
 {
   Hydra hy;
-
-  Generator gen("Generator",1.9,0.4,0.4,0.5);
-  Efficiency eff("Efficiency");
-  Amplitude amp("Amplitude");
+  hy.setDecay("D0 => K+ pi- pi+ pi-");
+  
+  Generator gen("Generator");
+  D02K3Pi amp("Amplitude");
   Accept acc("Accept");
+  Tupling tup("Tupling");
+  tup.addMass();
+  tup.addCompositeMass();
+  tup.printParams();
 
   Sequence flow;
   flow.addAlgorithm(gen);
-  flow.addAlgorithm(eff);
   flow.addAlgorithm(amp);
   flow.addAlgorithm(acc);
+  flow.addAlgorithm(tup);
   flow.printAlgorithmSequence();
 
-  hy().EvtMax = 100000;
-  hy().TreeName = "d02kshh";
+  hy().EvtMax = 10000;
+  hy().TreeName = "d02k3pi";
   hy().AlgoSequence = flow;
-  hy().OutputLocation = "";
   hy().NThreads = 32;
+  hy().OutputLocation = "/Users/eddieshields/Documents/LHCb/ToyGenerator/build/tmp/output.root";
+  hy().Variables = tup.getVariables();
   hy.run();
-
-  TTree* tree = hy.tree();
-  tree->Print();
 }

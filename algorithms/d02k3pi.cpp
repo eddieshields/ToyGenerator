@@ -1,0 +1,32 @@
+#include "d02k3pi.h"
+
+void D02K3Pi::operator()(Event& ev)
+{
+  if ( ev.daughter(1).charge() == -1 ) {
+    std::complex<double> a = rs( ev.data() , -1 );
+    double A = std::norm( a );
+    ev.pdf = A;
+    ev.weight = A;
+  } else if ( ev.daughter(1).charge() == +1 ) {
+    const double* data = ev.data();
+    std::complex<double> Adcs = m_dcs_offset * dcs( data , +1 );
+    std::complex<double> Acf  = cf( data , +1 );
+    std::complex<double> a = gp( ev.mother().time() )*Adcs + (m_q/m_p)*gm( ev.mother().time() )*Acf;
+    double A = std::norm( a );
+    ev.pdf = A;
+    ev.weight = A;
+  }
+  return;
+}
+
+std::complex<double> D02K3Pi::gp(const double& t)
+{
+  std::complex<double> I(0,1);
+  return std::cos( -I * m_z * ( t/2 ) );
+}
+
+std::complex<double> D02K3Pi::gm(const double& t)
+{
+  std::complex<double> I(0,1);
+  return std::sin( - I * m_z * ( t/2 ) );
+}
