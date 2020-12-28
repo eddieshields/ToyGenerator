@@ -7,6 +7,7 @@
 
 struct Algorithm
 {
+  Algorithm () = default;
   Algorithm(std::string name) { m_name = name; }
   virtual ~Algorithm() {};
   
