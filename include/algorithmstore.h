@@ -13,54 +13,15 @@
 
 struct AlgorithmStore
 {
-  std::map<std::string,Algorithm*> m_algos;
+public: 
+  AlgorithmStore() {};
+  ~AlgorithmStore() {};
 
-  void setHead(Algorithm* algo) { head = algo; }
-  void setHead(std::string name) 
-  {
-    if (m_algos.find(name) != m_algos.end()) {
-      head =  m_algos[name];
-      INFO("Setting algorithm head to: "+head->name());
-    } else {
-      ERROR("Algorithm "+name+" doesn't exists.");
-    }
-    return;
-  }
-
-  void addToStore(Algorithm* algo)
-  {
-    if (m_algos.find(algo->name()) != m_algos.end()) {
-      FATAL("Algorithm "+algo->name()+" already exists. Please give all algorithms a unique name.");
-    } else {
-      m_algos[algo->name()] = algo;
-      DEBUG("Added "+algo->name()+" to store.");
-    }
-  }
-
-  template<class T>
-  void addToStore(T algoT)
-  {
-    Algorithm* algo = reinterpret_cast<Algorithm*>(&algoT);
-    if (m_algos.find(algo->name()) != m_algos.end()) {
-      FATAL("Algorithm "+algo->name()+" already exists. Please give all algorithms a unique name.");
-    } else {
-      m_algos[algo->name()] = algo;
-      INFO("Added "+algo->name()+" to store.");
-    }
-  }
-
-  Algorithm* getAlgorithm(std::string name)
-  {
-    if (m_algos.find(name) != m_algos.end()) {
-      INFO("Found "+m_algos[name]->name());
-      return m_algos[name];
-    } else {
-      ERROR("Algorithm "+name+" doesn't exists.");
-    }
-    return nullptr;
-  }
-
-  Algorithm* head;
+private:
+  std::map<std::string,boost::any>  m_algos;
+  std::map<std::string,std::string> m_ptrs;
 };
+
+extern AlgorithmStore gAlgorithmStore;
 
 #endif
