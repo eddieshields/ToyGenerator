@@ -6,6 +6,7 @@
 #pragma link C++ nestedclasses;
 
 #pragma link C++ class Hydra+;
+#pragma link C++ class PyAlgorithm+;
 #pragma link C++ class Event+;
 #pragma link C++ class Particle+;
 #pragma link C++ class DecayDescriptor+;

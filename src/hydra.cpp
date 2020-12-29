@@ -16,7 +16,7 @@ void Hydra::run()
   ttree->Print();
 }
 
-std::vector<Event> Hydra::runSequence(int thread)
+std::vector<Event> Hydra::runSequence()
 {
   std::vector<Event> list;
   unsigned int counter = 0;

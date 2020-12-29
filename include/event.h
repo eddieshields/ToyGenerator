@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <string>
+
 /*
 TODO:
   Have event include particle classes that can be dealt with seprately.
@@ -19,6 +20,7 @@ public:
   {
     m_particles.reserve( 5 );
     m_data.reserve( ( 5 * 4 ) + 1);
+    //Py_INCREF(this);
   };
   ~Event() {};
 

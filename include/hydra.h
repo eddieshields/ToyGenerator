@@ -29,6 +29,7 @@ public:
 
   // Struct for configuration.
   struct Configuration {
+    Configuration() : Decay( gDescriptor ) {}
     int EvtMax = {1000};
     int NThreads = {32};
     std::string TreeName = {"DecayTree"};
@@ -36,6 +37,7 @@ public:
     std::string OutputLocation = {""};
     std::vector<std::string> Variables;
     Sequence AlgoSequence;
+    DecayDescriptor& Decay;
   };
 
   // Wrapper struct that is passed to threads for execution.
@@ -43,9 +45,9 @@ public:
     Exec(Hydra* _base) : base( _base ) {}
     ~Exec() {}
 
-    std::vector<Event> operator()(int thread)
+    std::vector<Event> operator()()
     {
-      return base->runSequence(thread);
+      return base->runSequence();
     }
     Hydra* base;
   };
@@ -61,7 +63,7 @@ public:
 private:
   std::vector<Event> m_list;
   void addToList(Event ev) { m_list.push_back(ev); } 
-  std::vector<Event> runSequence(int thread);
+  std::vector<Event> runSequence();
   unsigned int m_counter = {0};
 
   static void WelcomeMessage();

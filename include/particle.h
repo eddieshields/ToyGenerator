@@ -3,10 +3,6 @@
 
 #include "particlestore.h"
 
-// json.
-#include <nlohmann/json.hpp>
-using json = nlohmann::json;
-
 #include <string>
 
 #include "TLorentzVector.h"

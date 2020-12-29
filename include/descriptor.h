@@ -26,6 +26,7 @@ struct DecayDescriptor
   bool&                      getChargeConjugate() { return m_chcnj; }
 
   void operator()(std::string decay) { decodeDecayDescriptor(decay); }
+  DecayDescriptor operator=(std::string decay) { decodeDecayDescriptor(decay); return *this; }
 private:
   std::vector<std::string>  m_particles;
   std::vector<int>          m_charges;

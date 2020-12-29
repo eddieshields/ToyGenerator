@@ -1,5 +1,6 @@
 <lcgdict>
   <class name="Hydra" />
+  <class name="PyAlgorithm" />
   <class name="Event" />
   <class name="Particle" />
   <class name="DecayDescriptor" />

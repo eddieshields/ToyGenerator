@@ -3,6 +3,7 @@
 // Include files
 
 #include "hydra.h"
+#include "pyalgorithm.h"
 #include "event.h"
 #include "particle.h"
 #include "descriptor.h"
