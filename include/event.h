@@ -7,13 +7,13 @@
 #include <map>
 #include <string>
 
-#include <Python/Python.h>
+//#include <Python/Python.h>
 /*
 TODO:
   Have event include particle classes that can be dealt with seprately.
   This class should deal with the event as a while and have access to daughter particles.
 */
-class Event : public PyObject
+class Event //: public PyObject
 {
 friend class Generator;
 public:
@@ -21,7 +21,7 @@ public:
   {
     m_particles.reserve( 5 );
     m_data.reserve( ( 5 * 4 ) + 1);
-    Py_INCREF(this);
+    //Py_INCREF(this);
   };
   ~Event() {};
 
