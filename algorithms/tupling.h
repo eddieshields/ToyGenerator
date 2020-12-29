@@ -6,6 +6,7 @@
 #include "msgservice.h"
 #include "param.h"
 #include "compositeparam.h"
+#include "eventparam.h"
 #include "descriptor.h"
 
 #include <vector>
@@ -26,7 +27,9 @@ public:
 
   void addMomentum();
   void addMass();
+  void addTime();
   void addCharge();
+  void addEventInfo();
   void addParam(Param* param);
   void addParam(Param& param);
   void printParams();

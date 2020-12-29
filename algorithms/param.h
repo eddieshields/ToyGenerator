@@ -10,6 +10,8 @@ class Param : public Algorithm
 {
 public:
   enum Type {
+    W,
+    PDF,
     Q,
     T,     //Time.
     M,     //Mass.
