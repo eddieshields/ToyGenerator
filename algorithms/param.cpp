@@ -34,7 +34,11 @@ const double Param::eval(Particle& part)
 
 const Param::Type Param::getParamFromString(std::string param)
 {
-  if ( param == "q" || param == "Q" ) {
+  if ( param == "weight" || param == "Weight" || param == "w") {
+    return Param::W;
+  } else if ( param == "pdf" || param == "Pdf" ) {
+    return Param::PDF;
+  } else if ( param == "q" || param == "Q" ) {
     return Param::Q;
   } else if ( param == "t" || param == "time" ) {
     return Param::T;
@@ -64,6 +68,10 @@ const std::string Param::getName(Param::Type param)
 {
   switch(param)
   {
+  case Param::W:
+    return "weight";
+  case Param::PDF:
+    return "pdf";
   case Param::Q:
     return "Q";
   case Param::T:
