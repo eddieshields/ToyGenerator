@@ -29,6 +29,7 @@ public:
 
   // Struct for configuration.
   struct Configuration {
+    Configuration() : Decay( gDescriptor ) {}
     int EvtMax = {1000};
     int NThreads = {32};
     std::string TreeName = {"DecayTree"};
@@ -36,6 +37,7 @@ public:
     std::string OutputLocation = {""};
     std::vector<std::string> Variables;
     Sequence AlgoSequence;
+    DecayDescriptor& Decay;
   };
 
   // Wrapper struct that is passed to threads for execution.
