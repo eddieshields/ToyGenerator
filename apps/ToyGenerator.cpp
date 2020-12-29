@@ -20,6 +20,7 @@ int main()
   Generator gen("Generator");
   D02K3Pi amp("Amplitude");
   Accept acc("Accept");
+  acc.setMaxPdf(4);
   Tupling tup("Tupling");
   tup.addMass();
   tup.addCompositeMass();

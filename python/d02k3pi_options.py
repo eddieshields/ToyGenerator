@@ -15,6 +15,9 @@ acc = r.Accept("Accept")
 acc.setMaxPdf(0.4)
 tup = r.Tupling("Tupling")
 tup.addMass()
+tup.addCharge()
+tup.addTime()
+tup.addEventInfo()
 
 
 # Create sequence.
