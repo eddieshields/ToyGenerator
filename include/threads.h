@@ -26,15 +26,21 @@ public:
 
   void operator()()
   {
-    for (int i = 0; i < m_nthreads; i++) {
-      std::future<std::vector<Event>> t = std::async(std::launch::async,m_function,i);
-      m_threads.push_back( std::move(t) );
-    }
-
-    for (int i = 0; i < m_nthreads; i++) {
-      std::vector<Event> tmp = m_threads[i].get();
+    if ( m_nthreads > 1 ) {
+      for (int i = 0; i < m_nthreads; i++) {
+        std::future<std::vector<Event>> t = std::async(std::launch::async,m_function);
+        m_threads.push_back( std::move(t) );
+      }
+  
+      for (int i = 0; i < m_nthreads; i++) {
+        std::vector<Event> tmp = m_threads[i].get();
+        m_list.insert( m_list.end(), tmp.begin(), tmp.end() );
+      }
+    } else {
+      std::vector<Event> tmp = m_function();
       m_list.insert( m_list.end(), tmp.begin(), tmp.end() );
     }
+    return;
   }
 
   std::vector<Event> list() { return m_list; }
