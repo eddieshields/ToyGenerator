@@ -1,5 +1,6 @@
 # Hydra
-Package that generates toys from an amplitude model and is fully configurable.
+
+Hydra is a package for generating toys that is fast, easily configurable and hopefully user friendly. 
 
 
 
