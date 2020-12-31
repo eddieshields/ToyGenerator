@@ -28,6 +28,11 @@ public:
     m_type(Param::Q),
     m_particle_index(-1)
   {}
+  Param(std::string name) :
+    Algorithm(name),
+    m_type(Param::Q),
+    m_particle_index(-1)
+  {}
   Param(std::string name, std::string param, int index = 0) :
     Algorithm(name),
     m_type( getParamFromString(param) ),
