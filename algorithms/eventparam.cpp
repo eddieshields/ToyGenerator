@@ -4,9 +4,9 @@ const double EventParam::eval(Event& ev)
 {
   switch (m_type)
   {
-  case Type::W:
+  case Param::W:
     return ev.weight;
-  case Type::PDF:
+  case Param::PDF:
     return ev.pdf;
   default:
     FATAL(getName(m_type)+" does not exist.")
