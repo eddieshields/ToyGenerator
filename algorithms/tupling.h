@@ -33,6 +33,8 @@ public:
   void addEventInfo();
   void addParam(Param* param);
   void addParam(Param& param);
+  template<typename PARAM>
+  void addParam(PARAM& param);
   void printParams();
 
   std::vector<std::string> getVariables();

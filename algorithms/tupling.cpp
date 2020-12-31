@@ -23,6 +23,14 @@ void Tupling::addParam(Param* param)
   addParamToList(m_variables[m_variables.size()-1]);
 }
 
+template <typename PARAM>
+void Tupling::addParam(PARAM& param)
+{ 
+  // Add assertion.
+  m_variables.push_back( std::move(static_cast<Param*>(&param)) );
+  addParamToList(m_variables[m_variables.size()-1]);
+}
+
 void Tupling::addParamToList(Param* param)
 {
   Param* tmp = nullptr;
