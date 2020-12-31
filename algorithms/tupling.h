@@ -5,6 +5,7 @@
 #include "algorithm.h"
 #include "msgservice.h"
 #include "param.h"
+#include "particleparam.h"
 #include "compositeparam.h"
 #include "eventparam.h"
 #include "descriptor.h"

@@ -25,29 +25,24 @@ public:
   };
   Param() :
     Algorithm(""),
-    m_type(Param::Q),
-    m_particle_index(-1)
+    m_type(Param::Q)
   {}
   Param(std::string name) :
     Algorithm(name),
-    m_type(Param::Q),
-    m_particle_index(-1)
+    m_type(Param::Q)
   {}
   Param(std::string name, std::string param, int index = 0) :
     Algorithm(name),
-    m_type( getParamFromString(param) ),
-    m_particle_index( index )
+    m_type( getParamFromString(param) )
   {}
   ~Param() {};
 
-  virtual void operator()(Event& ev) { ev[m_name] = eval( ev.particle(m_particle_index)); }
-  Param operator=(Param& param) { return *this; }
+  virtual void operator()(Event& ev) = 0; 
+  //Param operator=(Param& param) { return *this; }
   Param* next;
 protected:
   const Param::Type m_type;
-  const int         m_particle_index;
 
-  const double      eval(Particle& part);
   const Param::Type getParamFromString(std::string param);
   const std::string getName(Param::Type param);
 };

@@ -45,7 +45,7 @@ void Tupling::addMomentum()
   for (int i = 1; i < gDescriptor.getParticles().size(); i++) {
     for (auto& var : mvars) {
       std::string name = "_"+std::to_string(i)+"_"+gDescriptor.getParticles()[i]+"_"+var+"_";
-      Param* param = new Param(name,var,i);
+      Param* param = new ParticleParam(name,var,i);
       m_variables.push_back( param );
       addParamToList(m_variables[m_variables.size()-1]);
     }
@@ -58,7 +58,7 @@ void Tupling::addMass()
   for (int i = 1; i < gDescriptor.getParticles().size(); i++) {
     for (auto& var : mvars) {
       std::string name = "_"+std::to_string(i)+"_"+gDescriptor.getParticles()[i]+"_"+var+"_";
-      Param* param = new Param(name,var,i);
+      Param* param = new ParticleParam(name,var,i);
       m_variables.push_back( param );
       addParamToList(m_variables[m_variables.size()-1]);
     }
@@ -68,7 +68,7 @@ void Tupling::addMass()
 void Tupling::addTime()
 {
   std::string name = "_0_"+gDescriptor.getParticles()[0]+"_T_";
-  Param* param = new Param(name,"t",0);
+  Param* param = new ParticleParam(name,"t",0);
   m_variables.push_back( param );
   addParamToList(m_variables[m_variables.size()-1]);
 }
@@ -77,7 +77,7 @@ void Tupling::addCharge()
 {
   for (int i = 1; i < gDescriptor.getParticles().size(); i++) {
     std::string name = "_"+std::to_string(i)+"_"+gDescriptor.getParticles()[i]+"_Q_";
-    Param* param = new Param(name,"Q",i);
+    Param* param = new ParticleParam(name,"Q",i);
     m_variables.push_back( param );
     addParamToList(m_variables[m_variables.size()-1]);
   }
