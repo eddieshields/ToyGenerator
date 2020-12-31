@@ -38,8 +38,8 @@ add_library(HYDRA SHARED ${sources} ${} G__${PACKAGE}.cxx)
 add_library(${PACKAGE} SHARED ${sources} ${headers})
 
 #--- Link libraries
-target_link_libraries(HYDRA ${ROOT_LIBRARIES} ${Boost_LIBRARIES})
-target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(HYDRA ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${CMAKE_DL_LIBS})
+target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${CMAKE_DL_LIBS})
 
 #--- External library for reading json files.
 target_include_directories(${PACKAGE} PUBLIC external/json/single_include)
@@ -48,4 +48,4 @@ target_include_directories(HYDRA PUBLIC external/json/single_include)
 
 #---Create an executable
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
-target_link_libraries(ToyGenerator ${PACKAGE})
+target_link_libraries(ToyGenerator HYDRA)

@@ -7,12 +7,6 @@
 class EventParam : public Param
 {
 public:
-  /*
-  enum EventType {
-    W,
-    PDF,
-  };
-  */
   EventParam() :
     Param()
   {}
