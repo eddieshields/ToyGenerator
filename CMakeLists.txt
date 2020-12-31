@@ -22,19 +22,14 @@ include_directories(${ROOT_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
 
 #--- Define the headers list
-include_directories(include src dict external/json/single_include ${CMAKE_SOURCE_DIR})
-
-#--- Add json
-add_subdirectory(external/json)
-
-include_directories(algorithms)
+include_directories(include src dict algorithms external/json/single_include ${CMAKE_SOURCE_DIR})
 
 #--- Define the headers and src directories
 file(GLOB_RECURSE sources src/*.cpp algorithms/*.cpp)
 file(GLOB_RECURSE headers include/*.h algorithms/*.h)
 file(GLOB_RECURSE json external/json/single_include/*)
 
-ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} ${algos} LINKDEF dict/${PACKAGE}LinkDef.h)
+ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} LINKDEF dict/${PACKAGE}LinkDef.h)
 
 #--- Generate ROOT library from dictionary
 add_library(HYDRA SHARED ${sources} ${} G__${PACKAGE}.cxx)
@@ -43,8 +38,13 @@ add_library(HYDRA SHARED ${sources} ${} G__${PACKAGE}.cxx)
 add_library(${PACKAGE} SHARED ${sources} ${headers})
 
 #--- Link libraries
-target_link_libraries(HYDRA ${ROOT_LIBRARIES} ${Boost_LIBRARIES} nlohmann_json::nlohmann_json)
-target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_LIBRARIES} nlohmann_json::nlohmann_json)
+target_link_libraries(HYDRA ${ROOT_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_LIBRARIES})
+
+#--- External library for reading json files.
+target_include_directories(${PACKAGE} PUBLIC external/json/single_include)
+#--- External library for reading json files.
+target_include_directories(HYDRA PUBLIC external/json/single_include)
 
 #---Create an executable
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
