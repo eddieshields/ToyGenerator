@@ -2,15 +2,12 @@ import ROOT as r
 r.gSystem.Load('build/libHYDRA')
 
 from numba import jit
-from numba.experimental import jitclass
 
-# A helper structure that wraps around a function and uses 
-# Just In Time compilation from numba to speed it up.
-@jitclass
-class FastAlgorithm:
-    def __init__(self,_func):
-        self.func = _func
+class PyAlgorithm(r.PyAlgorithm):
+    def __init__(self,name,func):
+        self.m_func = func
+        r.PyAlgorithm( name , func )
 
-    @staticmethod
-    def __call__(self,ev):
-        func(ev)
+    @jit(nogil=True)
+    def __call__(ev):
+        self,m_func(ev)
