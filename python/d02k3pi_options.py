@@ -20,8 +20,6 @@ tup.addCharge()
 tup.addTime()
 tup.addEventInfo()
 
-#R = amp.getR(gen)
-
 
 # Create sequence.
 seq = r.Sequence()
@@ -40,4 +38,4 @@ hy().NThreads = 1
 hy().TreeName = "d02k3pi"
 hy().OutputLocation = "/Users/eddieshields/Documents/LHCb/ToyGenerator/build/tmp/output.root"
 
-hy.runPython()
+hy.run()
