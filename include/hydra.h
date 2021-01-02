@@ -25,7 +25,7 @@ class Hydra
 {
 public:
   Hydra() : m_runner( this ) {WelcomeMessage();}
-  ~Hydra() {}
+  virtual ~Hydra() {}
 
   // Struct for configuration.
   struct Configuration {
@@ -56,14 +56,14 @@ public:
   Exec m_runner;
 
   Configuration& operator()() { return m_configuration; }
+  std::vector<Event> runSequence();
   void run();
   TTree* tree();
-
+  void addToList(std::vector<Event> tmp) { m_list.insert( m_list.end(), tmp.begin(), tmp.end() ); }
   void setDecay(std::string decay) { gDescriptor(decay); }
 private:
   std::vector<Event> m_list;
   void addToList(Event ev) { m_list.push_back(ev); } 
-  std::vector<Event> runSequence();
   unsigned int m_counter = {0};
 
   static void WelcomeMessage();

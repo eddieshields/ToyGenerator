@@ -1,19 +1,19 @@
 #ifndef TOYGEN_COMPOSITE_PARAM
 #define TOYGEN_COMPOSITE_PARAM
 
-#include "param.h"
+#include "particleparam.h"
 
-class CompositeParam : public Param 
+class CompositeParam : public ParticleParam 
 {
 public:
   CompositeParam() :
-    Param()
+    ParticleParam()
   {}
   template<typename... ARGS>
   CompositeParam(std::string name, std::string param, int index, ARGS... indices) :
-    Param(name,param,index)
+    ParticleParam(name,param,index)
   {
-    addIndex(index,indices...);
+    addIndex(indices...);
   }
   ~CompositeParam() {};
 

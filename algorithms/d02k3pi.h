@@ -3,6 +3,7 @@
 
 #include "event.h"
 #include "algorithm.h"
+#include "generator.h"
 #include "random.h"
 #include "msgservice.h"
 
@@ -48,6 +49,8 @@ public:
 
   virtual void operator() (Event& ev);
 
+
+  const double getR(Generator& gen);
 private:
   const double& x() const { return m_x; }
   const double& y() const { return m_y; }

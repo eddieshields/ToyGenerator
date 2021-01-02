@@ -5,7 +5,9 @@
 #include "algorithm.h"
 #include "msgservice.h"
 #include "param.h"
+#include "particleparam.h"
 #include "compositeparam.h"
+#include "eventparam.h"
 #include "descriptor.h"
 
 #include <vector>
@@ -26,9 +28,13 @@ public:
 
   void addMomentum();
   void addMass();
+  void addTime();
   void addCharge();
+  void addEventInfo();
   void addParam(Param* param);
   void addParam(Param& param);
+  template<typename PARAM>
+  void addParam(PARAM& param);
   void printParams();
 
   std::vector<std::string> getVariables();

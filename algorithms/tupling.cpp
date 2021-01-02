@@ -23,6 +23,14 @@ void Tupling::addParam(Param* param)
   addParamToList(m_variables[m_variables.size()-1]);
 }
 
+template <typename PARAM>
+void Tupling::addParam(PARAM& param)
+{ 
+  // Add assertion.
+  m_variables.push_back( std::move(static_cast<Param*>(&param)) );
+  addParamToList(m_variables[m_variables.size()-1]);
+}
+
 void Tupling::addParamToList(Param* param)
 {
   Param* tmp = nullptr;
@@ -45,7 +53,7 @@ void Tupling::addMomentum()
   for (int i = 1; i < gDescriptor.getParticles().size(); i++) {
     for (auto& var : mvars) {
       std::string name = "_"+std::to_string(i)+"_"+gDescriptor.getParticles()[i]+"_"+var+"_";
-      Param* param = new Param(name,var,i);
+      Param* param = new ParticleParam(name,var,i);
       m_variables.push_back( param );
       addParamToList(m_variables[m_variables.size()-1]);
     }
@@ -58,18 +66,37 @@ void Tupling::addMass()
   for (int i = 1; i < gDescriptor.getParticles().size(); i++) {
     for (auto& var : mvars) {
       std::string name = "_"+std::to_string(i)+"_"+gDescriptor.getParticles()[i]+"_"+var+"_";
-      Param* param = new Param(name,var,i);
+      Param* param = new ParticleParam(name,var,i);
       m_variables.push_back( param );
       addParamToList(m_variables[m_variables.size()-1]);
     }
   }
 }
 
+void Tupling::addTime()
+{
+  std::string name = "_0_"+gDescriptor.getParticles()[0]+"_T_";
+  Param* param = new ParticleParam(name,"t",0);
+  m_variables.push_back( param );
+  addParamToList(m_variables[m_variables.size()-1]);
+}
+
 void Tupling::addCharge()
 {
   for (int i = 1; i < gDescriptor.getParticles().size(); i++) {
     std::string name = "_"+std::to_string(i)+"_"+gDescriptor.getParticles()[i]+"_Q_";
-    Param* param = new Param(name,"Q",i);
+    Param* param = new ParticleParam(name,"Q",i);
+    m_variables.push_back( param );
+    addParamToList(m_variables[m_variables.size()-1]);
+  }
+}
+
+void Tupling::addEventInfo()
+{
+  std::vector<std::string> mvars = {"pdf","weight"};
+  for (auto& var : mvars) {
+    std::string name = "_"+var+"_";
+    EventParam* param = new EventParam(name,var);
     m_variables.push_back( param );
     addParamToList(m_variables[m_variables.size()-1]);
   }

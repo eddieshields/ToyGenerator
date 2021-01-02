@@ -19,6 +19,32 @@ void D02K3Pi::operator()(Event& ev)
   return;
 }
 
+const double D02K3Pi::getR(Generator& gen)
+{
+  double n_dcs = 0;
+  double n_cf  = 0;
+
+  for (int i = 0; i < 1000000; i++) {
+    Event ev;
+    gen(ev);
+    const double* data = ev.data();
+    double adcs = std::norm( m_dcs_offset * dcs( data , +1 ) );
+    double acf  = std::norm( cf( data , +1 ) );
+    // Make sure that the amplitudes make sense.
+    if ( std::isnan(adcs) || std::isnan(acf) ) continue;
+      {
+        n_dcs += adcs;
+        n_cf  += acf;
+      }
+  }
+
+  INFO("n_dcs = "+std::to_string(n_dcs));
+  INFO("n_cf  = "+std::to_string(n_cf));
+  double _r = std::sqrt( n_dcs/n_cf );
+  INFO("r = "+std::to_string(_r));
+  return _r;
+}
+
 std::complex<double> D02K3Pi::gp(const double& t)
 {
   std::complex<double> I(0,1);
