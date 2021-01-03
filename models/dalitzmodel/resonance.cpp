@@ -10,7 +10,6 @@ std::complex< double > Resonance::evaluate(const PhaseSpace& ps, const double& m
   double mSqAB = M2AB(mSq12, mSq13, mSq23);
   double mSqAC = M2AC(mSq12, mSq13, mSq23);
   double mSqBC = M2BC(mSq12, mSq13, mSq23);
-
   return _coeff*_norm*propagator(ps, mSqAB)*angular(ps, mSqAB, mSqAC, mSqBC);
 }
 

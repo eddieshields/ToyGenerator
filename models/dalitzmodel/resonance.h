@@ -6,6 +6,7 @@
 #include "phasespace.h"
 #include "parameter.h"
 #include "angular.h"
+#include "msgservice.h"
 
 // SL.
 #include <iostream>

@@ -25,19 +25,22 @@ class DalitzAmplitude;
 class ConfigureAmplitude
 {
 public:
-  ConfigureAmplitude(std::string cfgfile);
+  ConfigureAmplitude(std::string cfgfile) : 
+    m_config( cfgfile ),
+    m_cfgfile( cfgfile )
+  {}
   ~ConfigureAmplitude() {}
 
-  void addFlatte(std::string name, std::vector<std::string> res);
-  void addRBW   (std::string name, std::vector<std::string> res);
+  void addFlatte(DalitzAmplitude& amp, std::string name, std::vector<std::string> res);
+  void addRBW   (DalitzAmplitude& amp, std::string name, std::vector<std::string> res);
 
-  Parameter getParameter(std::string name);
-
-  DalitzAmplitude& amplitude() { return m_amp; }
+  DalitzAmplitude operator()(DalitzAmplitude& amp);
+  DalitzAmplitude operator()();
 private:
-  ConfigFile m_config;
+  ConfigFile  m_config;
+  std::string m_cfgfile;
 
-  DalitzAmplitude m_amp;
+  Parameter getParameter(DalitzAmplitude& amp, std::string name);
 };
 
 }

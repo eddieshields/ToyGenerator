@@ -10,6 +10,8 @@
 #include <complex>
 #include <vector>
 
+#include <omp.h>
+
 namespace DalitzModel {
 
 class DalitzAmplitude
@@ -30,9 +32,13 @@ public:
   const double               AbarSq(const double& mSq12, const double& mSq13) const;
   const double               AbarSq(const double& mSq12, const double& mSq13, const double& mSq23) const;
 
+  void test() { for (int i = 0; i < m_resonances.size(); i++) { double a =std::norm(  m_resonances[i]->evaluate(_ps,1.1,1.1) ); INFO("TEST = "+std::to_string(a)); } }
+
   void addResonance(Resonance* res);
   void printResonances();
+  PhaseSpace& phasespace() { return _ps; }
   std::map<std::string,Parameter>& parameters() { return m_parameters; }
+  std::vector<Resonance*>& resonances() { return m_resonances; }
 private:
   PhaseSpace _ps;
   void addResonanceToList(Resonance* res);

@@ -61,8 +61,8 @@ const bool PhaseSpace::contains( const double& mSq12, const double& mSq13 ) cons
 {
   const double& mSq23 = _mSqSum - mSq12 - mSq13;
 
-  return ( mSq13 > mSq13min( mSq12 ) ) && ( mSq13 < mSq13max( mSq12 ) ) &&
-         ( mSq23 > mSq23min( mSq12 ) ) && ( mSq23 < mSq23max( mSq12 ) );
+  return ( ( mSq13 > mSq13min( mSq12 ) ) && ( mSq13 < mSq13max( mSq12 ) ) &&
+         ( mSq23 > mSq23min( mSq12 ) ) && ( mSq23 < mSq23max( mSq12 ) ) );
 }
 
 const bool PhaseSpace::contains(const double& mSq12, const double& mSq13, const double& mSq23) const
