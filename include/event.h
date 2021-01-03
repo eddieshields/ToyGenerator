@@ -20,7 +20,6 @@ public:
   {
     m_particles.reserve( 5 );
     m_data.reserve( ( 5 * 4 ) + 1);
-    //Py_INCREF(this);
   };
   ~Event() {};
 
@@ -40,14 +39,13 @@ public:
 
   std::vector<Particle> m_particles;
   std::vector<double>   m_data;
-  //std::map<std::string,Particle> m_particles;
   std::map<std::string,double>   m_v;
 
   void updateMasses()
   {  
-    TLorentzVector p1 = m_particles[0].momentum();
-    TLorentzVector p2 = m_particles[1].momentum();
-    TLorentzVector p3 = m_particles[2].momentum();
+    TLorentzVector p1 = m_particles[1].momentum();
+    TLorentzVector p2 = m_particles[2].momentum();
+    TLorentzVector p3 = m_particles[3].momentum();
 
     TLorentzVector p12 = p1 + p2;
     TLorentzVector p13 = p1 + p3;
