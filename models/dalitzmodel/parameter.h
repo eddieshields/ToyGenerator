@@ -40,7 +40,7 @@ public:
   static void setFixed()  { _random = false; }
 
   /** Copy method. */
-  Parameter* copy();
+  //Parameter* copy();
 
   double operator=(const double& in);
   double operator*(const double in) const;

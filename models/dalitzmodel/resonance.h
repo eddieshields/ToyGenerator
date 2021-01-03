@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <complex>
+#include <string>
 
 namespace DalitzModel {
 
@@ -18,14 +19,16 @@ class Resonance
 {
 public:
   // Constructor/Destructor.
-  Resonance(const char* name, const Coeff coeff, const int& resA, const int& resB,
+  Resonance(std::string name, const Coeff coeff, const int& resA, const int& resB,
             const Parameter& mass, const Parameter& width, const int l, const Parameter& r)
-            : _name( name ), _coeff( coeff ), _resA( resA ), _resB ( resB ), _mass( mass ), _width( width ), _l( l ), _r( r )
+            : _name( name ), _coeff( coeff ), _resA( resA ), _resB ( resB ), _mass( mass ), _width( width ), _l( l ), _r( r ), next( nullptr )
             {};
   virtual ~Resonance() {};
 
+  Resonance* next;
+
   // Name.
-  const char* name() { return _name; }
+  std::string name() { return _name; }
 
   // Evaluate.
   std::complex< double > evaluate(const PhaseSpace& ps, const double& mSq12, const double& mSq13);
@@ -70,7 +73,7 @@ public:
   virtual Resonance* copy() const = 0;
 
 protected:
-  const char* _name;
+  std::string _name;
   std::complex< double > evaluateUnormalised(const PhaseSpace& ps, const double& mSq12, const double& mSq13);
   std::complex< double > evaluateUnormalised(const PhaseSpace& ps, const double& mSq12, const double& mSq13, const double& mSq23);
   // Particle indices.

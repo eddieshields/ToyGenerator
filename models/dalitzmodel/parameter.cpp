@@ -11,11 +11,12 @@ const double Parameter::val() const
   else return _par;
 }
 
+/*
 Parameter* Parameter::copy()
 {
   return this;
 }
-
+*/
 double Parameter::operator=(const double& in)
 {
   return _par;
