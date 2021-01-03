@@ -40,7 +40,13 @@ public:
   std::complex< double > operator*(const double& num);
   /** Multiplication operator for a complex number. */
   std::complex< double > operator*(const std::complex< double >& num);
+  std::complex< double > operator*(const Parameter& num);
 
+  friend std::ostream& operator<<(std::ostream& os, const Coeff& c)
+  {
+    os << "(" << c._c1.val() << "," << c._c2.val() << ")"; 
+    return os;
+  }
 private:
   const Parameter _c1;
   const Parameter _c2;

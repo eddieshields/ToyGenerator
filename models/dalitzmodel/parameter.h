@@ -49,6 +49,12 @@ public:
   std::complex<double> operator*(const std::complex<double>& in) const;
   double operator*(const Parameter& param) const;
   double operator*(Parameter& param) const;
+
+  friend std::ostream& operator<<(std::ostream& os, const Parameter& p)
+  {
+    os << p.val(); 
+    return os;
+  }
 protected:
   static bool  _random;
   const double _par;
