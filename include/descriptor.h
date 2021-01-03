@@ -1,6 +1,7 @@
 #ifndef TOYGEN_DESCRIPTOR_H
 #define TOYGEN_DESCRIPTOR_H
 
+#include "particlestore.h"
 #include "msgservice.h"
 
 #include <vector>
@@ -11,13 +12,15 @@ struct DecayDescriptor
 {
   DecayDescriptor() {};
   ~DecayDescriptor() {}
-  void        decodeDecayDescriptor(std::string decay);
-  void        printDecayDescriptor();
-  void        getMotherName      (std::string decay);
-  void        getDaughtersNames  (std::string decay);
-  const int   getParticleCharge  (std::string particle);
-  const int   getParticleFlavour (std::string particle);
-  const bool  getChargedConjugate(std::string decay);
+  void         decodeDecayDescriptor(std::string decay);
+  void         printDecayDescriptor();
+  void         getMotherName      (std::string decay);
+  void         getDaughtersNames  (std::string decay);
+  const int    getParticleCharge  (std::string particle);
+  const int    getParticleFlavour (std::string particle);
+  const bool   getChargedConjugate(std::string decay);
+  const double getParticleMass    (std::string particle);
+  const double getParticleMass    (const int particle);
   std::string cleanParticle(std::string particle);
 
   std::vector<std::string>&  getParticles()       { return m_particles; }
