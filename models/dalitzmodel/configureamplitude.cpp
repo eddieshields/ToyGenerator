@@ -26,11 +26,20 @@ DalitzAmplitude ConfigureAmplitude::operator()()
   return this->operator()(amp);
 }
 
+DalitzMixing ConfigureAmplitude::operator()(DalitzMixing& amp)
+{
+
+  this->operator()(amp.amplitude());
+  setMixing( amp );
+  return amp;
+;}
+
 void ConfigureAmplitude::addFlatte(DalitzAmplitude& amp, std::string name, std::vector<std::string> res)
 {
   const int resoA    = std::stoi(res[1]);
   const int resoB    = std::stoi(res[2]);
   const int l        = std::stoi(res[3]);
+  const int noRes    = 6 - resoA - resoB;
   const Parameter m  = getParameter(amp,res[4]);
   const Parameter w  = getParameter(amp,res[5]);
   const Parameter r  = getParameter(amp,res[6]);
@@ -43,13 +52,21 @@ void ConfigureAmplitude::addFlatte(DalitzAmplitude& amp, std::string name, std::
   const Coeff c(c1,c2);
 
   Flatte* comp = new Flatte(name,c,resoA,resoB,m,w,l,r,g1,g2,mE,mP);
-  amp.addResonance( comp );
+  amp.addDirResonance( comp );
+  if ( resoA == 2 ) {
+    Flatte* compCnj = new Flatte(name,c,resoB,resoA,m,w,l,r,g1,g2,mE,mP);
+    amp.addCnjResonance( compCnj );
+  } else {
+    Flatte* compCnj = new Flatte(name,c,resoA,noRes,m,w,l,r,g1,g2,mE,mP);
+    amp.addCnjResonance( compCnj );
+  }
 }
 
 void ConfigureAmplitude::addRBW(DalitzAmplitude& amp, std::string name, std::vector<std::string> res)
 {
   const int resoA    = std::stoi(res[1]);
   const int resoB    = std::stoi(res[2]);
+  const int noRes    = 6 - resoA - resoB;
   const int l        = std::stoi(res[3]);
   const Parameter m  = getParameter(amp,res[4]);
   const Parameter w  = getParameter(amp,res[5]);
@@ -59,7 +76,23 @@ void ConfigureAmplitude::addRBW(DalitzAmplitude& amp, std::string name, std::vec
   const Coeff c(c1,c2);
 
   RelBreitWigner* comp = new RelBreitWigner(name,c,resoA,resoB,m,w,l,r);
-  amp.addResonance( comp );
+  amp.addDirResonance( comp );
+  if ( resoA == 2 ) {
+    RelBreitWigner* compCnj = new RelBreitWigner(name,c,resoB,resoA,m,w,l,r);
+    amp.addCnjResonance( compCnj );
+  } else {
+    RelBreitWigner* compCnj = new RelBreitWigner(name,c,resoA,noRes,m,w,l,r);
+    amp.addCnjResonance( compCnj );
+  }
+}
+
+void ConfigureAmplitude::setMixing(DalitzMixing& amp)
+{
+  if ( m_config.find("x") ) amp.setX( std::stod(m_config["x"][0]) );
+  if ( m_config.find("y") ) amp.setY( std::stod(m_config["y"][0]) );
+  if ( m_config.find("p") ) amp.setP( std::stod(m_config["p"][0]) );
+  if ( m_config.find("q") ) amp.setQ( std::stod(m_config["q"][0]) ); 
+  return;
 }
 
 Parameter ConfigureAmplitude::getParameter(DalitzAmplitude& amp, std::string name)

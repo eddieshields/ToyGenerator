@@ -6,7 +6,7 @@ const std::complex<double> DalitzAmplitude::Adir(const double& mSq12, const doub
 {
   std::complex<double> A(0.,0.);
   Resonance* res = nullptr;
-  res = head;
+  res = headDir;
   while ( res != nullptr ) {
     A += res->evaluate( _ps , mSq12 , mSq13 );
     res = res->next;
@@ -18,7 +18,7 @@ const std::complex<double> DalitzAmplitude::Adir(const double& mSq12, const doub
 {
   std::complex<double> A(0.,0.);
   Resonance* res = nullptr;
-  res = head;
+  res = headDir;
   while ( res != nullptr ) {
     A += res->evaluate( _ps , mSq12 , mSq13 , mSq23 );
     res = res->next;
@@ -30,9 +30,9 @@ const std::complex<double> DalitzAmplitude::Abar(const double& mSq12, const doub
 {
   std::complex<double> A(0.,0.);
   Resonance* res = nullptr;
-  res = head;
+  res = headCnj;
   while ( res != nullptr ) {
-    A += res->evaluate( _ps , mSq13 , mSq12 );
+    A += res->evaluate( _ps , mSq12 , mSq13 );
     res = res->next;
   }
   return A;
@@ -42,7 +42,7 @@ const std::complex<double> DalitzAmplitude::Abar(const double& mSq12, const doub
 {
   std::complex<double> A(0.,0.);
   Resonance* res = nullptr;
-  res = head;
+  res = headCnj;
   while ( res != nullptr ) {
     A += res->evaluate( _ps , mSq13 , mSq12 , mSq23 );
     res = res->next;
@@ -70,24 +70,46 @@ const double DalitzAmplitude::AbarSq(const double& mSq12, const double& mSq13, c
   return std::norm( Abar( mSq12, mSq13, mSq23 ) );
 }
 
-void DalitzAmplitude::addResonance(Resonance* res)
+void DalitzAmplitude::addDirResonance(Resonance* res)
 {
-  m_resonances.push_back( std::move(static_cast<Resonance*>(res)) );
-  addResonanceToList(m_resonances[m_resonances.size()-1]);
+  m_dirresonances.push_back( std::move(static_cast<Resonance*>(res)) );
+  addDirResonanceToList(m_dirresonances[m_dirresonances.size()-1]);
 }
 
-void DalitzAmplitude::addResonanceToList(Resonance* res)
+void DalitzAmplitude::addCnjResonance(Resonance* res)
+{
+  m_cnjresonances.push_back( std::move(static_cast<Resonance*>(res)) );
+  addCnjResonanceToList(m_cnjresonances[m_cnjresonances.size()-1]);
+}
+
+void DalitzAmplitude::addDirResonanceToList(Resonance* res)
 {
   Resonance* tmp = nullptr;
   tmp = res;
   tmp->next=nullptr;
-  if ( head == nullptr ) {
-    head=tmp;
-    tail=tmp;
+  if ( headDir == nullptr ) {
+    headDir=tmp;
+    tailDir=tmp;
     tmp=nullptr;
   } else {
-    tail->next=tmp;
-    tail=tmp;
+    tailDir->next=tmp;
+    tailDir=tmp;
+  }
+  return;
+}
+
+void DalitzAmplitude::addCnjResonanceToList(Resonance* res)
+{
+  Resonance* tmp = nullptr;
+  tmp = res;
+  tmp->next=nullptr;
+  if ( headCnj == nullptr ) {
+    headCnj=tmp;
+    tailCnj=tmp;
+    tmp=nullptr;
+  } else {
+    tailCnj->next=tmp;
+    tailCnj=tmp;
   }
   return;
 }
@@ -96,7 +118,7 @@ void DalitzAmplitude::printResonances()
 {
   std::string param_str = "Resonances = ";
   Resonance* tmp = nullptr;
-  tmp = head;
+  tmp = headDir;
   while ( tmp != NULL ){
     param_str += tmp->name()+", ";
 		tmp=tmp->next;

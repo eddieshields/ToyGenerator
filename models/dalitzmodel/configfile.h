@@ -18,9 +18,8 @@ public:
   ConfigFile(const std::string cfgfile );
   ~ConfigFile() {}
 
-  template<class T> T read(std::string key) const;
-  template<class T> T string_as_T(std::string& s);
-  std::vector<std::string> operator[](std::string& entry) { return m_entries[entry]; }
+  bool find(std::string entry) { if ( m_entries.find(entry) == m_entries.end() ) return false; return true; }
+  std::vector<std::string> operator[](std::string entry) { return m_entries[entry]; }
 private:
   std::map<std::string,std::vector<std::string>> m_entries;
 };

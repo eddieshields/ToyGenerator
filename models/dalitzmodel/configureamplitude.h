@@ -7,6 +7,7 @@
 #include "coefficient.h"
 #include "resonance.h"
 #include "dalitzamplitude.h"
+#include "dalitzmixing.h"
 #include "msgservice.h"
 #include "configfile.h"
 
@@ -34,8 +35,12 @@ public:
   void addFlatte(DalitzAmplitude& amp, std::string name, std::vector<std::string> res);
   void addRBW   (DalitzAmplitude& amp, std::string name, std::vector<std::string> res);
 
+  void setMixing(DalitzMixing& amp);
+
   DalitzAmplitude operator()(DalitzAmplitude& amp);
   DalitzAmplitude operator()();
+
+  DalitzMixing    operator()(DalitzMixing& amp);
 private:
   ConfigFile  m_config;
   std::string m_cfgfile;

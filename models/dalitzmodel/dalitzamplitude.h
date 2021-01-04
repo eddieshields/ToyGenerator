@@ -32,21 +32,24 @@ public:
   const double               AbarSq(const double& mSq12, const double& mSq13) const;
   const double               AbarSq(const double& mSq12, const double& mSq13, const double& mSq23) const;
 
-  void test() { for (int i = 0; i < m_resonances.size(); i++) { double a =std::norm(  m_resonances[i]->evaluate(_ps,1.1,1.1) ); INFO("TEST = "+std::to_string(a)); } }
-
-  void addResonance(Resonance* res);
+  void addDirResonance(Resonance* res);
+  void addCnjResonance(Resonance* res);
   void printResonances();
   PhaseSpace& phasespace() { return _ps; }
   std::map<std::string,Parameter>& parameters() { return m_parameters; }
-  std::vector<Resonance*>& resonances() { return m_resonances; }
 private:
   PhaseSpace _ps;
-  void addResonanceToList(Resonance* res);
-  std::vector<Resonance*> m_resonances;
+  void addDirResonanceToList(Resonance* res);
+  void addCnjResonanceToList(Resonance* res);
+  std::vector<Resonance*> m_dirresonances;
+  std::vector<Resonance*> m_cnjresonances;
   std::map<std::string,Parameter> m_parameters;
 
-  Resonance* head = {nullptr};
-  Resonance* tail = {nullptr};
+  Resonance* headDir = {nullptr};
+  Resonance* tailDir = {nullptr};
+
+  Resonance* headCnj = {nullptr};
+  Resonance* tailCnj = {nullptr};
 };
 
 }
