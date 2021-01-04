@@ -6,5 +6,5 @@ void CompositeParam::operator()(Event& ev)
   for (auto& i : m_particles_indices) {
     part += ev.particle(i);
   }
-  eval(part);
+  ev[m_name] = eval(part);
 }

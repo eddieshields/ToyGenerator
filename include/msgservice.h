@@ -24,8 +24,8 @@ inline std::string trimmedString( std::string thing, const unsigned int& length 
 {
   size_t pos2=0;
   do {
-  pos2                            = thing.find( "AmpGen::" );
-  if ( pos2 != std::string::npos ) thing = thing.replace( pos2, 8, "" );
+  pos2                            = thing.find( "DalitzModel::" );
+  if ( pos2 != std::string::npos ) thing = thing.replace( pos2, 13, "" );
   } while( pos2 != std::string::npos );
 
   pos2                                   = thing.find( "std::" );

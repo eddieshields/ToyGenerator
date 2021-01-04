@@ -19,6 +19,7 @@ void Generator::operator()(Event& ev)
   }
 
   // Set decay time.
+  if ( !ev.mother().charge() ) ev.mother().flavour() = ( Random::integer() ? -1 : 1 );
   ev.mother().isStable() = false;
   ev.mother().time() = Random::exponential();
 

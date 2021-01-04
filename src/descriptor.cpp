@@ -84,6 +84,16 @@ const bool DecayDescriptor::getChargedConjugate(std::string decay)
   return true;
 }
 
+const double DecayDescriptor::getParticleMass(std::string particle)
+{
+  return gParticleStore(particle,"mass");
+}
+
+const double DecayDescriptor::getParticleMass(const int particle)
+{
+  return gParticleStore(m_particles[particle],"mass");
+}
+
 std::string DecayDescriptor::cleanParticle(std::string particle)
 {
     int posp = particle.find("+");

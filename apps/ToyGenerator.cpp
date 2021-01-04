@@ -5,6 +5,7 @@
 #include "accept.h"
 #include "sequence.h"
 #include "d02k3pi.h"
+#include "decay3body.h"
 #include "tupling.h"
 #include "algorithm.h"
 #include "clock.h"
@@ -15,12 +16,12 @@
 int main()
 {
   Hydra hy;
-  hy.setDecay("D0 => K+ pi- pi+ pi-");
+  hy.setDecay("D0 => KS0 K+ K-");
   
   Generator gen("Generator");
-  D02K3Pi amp("Amplitude");
+  Decay3Body amp("Amplitude","cfg/belle2010.cfg");
   Accept acc("Accept");
-  acc.setMaxPdf(4);
+  acc.setMaxPdf(624);
   Tupling tup("Tupling");
   tup.addMass();
   tup.addCompositeMass();
@@ -33,10 +34,10 @@ int main()
   flow.addAlgorithm(tup);
   flow.printAlgorithmSequence();
 
-  hy().EvtMax = 10000;
-  hy().TreeName = "d02k3pi";
+  hy().EvtMax = 100000;
+  hy().TreeName = "d02kshh";
   hy().AlgoSequence = flow;
-  hy().NThreads = 32;
+  hy().NThreads = 1;
   hy().OutputLocation = "/Users/eddieshields/Documents/LHCb/ToyGenerator/build/tmp/output.root";
   hy().Variables = tup.getVariables();
   hy.run();
