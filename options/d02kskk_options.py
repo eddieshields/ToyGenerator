@@ -8,14 +8,12 @@ hy.setDecay("D0 => KS0 K+ K-")
 
 # Configure algorithms.
 gen = r.Generator("Generator")
-amp = r.Decay3Body("D02KSKKAmplitude","cfg/belle2010.cfg")
+amp = r.Decay3BodyMixing("D02KSKKAmplitude","cfg/belle2010.cfg")
 acc = r.Accept("Accept")
 acc.setMaxPdf(652.23)
 tup = r.Tupling("Tupling")
-tup.addMass()
 tup.addCharge()
 tup.addTime()
-tup.addEventInfo()
 tup.addCompositeMass()
 
 
