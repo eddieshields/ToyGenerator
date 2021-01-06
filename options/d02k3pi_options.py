@@ -19,7 +19,6 @@ tup.addEventInfo()
 seq = r.Sequence()
 seq.addAlgorithm(gen)
 seq.addAlgorithm(amp)
-seq.addAlgorithm(tes)
 seq.addAlgorithm(acc)
 seq.addAlgorithm(tup)
 seq.printAlgorithmSequence()
@@ -31,5 +30,5 @@ hy().Variables = tup.getVariables()
 hy().NThreads = 1
 hy().TreeName = "d02k3pi"
 hy().OutputLocation = "/Users/eddieshields/Documents/LHCb/ToyGenerator/build/tmp/output.root"
-
+import pdb; pdb.set_trace()
 hy.run()
