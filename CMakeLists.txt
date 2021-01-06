@@ -22,11 +22,11 @@ include_directories(${ROOT_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
 
 #--- Define the headers list
-include_directories(include src dict algorithms external/json/single_include ${CMAKE_SOURCE_DIR})
+include_directories(include src dict algorithms models/dalitzmodel external/json/single_include ${CMAKE_SOURCE_DIR})
 
 #--- Define the headers and src directories
-file(GLOB_RECURSE sources src/*.cpp algorithms/*.cpp)
-file(GLOB_RECURSE headers include/*.h algorithms/*.h)
+file(GLOB_RECURSE sources src/*.cpp algorithms/*.cpp models/dalitzmodel/*.cpp)
+file(GLOB_RECURSE headers include/*.h algorithms/*.h models/dalitzmodel/*.h)
 file(GLOB_RECURSE json external/json/single_include/*)
 
 ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} LINKDEF dict/${PACKAGE}LinkDef.h)
