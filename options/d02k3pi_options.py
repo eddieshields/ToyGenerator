@@ -1,19 +1,13 @@
 from hydra import *
-from Utils import PyAlgorithm
+
 hy = Hydra()
 hy.setDecay("D0 => K+ pi- pi+ pi-")
-
-
-def pyfunc(ev):
-    ev["mSq12"] = ev.particle(1).momentum().M() + ev.particle(2).momentum().M()
-    return
 
 # Configure algorithms.
 gen = r.Generator("Generator")
 amp = r.D02K3Pi("D02K3Pi")
-tes = r.PyAlgorithm("pyfunc",pyfunc)
 acc = r.Accept("Accept")
-acc.setMaxPdf(0.4)
+acc.setMaxPdf(5)
 tup = r.Tupling("Tupling")
 tup.addMass()
 tup.addCharge()
