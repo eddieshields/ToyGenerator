@@ -61,13 +61,15 @@ public:
   TTree* tree();
   void addToList(std::vector<Event> tmp) { m_list.insert( m_list.end(), tmp.begin(), tmp.end() ); }
   void setDecay(std::string decay) { gDescriptor(decay); }
+
+  static void SetDecay(std::string decay) { gDescriptor(decay); }
+  static void WelcomeMessage();
+  static bool m_welcome;
 private:
   std::vector<Event> m_list;
   void addToList(Event ev) { m_list.push_back(ev); } 
   unsigned int m_counter = {0};
 
-  static void WelcomeMessage();
-  static bool m_welcome;
 };
 
 #endif
