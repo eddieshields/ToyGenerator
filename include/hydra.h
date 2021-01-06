@@ -31,7 +31,7 @@ public:
   struct Configuration {
     Configuration() : Decay( gDescriptor ) {}
     int EvtMax = {1000};
-    int NThreads = {32};
+    int NThreads = {1};
     std::string TreeName = {"DecayTree"};
     std::string TreeTitle = {"DecayTree"};
     std::string OutputLocation = {""};

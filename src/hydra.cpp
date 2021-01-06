@@ -2,6 +2,7 @@
 
 void Hydra::run()
 {
+  INFO("Will use " << m_configuration.NThreads << " threads");
   Clock::Start();
   Threads<Hydra::Exec> execute(m_runner,m_configuration.NThreads,m_configuration.EvtMax);
   execute();
