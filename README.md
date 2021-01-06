@@ -35,6 +35,30 @@ make
 cd ..
 ```
 
+Each subsequent time you use this package, call 
+
+```bash
+. setup.sh
+```
+
+from the root directory.
+
+### Interactive Hydra
+
+Hydra can be used in an interactive python session. Simply call
+
+```bash
+Hydra
+```
+
+from the directory root to load and interactive python session with Hydra pre-configured. You can
+additionally call options files this way by 
+
+```bash
+Hydra path/to/options/file
+```
+
+
 ### Python environment
 
 For using the python version of this program I would recommend setting up a python virtual
