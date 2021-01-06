@@ -26,7 +26,7 @@ seq.addAlgorithm(tup)
 seq.printAlgorithmSequence()
 
 # Configure Hydra.
-hy().EvtMax = 10000
+hy().EvtMax = 1000
 hy().AlgoSequence = seq
 hy().Variables = tup.getVariables() 
 hy().NThreads = 1
