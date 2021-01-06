@@ -1,4 +1,4 @@
-https://github.com/eddieshields/ToyGenerator/workflows/CMake/badge.svg
+![CMake](https://github.com/eddieshields/ToyGenerator/workflows/CMake/badge.svg)
 
 # Hydra
 
