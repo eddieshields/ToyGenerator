@@ -9,8 +9,7 @@
 
 #include <complex>
 #include <vector>
-
-#include <omp.h>
+#include <map>
 
 namespace DalitzModel {
 
