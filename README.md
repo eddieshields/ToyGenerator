@@ -94,3 +94,7 @@ sequence.addAlgorithm(Algorithm)
 ```
 
 method.
+
+
+[travis-badge]:      https://travis-ci.com/eddieshields/ToyGenerator.svg?token=kSjk97VeMvMyZGvyxnp2&branch=main
+[travis-link]:       https://travis-ci.com/github/eddieshields/ToyGenerator
