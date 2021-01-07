@@ -1,3 +1,5 @@
+[![Build Status][travis-badge]][travis-link]
+
 # Hydra
 
 Hydra is a package for generating toys that is fast, easily configurable and hopefully user friendly. 
