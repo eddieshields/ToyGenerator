@@ -4,7 +4,7 @@
 #include "msgservice.h"
 #include "event.h"
 
-#include<thread>
+#include <thread>
 #include <pthread.h>
 #include <vector>
 #include <future>
