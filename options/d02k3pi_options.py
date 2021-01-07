@@ -1,7 +1,6 @@
 from hydra import *
 
-hy = Hydra()
-hy.setDecay("D0 => K+ pi- pi+ pi-")
+SetDecay("D0 => K+ pi- pi+ pi-")
 
 # Configure algorithms.
 gen = r.Generator("Generator")
@@ -24,11 +23,10 @@ seq.addAlgorithm(tup)
 seq.printAlgorithmSequence()
 
 # Configure Hydra.
-hy().EvtMax = 10000
-hy().AlgoSequence = seq
-hy().Variables = tup.getVariables()
-hy().NThreads = 1
-hy().TreeName = "d02k3pi"
-hy().OutputLocation = "/Users/eddieshields/Documents/LHCb/ToyGenerator/build/tmp/output.root"
-import pdb; pdb.set_trace()
-hy.run()
+Hydra().EvtMax = 10000
+Hydra().AlgoSequence = seq
+Hydra().Variables = tup.getVariables()
+Hydra().NThreads = 1
+Hydra().TreeName = "d02k3pi"
+Hydra().OutputLocation = "/Users/eddieshields/Documents/LHCb/ToyGenerator/build/tmp/output.root"
+Hydra.run()
