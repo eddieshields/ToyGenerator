@@ -14,13 +14,18 @@
 #include "TFile.h"
 #include "TTree.h"
 
-/*
-TODO:
-  Make similar to DaVinci. Configure everything within Hydra.
-  Allow hydra to run toy generation sequence. Will include thread start and finish hear.
-  Have TTree produced and saves.
-  Allow plots if requested. Take classes from amplitude model. Start with 3 body. Can then be expanded to 4.
-*/
+
+/** @brief Hydra is the central class used to configure and generate toys.
+ * 
+ * Hydra is the central object in the package the used to configure settings as well as performs the 
+ * execution of a series of algorithms. 
+ * 
+ * Options are called with the () operator. I.e. to set the number of events do Hydra().EvtMax = 1000.
+ * Once all the options are set call Hydra.run() to run the sequence loop and generate an output.
+ * 
+ * @author Edward Shields
+ * @date   07/01/2021
+ */
 class Hydra
 {
 public:
