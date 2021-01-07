@@ -12,7 +12,7 @@ class Particle
 {
 public:
   Particle() {};
-  ~Particle() {};
+  virtual ~Particle() {};
 
   bool& isStable()           { return m_stable; }
   double& time()             { return m_ctau; }
@@ -22,7 +22,7 @@ public:
 
   Particle operator+(Particle& part2);
   Particle operator+=(Particle& part2);
-private:
+protected:
   std::string m_name;
   bool        m_stable;
   double      m_mass;

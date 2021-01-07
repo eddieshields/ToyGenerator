@@ -11,10 +11,6 @@
 #include "msgservice.h"
 #include "configfile.h"
 
-// json.
-#include "nlohmann/json.hpp"
-using json = nlohmann::json;
-
 #include "string.h"
 #include <fstream>
 #include <sstream>

@@ -1,19 +1,12 @@
 from hydra import *
-from Utils import PyAlgorithm
-hy = Hydra()
-hy.setDecay("D0 => K+ pi- pi+ pi-")
 
-
-def pyfunc(ev):
-    ev["mSq12"] = ev.particle(1).momentum().M() + ev.particle(2).momentum().M()
-    return
+SetDecay("D0 => K+ pi- pi+ pi-")
 
 # Configure algorithms.
 gen = r.Generator("Generator")
 amp = r.D02K3Pi("D02K3Pi")
-tes = r.PyAlgorithm("pyfunc",pyfunc)
 acc = r.Accept("Accept")
-acc.setMaxPdf(0.4)
+acc.setMaxPdf(5)
 tup = r.Tupling("Tupling")
 tup.addMass()
 tup.addCharge()
@@ -25,17 +18,15 @@ tup.addEventInfo()
 seq = r.Sequence()
 seq.addAlgorithm(gen)
 seq.addAlgorithm(amp)
-seq.addAlgorithm(tes)
 seq.addAlgorithm(acc)
 seq.addAlgorithm(tup)
 seq.printAlgorithmSequence()
 
 # Configure Hydra.
-hy().EvtMax = 10000
-hy().AlgoSequence = seq
-hy().Variables = tup.getVariables()
-hy().NThreads = 1
-hy().TreeName = "d02k3pi"
-hy().OutputLocation = "/Users/eddieshields/Documents/LHCb/ToyGenerator/build/tmp/output.root"
-
-hy.run()
+Hydra().EvtMax = 10000
+Hydra().AlgoSequence = seq
+Hydra().Variables = tup.getVariables()
+Hydra().NThreads = 1
+Hydra().TreeName = "d02k3pi"
+Hydra().OutputLocation = "/Users/eddieshields/Documents/LHCb/ToyGenerator/build/tmp/output.root"
+Hydra.run()

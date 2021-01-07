@@ -2,6 +2,7 @@
 
 void Hydra::run()
 {
+  INFO("Will use " << m_configuration.NThreads << " threads");
   Clock::Start();
   Threads<Hydra::Exec> execute(m_runner,m_configuration.NThreads,m_configuration.EvtMax);
   execute();
@@ -64,11 +65,13 @@ bool Hydra::m_welcome = false;
 void Hydra::WelcomeMessage()
 {
   if ( !m_welcome ) {
-  std::cout << "\033[1;31m**********************************************************\033[0m\n" << std::endl;
-  //std::cout << "\033[1;31m*                                                        *\033[0m\n" << std::endl;
-  std::cout << "\033[1;31m*                    WELCOME TO HYDRA                    *\033[0m\n" << std::endl;
-  std::cout << "\033[1;31m*                                                        *\033[0m\n" << std::endl;
-  std::cout << "\033[1;31m* Contact: edward.brendan.shields@cern.ch                *\033[0m\n" << std::endl;
+  std::cout << "\033[1;31m**********************************************************\033[0m\n";
+  std::cout << "\033[1;31m*                                                        *\033[0m\n";
+  std::cout << "\033[1;31m*                    WELCOME TO HYDRA                    *\033[0m\n";
+  std::cout << "\033[1;31m*                                                        *\033[0m\n";
+  std::cout << "\033[1;31m*                                                        *\033[0m\n";
+  std::cout << "\033[1;31m* Contact: edward.brendan.shields@cern.ch                *\033[0m\n";
+  std::cout << "\033[1;31m*                                                        *\033[0m\n";
   std::cout << "\033[1;31m**********************************************************\033[0m\n" << std::endl;
   }
   m_welcome = true;

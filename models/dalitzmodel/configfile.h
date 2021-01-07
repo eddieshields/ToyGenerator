@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <iterator>  
 
 namespace DalitzModel {
 

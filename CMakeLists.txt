@@ -22,12 +22,16 @@ include_directories(${ROOT_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
 
 #--- Define the headers list
-include_directories(include src dict algorithms models/dalitzmodel external/json/single_include ${CMAKE_SOURCE_DIR})
+include_directories(include src dict algorithms models/dalitzmodel  ${CMAKE_SOURCE_DIR})
+
+if (APPLE)
+    include_directories(external/json/single_include)
+endif()
 
 #--- Define the headers and src directories
 file(GLOB_RECURSE sources src/*.cpp algorithms/*.cpp models/dalitzmodel/*.cpp)
 file(GLOB_RECURSE headers include/*.h algorithms/*.h models/dalitzmodel/*.h)
-file(GLOB_RECURSE json external/json/single_include/*)
+#file(GLOB_RECURSE json external/json/single_include/*)
 
 ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} LINKDEF dict/${PACKAGE}LinkDef.h)
 
@@ -46,6 +50,9 @@ target_include_directories(${PACKAGE} PUBLIC external/json/single_include)
 #--- External library for reading json files.
 target_include_directories(HYDRA PUBLIC external/json/single_include)
 
-#---Create an executable
+#--- Create an executable
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
 target_link_libraries(ToyGenerator HYDRA)
+
+#--- Create Hydra
+execute_process(COMMAND chmod +x ${CMAKE_SOURCE_DIR}/Hydra)

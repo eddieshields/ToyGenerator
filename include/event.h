@@ -21,12 +21,12 @@ public:
     m_particles.reserve( 5 );
     m_data.reserve( ( 5 * 4 ) + 1);
   };
-  ~Event() {};
+  virtual ~Event() {};
 
   double pdf = {1};
   double efficiency = {1};
   double weight = {1};
-  bool   Accept = {false};
+  bool   Accept = {true};
 
   std::vector<Particle>& particles() { return m_particles; }
   Particle& particle(int index)      { return m_particles[index]; }       

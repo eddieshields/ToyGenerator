@@ -1,9 +1,6 @@
-import sys, os
-sys.path.append(os.getcwd()+'/python')
 from hydra import *
-from array import *
-hy = Hydra()
-hy.setDecay("D0 => KS0 K+ K-")
+
+SetDecay("D0 => KS0 K+ K-")
 
 
 # Configure algorithms.
@@ -26,11 +23,10 @@ seq.addAlgorithm(tup)
 seq.printAlgorithmSequence()
 
 # Configure Hydra.
-hy().EvtMax = 10000
-hy().AlgoSequence = seq
-hy().Variables = tup.getVariables() 
-hy().NThreads = 1
-hy().TreeName = "d02kskk"
-hy().OutputLocation = "/Users/eddieshields/Documents/LHCb/ToyGenerator/build/tmp/output.root"
-
-hy.run()
+Hydra().EvtMax = 10000
+Hydra().AlgoSequence = seq
+Hydra().Variables = tup.getVariables() 
+Hydra().NThreads = 1
+Hydra().TreeName = "d02kskk"
+Hydra().OutputLocation = "output.root"
+Hydra.run()
