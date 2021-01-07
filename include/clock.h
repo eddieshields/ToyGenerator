@@ -12,6 +12,14 @@
 #include "TStopwatch.h"
 
 
+/** @brief Clock class used for timings across package.
+ * 
+ * Used for timings. Clock::Start() and Clock::Stop() can be used around a section of 
+ * code to time it.
+ * 
+ * @author Edward Shields
+ * @date   05/11/2020
+ */
 class Clock
 {
 public:
