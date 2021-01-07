@@ -16,8 +16,9 @@ c.InteractiveShellApp.exec_lines = [
     'r.gSystem.Load(\"build/libHYDRA\")\n'
     'from python.hydra import *\n',
     'Hydra.WelcomeMessage()\n',
-    'printc(\"Please set decay with SetDecay(decay)\"\n)'
 ]
+if ( len(sys.argv) == 1 ): c.InteractiveShellApp.exec_lines.append('printc(\"Please set decay with SetDecay(decay)\"\n)')
+
 c.InteractiveShellApp.exec_files = [
     'python/hydra.py',
 ]
