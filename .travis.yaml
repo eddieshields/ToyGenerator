@@ -41,9 +41,9 @@ branches:
 # Environment variables
 env:
   global:
-    - GH_REPO_NAME: Hydra
+    - GH_REPO_NAME: ToyGenerator
     - DOXYFILE: $TRAVIS_BUILD_DIR/doc/doxyfile
-    - GH_REPO_REF: github.com/GooFit/AmpGen.git
+    - GH_REPO_REF: https://github.com/eddieshields/ToyGenerator
     - DEPS_DIR: "${TRAVIS_BUILD_DIR}/deps"
 
 before_install:
