@@ -8,7 +8,7 @@ from ROOT import ( Hydra,
                    Event,
                    Particle,
                    ParticleStore,
-                   #PyAlgorithm,
+                   PyAlgorithm,
                    Random,
                    Sequence
                  )
@@ -27,9 +27,17 @@ from ROOT import ( Accept,
                    Tupling
                  )
 
+Hydra = Hydra()
+
 def SetDecay(decay):
-    r.Hydra.SetDecay(decay)
+    Hydra.SetDecay(decay)
     return
 
 def printc(inp):
     print("\033[1;31m"+inp+"\033[0m\n")
+
+def MakeSequence(*args):
+    seq = Sequence()
+    for alg in args:
+        seq.addAlgorithm(alg)
+    return seq
