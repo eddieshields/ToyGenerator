@@ -1,5 +1,3 @@
-![CMake](https://github.com/eddieshields/ToyGenerator/workflows/CMake/badge.svg)
-
 # Hydra
 
 Hydra is a package for generating toys that is fast, easily configurable and hopefully user friendly. 
