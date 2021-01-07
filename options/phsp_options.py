@@ -15,12 +15,13 @@ SetDecay("D0 => KS0 K+ K-")
 
 # Configure algorithms
 gen = Generator("Generator")
+acc = Accept("Accept")
 tup = Tupling("Tupling")
 tup.addMass()
 tup.addCompositeMass()
 
 # Make sequence
-seq = MakeSequence(gen,tup)
+seq = MakeSequence(gen,acc,tup)
 
 # Configure Hydra.
 Hydra().EvtMax = args.nevents
