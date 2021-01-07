@@ -21,7 +21,7 @@ public:
     m_particles.reserve( 5 );
     m_data.reserve( ( 5 * 4 ) + 1);
   };
-  ~Event() {};
+  virtual ~Event() {};
 
   double pdf = {1};
   double efficiency = {1};
