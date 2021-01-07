@@ -15,7 +15,7 @@ public:
   {}
   ~PyAlgorithm() {}
 
-  virtual void operator()(Event& ev) { m_func(ev); } 
+  virtual void operator()(Event& ev);
 
 private:
   std::function<void(Event&)> m_func;
