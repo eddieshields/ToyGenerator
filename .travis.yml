@@ -38,7 +38,8 @@ before_install:
 # Build your code e.g. by calling make
 script:
   - chmod +x .ci/travis_${TRAVIS_OS_NAME}.sh
-  - source .ci/travis_${TRAVIS_OS_NAME}.sh
+  
+#  - source .ci/travis_${TRAVIS_OS_NAME}.sh
 
 # Generate and deploy documentation
 after_success:
