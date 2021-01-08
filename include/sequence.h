@@ -10,6 +10,11 @@ class Sequence
 {
 public:
   Sequence() = default;
+  Sequence(Sequence& other)
+  {
+    head = other.head;
+    tail = other.tail;
+  }
   ~Sequence() {};
 
   template <typename IN_TYPE>
@@ -44,11 +49,6 @@ public:
   
   Algorithm* head;
   Algorithm* tail;
-
-  void operator=(const Sequence& other) 
-  {
-    head = other.head;
-  }
 };
 
 #endif
