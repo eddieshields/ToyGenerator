@@ -23,7 +23,8 @@ std::vector<Event> Hydra::runSequence()
   unsigned int counter = 0;
   while ( counter < m_configuration.EvtMax/m_configuration.NThreads ) {
     Event* ev = new Event();
-    Algorithm* algo = m_configuration.AlgoSequence.head;
+    Algorithm* algo = nullptr;
+    algo = m_configuration.AlgoSequence.head;
     while ( algo != nullptr ) {
       algo->operator()(*ev);
       algo = algo->next;
