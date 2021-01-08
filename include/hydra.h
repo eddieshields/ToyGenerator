@@ -15,6 +15,20 @@
 #include "TTree.h"
 
 
+// Struct for configuration.
+struct Configuration {
+  Configuration()  {}
+  ~Configuration() {}
+  int                      EvtMax         = {1000};
+  int                      NThreads       = {1};
+  std::string              TreeName       = {"DecayTree"};
+  std::string              TreeTitle      = {"DecayTree"};
+  std::string              OutputLocation = {""};
+  std::vector<std::string> Variables;
+  Sequence                 AlgoSequence;
+};
+
+
 /** @brief Hydra is the central class used to configure and generate toys.
  * 
  * Hydra is the central object in the package the used to configure settings as well as performs the 
@@ -32,19 +46,6 @@ public:
   Hydra() : m_runner( this ) {WelcomeMessage();}
   virtual ~Hydra() {}
 
-  // Struct for configuration.
-  struct Configuration {
-    Configuration() : Decay( gDescriptor ) {}
-    int EvtMax = {1000};
-    int NThreads = {1};
-    std::string TreeName = {"DecayTree"};
-    std::string TreeTitle = {"DecayTree"};
-    std::string OutputLocation = {""};
-    std::vector<std::string> Variables;
-    Sequence AlgoSequence;
-    DecayDescriptor& Decay;
-  };
-
   // Wrapper struct that is passed to threads for execution.
   struct Exec {
     Exec(Hydra* _base) : base( _base ) {}
@@ -58,7 +59,7 @@ public:
   };
 
   Configuration m_configuration;
-  Exec m_runner;
+  Exec          m_runner;
 
   Configuration& operator()() { return m_configuration; }
   std::vector<Event> runSequence();
