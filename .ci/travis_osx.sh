@@ -5,9 +5,9 @@ echo "Building under OS: $TRAVIS_OS_NAME"
 mkdir -p build
 cd build
 echo "CMake-ing, CXX = $CXX"
-cmake .. -DCMAKE_CXX_COMPILER=clang
+cmake .. 
 echo "Building ..."
-cmake --build . -- -j2 
+make
 cd ..
 echo "Running test job ..."
 ./build/ToyGenerator
