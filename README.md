@@ -12,7 +12,7 @@ Hydra is a package for generating toys that is fast, easily configurable and hop
 First clone the respository,
 
 ```bash
-https://github.com/eddieshields/ToyGenerator.git
+git clone https://github.com/eddieshields/ToyGenerator.git
 ```
 
 and fetch necessary external libraries
@@ -23,7 +23,7 @@ git submodule update --init --recursive
 
 If you are working on lxplus you will need to set up the right environment with 
 
-```bash 
+```bash
 source /cvmfs/sft.cern.ch/lcg/views/setupViews.sh LCG_97python3 x86_64-centos7-gcc8-opt
 ```
 
