@@ -34,24 +34,21 @@ public:
       omp_set_num_threads(m_nthreads);
       #pragma omp parallel for
       for (int i = 0; i < m_nthreads; i++) {
-        std::vector<Event> tmp = m_function();
-        #pragma omp critical
-          m_list.insert( m_list.end(), tmp.begin(), tmp.end() );
+        int thread = omp_get_thread_num();
+        std::vector<Event> tmp = m_function(thread);
       }
     #else
       if ( m_nthreads > 1 ) {
         for (int i = 0; i < m_nthreads; i++) {
-          std::future<std::vector<Event>> t = std::async(std::launch::async,m_function);
+          std::future<std::vector<Event>> t = std::async(std::launch::async,m_function,i);
           m_threads.push_back( std::move(t) );
         }
     
         for (int i = 0; i < m_nthreads; i++) {
           std::vector<Event> tmp = m_threads[i].get();
-          m_list.insert( m_list.end(), tmp.begin(), tmp.end() );
         }
       } else {
-        std::vector<Event> tmp = m_function();
-        m_list.insert( m_list.end(), tmp.begin(), tmp.end() );
+        std::vector<Event> tmp = m_function(0);
       }
     #endif
     return;
