@@ -15,6 +15,13 @@ void Hydra::run()
   Clock::Stop();
   Clock::Print("fill tree with "+std::to_string(ttree->GetEntries())+" events");
   ttree->Print();
+
+
+  TFile* file = new TFile(m_configuration.OutputLocation.c_str(),"RECREATE");
+  file->cd();
+  ttree->Write();
+  file->Close();
+  INFO("Tree saved to: " << m_configuration.OutputLocation);
 }
 
 std::vector<Event> Hydra::runSequence()
@@ -43,7 +50,7 @@ TTree* Hydra::tree()
   std::map<std::string,double> m_mapping;
   for (auto& var : m_configuration.Variables) {
     m_mapping[var] = 0.0;
-    tree->Branch(var.c_str(),&m_mapping[var]);
+    tree->Branch(var.c_str(),&m_mapping[var],(var+"/D").c_str());
   }
 
   for(auto& ev : m_list) {
@@ -53,11 +60,6 @@ TTree* Hydra::tree()
     }
     tree->Fill();
   }
-
-  TFile* file = new TFile(m_configuration.OutputLocation.c_str(),"RECREATE");
-  file->cd();
-  tree->Write();
-  file->Close();
 
   return tree;
 }
