@@ -5,3 +5,4 @@
 #export LDFLAGS="-L/usr/local/opt/llvm/lib"
 
 alias Hydra=./Hydra
+PYTHONPATH=${PWD}/python:${PYTHONPATH}
