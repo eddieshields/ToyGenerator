@@ -11,6 +11,10 @@
 
 #include "TROOT.h"
 
+#ifdef _OPENMP
+  #include <omp.h>
+#endif
+
 template<typename FUNC>
 class Threads 
 {
@@ -26,20 +30,30 @@ public:
 
   void operator()()
   {
-    if ( m_nthreads > 1 ) {
+    #ifdef _OPENMP
+      omp_set_num_threads(m_nthreads);
+      #pragma omp parallel for
       for (int i = 0; i < m_nthreads; i++) {
-        std::future<std::vector<Event>> t = std::async(std::launch::async,m_function);
-        m_threads.push_back( std::move(t) );
+        std::vector<Event> tmp = m_function();
+        #pragma omp critical
+          m_list.insert( m_list.end(), tmp.begin(), tmp.end() );
       }
-  
-      for (int i = 0; i < m_nthreads; i++) {
-        std::vector<Event> tmp = m_threads[i].get();
+    #else
+      if ( m_nthreads > 1 ) {
+        for (int i = 0; i < m_nthreads; i++) {
+          std::future<std::vector<Event>> t = std::async(std::launch::async,m_function);
+          m_threads.push_back( std::move(t) );
+        }
+    
+        for (int i = 0; i < m_nthreads; i++) {
+          std::vector<Event> tmp = m_threads[i].get();
+          m_list.insert( m_list.end(), tmp.begin(), tmp.end() );
+        }
+      } else {
+        std::vector<Event> tmp = m_function();
         m_list.insert( m_list.end(), tmp.begin(), tmp.end() );
       }
-    } else {
-      std::vector<Event> tmp = m_function();
-      m_list.insert( m_list.end(), tmp.begin(), tmp.end() );
-    }
+    #endif
     return;
   }
 
