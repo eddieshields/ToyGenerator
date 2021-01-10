@@ -19,7 +19,7 @@ template<typename FUNC>
 class Threads 
 {
 public:
-  Threads(FUNC& function,int& nthreads, int& nevents) :
+  Threads(FUNC& function,int& nthreads,int& nevents) :
     m_function(function),
     m_nthreads( nthreads )
   {
