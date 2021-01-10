@@ -40,6 +40,8 @@ std::vector<Event> Hydra::runSequence()
       counter++;
       list.push_back( std::move(*ev) );
     }
+    // Accepted events are saved in list, so events can be deleted.
+    delete ev;
   }
   return list;
 }
