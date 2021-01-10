@@ -41,7 +41,10 @@ std::vector<Event> Hydra::runSequence(int& thread)
     // Accepted events are saved in list, so events can be deleted.
     delete ev;
   }
-  temporary_tree(thread,list);
+  #ifdef _OPENMP
+    #pragma omp critical
+  #endif
+      temporary_tree(thread,list);
   return list;
 }
 
@@ -67,6 +70,9 @@ TTree* Hydra::tree()
 
 void Hydra::temporary_tree(int& thread, std::vector<Event>& list)
 {
+  TFile* file = new TFile(("tmp/tmp"+std::to_string(thread)+".root").c_str(),"RECREATE");
+  file->cd();
+  
   // Create new tree.
   TTree* tree = new TTree(m_configuration.TreeName.c_str(),m_configuration.TreeTitle.c_str());
 
@@ -87,13 +93,7 @@ void Hydra::temporary_tree(int& thread, std::vector<Event>& list)
   }
 
   // Save Tree.
-  TFile* file = new TFile(("tmp/tmp"+std::to_string(thread)+".root").c_str(),"RECREATE");
-  file->cd();
-  #ifdef _OPENMP
-    #pragma omp critical
-  #endif
-      tree->Write();
-
+  tree->Write();
   file->Close();
 }
 
