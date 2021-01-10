@@ -15,7 +15,7 @@ find_package(ROOT REQUIRED COMPONENTS Core RIO Hist Graf Graf3d Postscript Gpad
                              RooFit RooFitCore Tree MathCore Foam Physics
                              Proof ProofBench ProofDraw ProofPlayer)
 
-find_package(Boost)
+find_package(Boost COMPONENTS system filesystem REQUIRED)
                     
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
@@ -46,14 +46,14 @@ add_library(${PACKAGE} SHARED ${sources} ${headers})
 if ( USE_OPENMP )
     find_package(OpenMP)
     if (OpenMP_CXX_FOUND)
-        target_link_libraries(${PACKAGE} PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${CMAKE_DL_LIBS})
-        target_link_libraries(HYDRA PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${CMAKE_DL_LIBS})
+        target_link_libraries(${PACKAGE} PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS})
+        target_link_libraries(HYDRA      PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS})
     else()
         message(STATUS "OpenMP not found for CXX, you might have forgotten lb-run ROOT bash or CXX=`which g++` in CERN stack")
     endif()
 else()
-    target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${CMAKE_DL_LIBS})
-    target_link_libraries(HYDRA ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${CMAKE_DL_LIBS})
+    target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS})
+    target_link_libraries(HYDRA      ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS})
 endif()
 
 #--- External library for reading json files.
@@ -63,6 +63,11 @@ target_include_directories(HYDRA PUBLIC external/json/single_include)
 #--- Create an executable
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
 target_link_libraries(ToyGenerator HYDRA)
+
+if (OpenMP_CXX_FOUND)
+    add_executable(getMaxThreads ${CMAKE_SOURCE_DIR}/apps/getMaxThreads.cpp)
+    target_link_libraries(getMaxThreads PUBLIC OpenMP::OpenMP_CXX)
+endif()
 
 #--- Create Hydra
 execute_process(COMMAND chmod +x ${CMAKE_SOURCE_DIR}/Hydra)
