@@ -11,6 +11,7 @@
 
 #include "TGenPhaseSpace.h"
 #include "TLorentzVector.h"
+#include "TRandom.h"
 
 #include <vector>
 #include <random>
