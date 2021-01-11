@@ -11,8 +11,14 @@
 #include <vector>
 #include <map>
 
+// Dirty fix, should try fix in compilation instead.
+#define BOOST_NO_CXX11_SCOPED_ENUMS
+#include <boost/filesystem.hpp>
+#undef BOOST_NO_CXX11_SCOPED_ENUMS
+
 #include "TFile.h"
 #include "TTree.h"
+#include "TChain.h"
 
 
 // Struct for configuration.
@@ -51,9 +57,9 @@ public:
     Exec(Hydra* _base) : base( _base ) {}
     ~Exec() {}
 
-    std::vector<Event> operator()()
+    std::vector<Event> operator()(int& thread)
     {
-      return base->runSequence();
+      return base->runSequence(thread);
     }
     Hydra* base;
   };
@@ -62,9 +68,11 @@ public:
   Exec          m_runner;
 
   Configuration& operator()() { return m_configuration; }
-  std::vector<Event> runSequence();
+  std::vector<Event> runSequence(int& thread);
   void run();
   TTree* tree();
+  void temporary_tree(int& thread, std::vector<Event>& list);
+  void merge_tree();
   void addToList(std::vector<Event> tmp) { m_list.insert( m_list.end(), tmp.begin(), tmp.end() ); }
   void setDecay(std::string decay) { gDescriptor(decay); }
 

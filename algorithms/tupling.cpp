@@ -2,6 +2,7 @@
 
 void Tupling::operator()(Event& ev)
 {
+  if ( !ev.Accept ) return;
   Param* param = nullptr;
   param = head;
   while ( param != nullptr ) {

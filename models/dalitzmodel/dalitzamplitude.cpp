@@ -44,7 +44,7 @@ const std::complex<double> DalitzAmplitude::Abar(const double& mSq12, const doub
   Resonance* res = nullptr;
   res = headCnj;
   while ( res != nullptr ) {
-    A += res->evaluate( _ps , mSq13 , mSq12 , mSq23 );
+    A += res->evaluate( _ps , mSq12 , mSq13 , mSq23 );
     res = res->next;
   }
   return A;

@@ -59,8 +59,8 @@ public:
   void makeData()
   {
     std::vector<TLorentzVector> pVec;
-    for (auto& p : m_particles) {
-      pVec.push_back( p.momentum() );
+    for (int i = 0; i < m_particles.size(); i++) {
+      pVec.push_back( m_particles[i].momentum() );
     }
     m_data.resize( 4 * pVec.size() );
     for( int i = 0 ; i < 4; ++i ){
