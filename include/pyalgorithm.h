@@ -5,6 +5,7 @@
 #include "algorithm.h"
 
 #include <functional>
+#include <Python.h>
 
 class PyAlgorithm : public Algorithm
 {
@@ -15,7 +16,10 @@ public:
   {}
   ~PyAlgorithm() {}
 
-  virtual void operator()(Event& ev);
+  virtual void operator()(Event& ev)
+  {
+    m_func( ev );
+  }
 
 private:
   std::function<void(Event&)> m_func;
