@@ -10,10 +10,12 @@ namespace DalitzModel {
 class DalitzMixing
 {
 public:
-  DalitzMixing() {}
+  DalitzMixing() { INFO("Will generate mixing with: x = " << m_x << ", y = " << m_y); }
   DalitzMixing(DalitzAmplitude& amp) :
     m_amp( amp )
-  {}
+  {
+    INFO("Will generate mixing with: x = " << m_x << ", y = " << m_y);
+  }
   ~DalitzMixing() {}
 
   const std::complex<double> A(Event& ev);
