@@ -5,4 +5,5 @@
 #export LDFLAGS="-L/usr/local/opt/llvm/lib"
 
 alias Hydra=./Hydra
+alias getMaxThreads=./build/getMaxThreads
 PYTHONPATH=${PWD}/python:${PYTHONPATH}
