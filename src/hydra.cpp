@@ -2,6 +2,10 @@
 
 void Hydra::run()
 {
+  // If threads are wanted set them to the maximum available.
+  if ( m_configuration.NThreads == -1 || m_configuration.NThreads > omp_get_max_threads() ) {
+    m_configuration.NThreads = omp_get_max_threads();
+  }
   // Create temport directory to save files in.
   boost::filesystem::path tmp = "tmp";
   boost::filesystem::create_directory( tmp );
@@ -72,7 +76,7 @@ void Hydra::temporary_tree(int& thread, std::vector<Event>& list)
 {
   TFile* file = new TFile(("tmp/tmp"+std::to_string(thread)+".root").c_str(),"RECREATE");
   file->cd();
-  
+
   // Create new tree.
   TTree* tree = new TTree(m_configuration.TreeName.c_str(),m_configuration.TreeTitle.c_str());
 
