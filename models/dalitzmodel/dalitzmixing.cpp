@@ -43,7 +43,7 @@ const double DalitzMixing::ASq(const int& flav, const double& t, const double& m
 const std::complex<double> DalitzMixing::gp(const double& t)
 {
   std::complex<double> I(0,1);
-  return std::cos( -I * z() * ( t/2 ) );
+  return std::cos( - I * z() * ( t/2 ) );
 }
 
 const std::complex<double> DalitzMixing::gm(const double& t)
