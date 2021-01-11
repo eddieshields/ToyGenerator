@@ -18,7 +18,7 @@ If you are on lxplus, for a simple build just call
 source build.sh
 ```
 
-Otherwise see [Compilation README](doc/READMEs/compilation.md) for more details.
+Otherwise see [Compilation](doc/READMEs/compilation.md) for more details.
 
 Each time you log back in call ```. setup.sh``` from the repository root.
 
