@@ -18,7 +18,7 @@ If you are on lxplus, for a simple build just call
 source build.sh
 ```
 
-Otherwise see [Compilation README](docs/READMEs/compilation.md) for more details.
+Otherwise see [Compilation README](doc/READMEs/compilation.md) for more details.
 
 Each time you log back in call ```. setup.sh``` from the repository root.
 
@@ -40,7 +40,7 @@ Hydra path/to/options/file
 ## Configuration
 
 Hydra works on the basis of a series of algorithms acting on an event.
-The easiest way to configure a sequence is by writing an options file, more details on this is given is [Configuration](docs/READMEs/configuration.md).
+The easiest way to configure a sequence is by writing an options file, more details on this is given is [Configuration](doc/READMEs/configuration.md).
 
 [travis-badge]:      https://travis-ci.com/eddieshields/ToyGenerator.svg?token=kSjk97VeMvMyZGvyxnp2&branch=main
 [travis-link]:       https://travis-ci.com/github/eddieshields/ToyGenerator
