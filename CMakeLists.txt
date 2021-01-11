@@ -9,18 +9,22 @@ SET(USE_OPENMP TRUE CACHE BOOL "USE_OPENMP")
 
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
-
-#---Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
+#--- Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
 find_package(ROOT REQUIRED COMPONENTS Core RIO Hist Graf Graf3d Postscript Gpad
                              RooFit RooFitCore Tree MathCore Foam Physics
                              Proof ProofBench ProofDraw ProofPlayer)
 
-find_package(Boost COMPONENTS system filesystem REQUIRED)
-                    
-#---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
+#--- Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS})
+
+#--- Use Boost
+find_package(Boost COMPONENTS system filesystem REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
+
+#--- Use Python
+find_package(PythonLibs REQUIRED)
+include_directories(${PYTHON_INCLUDE_DIRS})
 
 #--- Define the headers list
 include_directories(include src dict algorithms models/dalitzmodel  ${CMAKE_SOURCE_DIR})
@@ -46,14 +50,14 @@ add_library(${PACKAGE} SHARED ${sources} ${headers})
 if ( USE_OPENMP )
     find_package(OpenMP)
     if (OpenMP_CXX_FOUND)
-        target_link_libraries(${PACKAGE} PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS})
-        target_link_libraries(HYDRA      PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS})
+        target_link_libraries(${PACKAGE} PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
+        target_link_libraries(HYDRA      PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
     else()
         message(STATUS "OpenMP not found for CXX, you might have forgotten lb-run ROOT bash or CXX=`which g++` in CERN stack")
     endif()
 else()
-    target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS})
-    target_link_libraries(HYDRA      ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS})
+    target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
+    target_link_libraries(HYDRA      ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
 endif()
 
 #--- External library for reading json files.
