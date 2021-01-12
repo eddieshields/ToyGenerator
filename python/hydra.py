@@ -1,6 +1,9 @@
 import ROOT as r 
 r.gSystem.Load('build/libHYDRA')
 
+# Import ROOT random engine
+from ROOT import gRandom
+
 # Import core Hydra.
 from ROOT import ( Hydra,
                    Clock,
@@ -27,8 +30,10 @@ from ROOT import ( Accept,
                    Tupling
                  )
 
+# Create Hydra object.
 Hydra = Hydra()
 
+# Helper functions.
 def SetDecay(decay):
     Hydra.SetDecay(decay)
     return
@@ -41,3 +46,7 @@ def MakeSequence(*args):
     for alg in args:
         seq.addAlgorithm(alg)
     return seq
+
+def SetSeed(seed):
+    Random.setSeed(seed)
+    gRandom.SetSeed(seed)
