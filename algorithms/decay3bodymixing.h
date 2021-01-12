@@ -20,6 +20,11 @@ public:
 
   DalitzModel::DalitzMixing& amp() { return m_amp; }
 
+  void setX(double x) { m_amp.setX( x ); }
+  void setY(double y) { m_amp.setY( y ); }
+  void setP(double p) { m_amp.setP( p ); }
+  void setQ(double q) { m_amp.setQ( q ); }
+
   virtual void operator() (Event& ev);
 private:
   DalitzModel::DalitzMixing m_amp;
