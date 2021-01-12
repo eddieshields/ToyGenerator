@@ -12,7 +12,13 @@ First clone the respository,
 git clone https://github.com/eddieshields/ToyGenerator.git
 ```
 
-If you are on lxplus, for a simple build just call
+If you are on lxplus, set the correct environment with
+
+```bash
+source /cvmfs/sft.cern.ch/lcg/views/setupViews.sh LCG_97python3 x86_64-centos7-gcc8-opt
+```
+
+and for a simple build just call
 
 ```bash
 source build.sh
