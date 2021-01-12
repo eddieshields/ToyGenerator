@@ -3,7 +3,7 @@ import sys, os
 
 
 import ROOT as r 
-r.gSystem.Load('build/libHYDRA')
+r.gSystem.Load('build/libHydra')
 sys.path.append(os.getcwd()+'/python')
 
 from traitlets.config import Config
@@ -13,7 +13,7 @@ c = Config()
 c.InteractiveShellApp.exec_lines = [
     'import sys, os\n'
     'import ROOT as r\n',
-    'r.gSystem.Load(\"build/libHYDRA\")\n'
+    'r.gSystem.Load(\"build/libHydra\")\n'
     'from python.hydra import *\n',
     'Hydra.WelcomeMessage()\n',
 ]

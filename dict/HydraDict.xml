@@ -11,7 +11,7 @@
   <class name="Particlestore" />
   <class name="PyAlgorithm" />
   <class name="Random" />
-  <class name="Requence" />
+  <class name="Sequence" />
   <class name="Threads" />
 
   <class name="Accept" />

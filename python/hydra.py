@@ -1,5 +1,5 @@
 import ROOT as r 
-r.gSystem.Load('build/libHYDRA')
+r.gSystem.Load('build/libHydra')
 
 # Import ROOT random engine
 from ROOT import gRandom

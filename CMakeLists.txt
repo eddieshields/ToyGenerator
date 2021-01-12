@@ -1,6 +1,6 @@
 # CMakeLists.txt for ToyGenerator module. It creates a library with dictionary and a main program
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
-set(PACKAGE ToyGen)
+set(PACKAGE Hydra)
 project(${PACKAGE})
 
 set (CMAKE_CXX_STANDARD 17)
@@ -36,37 +36,30 @@ endif()
 #--- Define the headers and src directories
 file(GLOB_RECURSE sources src/*.cpp algorithms/*.cpp models/dalitzmodel/*.cpp)
 file(GLOB_RECURSE headers include/*.h algorithms/*.h models/dalitzmodel/*.h)
-#file(GLOB_RECURSE json external/json/single_include/*)
 
 ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} LINKDEF dict/${PACKAGE}LinkDef.h)
 
-#--- Generate ROOT library from dictionary
-add_library(HYDRA SHARED ${sources} ${} G__${PACKAGE}.cxx)
-
-#-- Generate general library
-add_library(${PACKAGE} SHARED ${sources} ${headers})
+#--- Generate library with ROOT dictionary
+add_library(${PACKAGE} SHARED ${sources} ${} G__${PACKAGE}.cxx)
 
 #--- Use OpenMP
 if ( USE_OPENMP )
     find_package(OpenMP)
     if (OpenMP_CXX_FOUND)
         target_link_libraries(${PACKAGE} PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-        target_link_libraries(HYDRA      PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
     else()
         message(STATUS "OpenMP not found for CXX, you might have forgotten lb-run ROOT bash or CXX=`which g++` in CERN stack")
     endif()
 else()
     target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-    target_link_libraries(HYDRA      ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
 endif()
 
 #--- External library for reading json files.
 target_include_directories(${PACKAGE} PUBLIC external/json/single_include)
-target_include_directories(HYDRA PUBLIC external/json/single_include)
 
 #--- Create an executable
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
-target_link_libraries(ToyGenerator HYDRA)
+target_link_libraries(ToyGenerator ${PACKAGE})
 
 if (OpenMP_CXX_FOUND)
     add_executable(getMaxThreads ${CMAKE_SOURCE_DIR}/apps/getMaxThreads.cpp)

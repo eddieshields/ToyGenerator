@@ -1,0 +1,13 @@
+<lcgdict>
+  <class name="Angular" />
+  <class name="Coeff" />
+  <class name="ConfigFile" />
+  <class name="ConfigureAmplitude" />
+  <class name="DalitzAmplitude" />
+  <class name="DalitzMixing" />
+  <class name="Flatte" />
+  <class name="Parameter" />
+  <class name="PhaseSpace" />
+  <class name="RelBreitWigner" />
+  <class name="Resonance" />
+</lcgdict>

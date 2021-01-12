@@ -70,6 +70,47 @@ const double DalitzAmplitude::AbarSq(const double& mSq12, const double& mSq13, c
   return std::norm( Abar( mSq12, mSq13, mSq23 ) );
 }
 
+const std::complex<double> DalitzAmplitude::A1(const double& mSq12, const double& mSq13) const
+{
+  return ( Adir( mSq12 , mSq13 ) + Abar( mSq12 , mSq13 ) ) / 2.;
+}
+
+const std::complex<double> DalitzAmplitude::A1(const double& mSq12, const double& mSq13, const double& mSq23) const
+{
+  return ( Adir( mSq12 , mSq13 , mSq23 ) + Abar( mSq12 , mSq13 , mSq23 ) ) / 2.;
+}
+
+const std::complex<double> DalitzAmplitude::A2(const double& mSq12, const double& mSq13) const
+{
+  return ( Adir( mSq12 , mSq13 ) - Abar( mSq12 , mSq13 ) ) / 2.;
+}
+
+
+const std::complex<double> DalitzAmplitude::A2(const double& mSq12, const double& mSq13, const double& mSq23) const
+{
+  return ( Adir( mSq12 , mSq13 , mSq23 ) - Abar( mSq12 , mSq13 , mSq23 ) ) / 2.;
+}
+
+const double DalitzAmplitude::A1Sq(const double& mSq12, const double& mSq13) const
+{
+  return std::norm( A1( mSq12 , mSq13 ) );
+}
+
+const double DalitzAmplitude::A1Sq(const double& mSq12, const double& mSq13, const double& mSq23) const
+{
+  return std::norm( A1( mSq12 , mSq13 , mSq23 ) );
+}
+
+const double DalitzAmplitude::A2Sq(const double& mSq12, const double& mSq13) const
+{
+  return std::norm( A2( mSq12 , mSq13 ) );
+}
+
+const double DalitzAmplitude::A2Sq(const double& mSq12, const double& mSq13, const double& mSq23) const
+{
+  return std::norm( A2( mSq12 , mSq13 , mSq23 ) );
+}
+
 void DalitzAmplitude::addDirResonance(Resonance* res)
 {
   m_dirresonances.push_back( std::move(static_cast<Resonance*>(res)) );
