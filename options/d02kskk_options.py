@@ -5,32 +5,31 @@ SetDecay("D0 => KS0 K+ K-")
 
 # Configure algorithms.
 # Generate events according to decay.
-gen = r.Generator("Generator")
+gen = Generator("Generator")
+# Add secondary contamination
+sec = Secondaries("Secondaries")
+sec.LoadHistogram("/afs/cern.ch/user/e/eshields/cernbox/Analysis/branches/fitting/d02kskk-ycp/D02KSKKAnalysis/res/acceptance/Prompt_LL/Prompt_LL_secondaries_acceptance.root","secondaries")
+sec.LoadFraction("/afs/cern.ch/user/e/eshields/cernbox/Analysis/branches/fitting/d02kskk-ycp/D02KSKKAnalysis/res/secondaries/Prompt_LL/sec_fractions_dist_Prompt_LL.root","ff")
 # Set event pdf value according to an amplitude model with mixing.
-amp = r.Decay3BodyMixing("D02KSKKAmplitude","cfg/belle2010.cfg")
+amp = Decay3BodyMixing("D02KSKKAmplitude","cfg/belle2010.cfg")
+amp.setX(0)
+amp.setY(0)
 # Accept or reject event.
-acc = r.Accept("Accept")
+acc = Accept("Accept")
 acc.setMaxPdf(652.23)
 # Add variables to be saved in ntuple.
-tup = r.Tupling("Tupling")
+tup = Tupling("Tupling")
 tup.addCharge()
 tup.addTime()
 tup.addCompositeMass()
 
 
-# Create sequence.
-seq = r.Sequence()
-seq.addAlgorithm(gen)
-seq.addAlgorithm(amp)
-seq.addAlgorithm(acc)
-seq.addAlgorithm(tup)
-seq.printAlgorithmSequence()
-
+printAlgorithmSequence()
 # Configure Hydra.
-Hydra().EvtMax = 1000000
-Hydra().AlgoSequence = seq
-Hydra().Variables = tup.getVariables() 
+Hydra().EvtMax = 1000
+#Hydra().AlgoSequence = seq
+Hydra().Variables = Utils.addVectors( tup.getVariables() , sec.getVariables() )
 Hydra().NThreads = -1
 Hydra().TreeName = "d02kskk"
-Hydra().OutputLocation = "d02kskk.root"
+Hydra().OutputLocation = "d02kskk_test.root"
 Hydra.run()

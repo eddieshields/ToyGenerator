@@ -13,7 +13,8 @@ from ROOT import ( Hydra,
                    ParticleStore,
                    PyAlgorithm,
                    Random,
-                   Sequence
+                   Sequence,
+                   Utils
                  )
   
 # Import Algorithms.
@@ -27,6 +28,7 @@ from ROOT import ( Accept,
                    EventParam,
                    Generator,
                    ParticleParam,
+                   Secondaries,
                    Tupling
                  )
 
@@ -46,6 +48,9 @@ def MakeSequence(*args):
     for alg in args:
         seq.addAlgorithm(alg)
     return seq
+
+def printAlgorithmSequence():
+    Hydra().AlgorithmSequence().printAlgorithmSequence()
 
 def SetSeed(seed):
     Random.setSeed(seed)

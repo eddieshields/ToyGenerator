@@ -23,7 +23,9 @@
 
 // Struct for configuration.
 struct Configuration {
-  Configuration()  {}
+  Configuration() :
+    AlgoSequence( gSequence )
+  {}
   ~Configuration() {}
   int                      EvtMax         = {1000};
   int                      NThreads       = {1};
@@ -31,7 +33,8 @@ struct Configuration {
   std::string              TreeTitle      = {"DecayTree"};
   std::string              OutputLocation = {""};
   std::vector<std::string> Variables;
-  Sequence                 AlgoSequence;
+  Sequence&                AlgoSequence;
+  Sequence                 AlgorithmSequence() { return AlgoSequence; }
 };
 
 

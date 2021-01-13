@@ -5,12 +5,11 @@
 
 #include <string>
 
+class Sequence;
 struct Algorithm
 {
   Algorithm() : m_name("") {}
-  Algorithm(std::string name) :
-    m_name(name)
-  {}
+  Algorithm(std::string name);
   virtual ~Algorithm() {};
   
   virtual void operator() (Event& ev) = 0;

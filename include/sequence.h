@@ -33,6 +33,21 @@ public:
     }
   }
 
+  void AddAlgorithm(Algorithm* input)
+  {
+    Algorithm* tmp = nullptr ;
+    tmp = input;
+    tmp->next=nullptr ;
+    if ( head == nullptr ) {
+      head=tmp;
+      tail=tmp;
+      tmp=nullptr ;
+    } else {
+      tail->next=tmp;
+      tail=tmp;
+    }
+  }
+
   void printAlgorithmSequence()
   {
     std::string alg_str = "Sequence = ";
@@ -50,5 +65,7 @@ public:
   Algorithm* head;
   Algorithm* tail;
 };
+
+extern Sequence gSequence;
 
 #endif
