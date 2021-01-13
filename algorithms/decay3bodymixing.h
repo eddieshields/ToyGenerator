@@ -7,6 +7,8 @@
 #include "configureamplitude.h"
 #include "dalitzamplitude.h"
 
+#include <vector>
+
 class Decay3BodyMixing : public Algorithm
 {
 public:
@@ -26,6 +28,8 @@ public:
   void setQ(double q) { m_amp.setQ( q ); }
 
   virtual void operator() (Event& ev);
+
+  std::vector<std::string> getVariables() { return std::vector<std::string>{"pid"}; }
 private:
   DalitzModel::DalitzMixing m_amp;
 };
