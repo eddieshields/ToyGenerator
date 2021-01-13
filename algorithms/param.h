@@ -2,11 +2,10 @@
 #define TOYGEN_PARAM_H
 
 #include "event.h"
-#include "algorithm.h"
 #include "particle.h"
 #include "msgservice.h"
 
-class Param : public Algorithm
+class Param
 {
 public:
   enum Type {
@@ -24,15 +23,15 @@ public:
     E      //Energy.
   };
   Param() :
-    Algorithm(""),
+    m_name(""),
     m_type(Param::Q)
   {}
   Param(std::string name) :
-    Algorithm(name),
+    m_name(name),
     m_type(Param::Q)
   {}
   Param(std::string name, std::string param, int index = 0) :
-    Algorithm(name),
+    m_name(name),
     m_type( getParamFromString(param) )
   {}
   ~Param() {};
@@ -40,7 +39,11 @@ public:
   virtual void operator()(Event& ev) = 0; 
   //Param operator=(Param& param) { return *this; }
   Param* next;
+
+  const std::string name() { return m_name; }
 protected:
+  const std::string m_name;
+
   const Param::Type m_type;
 
   const Param::Type getParamFromString(std::string param);
