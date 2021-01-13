@@ -3,11 +3,17 @@
 
 #include "event.h"
 #include "algorithm.h"
+#include "msgservice.h"
+
+#include <string>
+#include <vector>
 
 // ROOT.
 #include "TFile.h"
 #include "TF1.h"
+#include "TH1.h"
 #include "TH2.h"
+#include "TFormula.h"
 #include "TRandom.h"
 
 class Secondaries : public Algorithm
@@ -25,10 +31,13 @@ public:
 
   const double fraction (const double& t_reco);
   const double true_time(const double& t_reco);
+
+  std::vector<std::string> getVariables() { return std::vector<std::string>{"isTruePrompt"}; }
 private:
   void m_construct_hist_vector();
   TF1* m_fraction;
-  TH2* m_hist;
+  TH2D* m_hist;
+  std::vector<TH1D*> m_hists;
 };
 
 #endif

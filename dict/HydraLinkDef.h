@@ -19,6 +19,7 @@
 #pragma link C++ class Random+;
 #pragma link C++ class Requence+;
 #pragma link C++ class Threads+;
+#pragma link C++ class Utils+;
 #pragma link C++ class Accept+;
 #pragma link C++ class Amplitude+;
 #pragma link C++ class CompositeParam+;

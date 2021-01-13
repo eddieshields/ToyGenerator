@@ -13,6 +13,7 @@
   <class name="Random" />
   <class name="Sequence" />
   <class name="Threads" />
+  <class name="Utils" />
 
   <class name="Accept" />
   <class name="Amplitude" />

@@ -16,6 +16,7 @@
 #include "random.h"
 #include "sequence.h"
 #include "threads.h"
+#include "utils.h"
 
 // Algorithms.
 #include "accept.h"
