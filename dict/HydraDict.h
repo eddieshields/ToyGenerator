@@ -30,6 +30,7 @@
 #include "generator.h"
 #include "param.h"
 #include "particleparam.h"
+#include "secondaries.h"
 #include "tupling.h"
 
 // Models.

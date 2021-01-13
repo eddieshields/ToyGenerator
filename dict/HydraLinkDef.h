@@ -31,6 +31,7 @@
 #pragma link C++ class Generator+;
 #pragma link C++ class Param+;
 #pragma link C++ class ParticleParam+;
+#pragma link C++ class Secondaries+;
 #pragma link C++ class Tupling+;
 #pragma link C++ class Angular+;
 #pragma link C++ class Coeff+;

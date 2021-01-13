@@ -26,6 +26,7 @@
   <class name="Generator" />
   <class name="Param" />
   <class name="ParticleParam" />
+  <class name="Secondaries" />
   <class name="Tupling" />
 
   <class name="Angular" />
