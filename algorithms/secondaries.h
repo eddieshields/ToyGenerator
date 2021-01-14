@@ -3,6 +3,7 @@
 
 #include "event.h"
 #include "algorithm.h"
+#include "correlationutils.h"
 #include "msgservice.h"
 
 #include <string>
@@ -14,6 +15,7 @@
 #include "TH1.h"
 #include "TH2.h"
 #include "TFormula.h"
+#include "TFitResult.h"
 #include "TRandom.h"
 
 class Secondaries : public Algorithm
@@ -25,7 +27,7 @@ public:
   ~Secondaries() {}
 
   void LoadHistogram(std::string hist_file, std::string hist_obj);
-  void LoadFraction (std::string frac_file, std::string frac_obj);
+  void LoadFraction (std::string frac_file, std::string frac_obj, std::string res_obj = "");
 
   virtual void operator() (Event& ev);
 
@@ -35,9 +37,11 @@ public:
   std::vector<std::string> getVariables() { return std::vector<std::string>{"isTruePrompt"}; }
 private:
   void m_construct_hist_vector();
-  TF1* m_fraction;
-  TH2D* m_hist;
+  TF1* m_fraction = {nullptr};
+  TH2D* m_hist    = {nullptr};
   std::vector<TH1D*> m_hists;
+
+  TFitResult* m_result = {nullptr};
 };
 
 #endif

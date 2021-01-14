@@ -26,13 +26,21 @@ void Secondaries::LoadHistogram(std::string hist_file, std::string hist_obj)
   return;
 }
 
-void Secondaries::LoadFraction(std::string frac_file, std::string frac_obj)
+void Secondaries::LoadFraction(std::string frac_file, std::string frac_obj, std::string res_object)
 {
   TFile* frac_tfile = TFile::Open(frac_file.c_str());
   frac_tfile->cd();
   frac_tfile->GetObject(frac_obj.c_str(),m_fraction);
+
+  if ( res_object != "" ) {
+    frac_tfile->GetObject(res_object.c_str(),m_result);
+    INFO("Varying fraction parameters");
+    m_fraction = CorrelationUtils::VaryFunction(m_fraction,m_result);
+  }
+  // Do an evaluation to initialise TF1 outside the threaded environment.
+  m_fraction->Eval(1.);
   frac_tfile->Close();
-  
+
   if ( m_fraction != nullptr ) INFO("Found fraction!");
   return;
 }

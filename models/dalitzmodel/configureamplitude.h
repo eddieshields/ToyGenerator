@@ -10,6 +10,8 @@
 #include "dalitzmixing.h"
 #include "msgservice.h"
 #include "configfile.h"
+#include "parameterstore.h"
+#include "correlationutils.h"
 
 #include "string.h"
 #include <fstream>
@@ -30,6 +32,8 @@ public:
 
   void addFlatte(DalitzAmplitude& amp, std::string name, std::vector<std::string> res);
   void addRBW   (DalitzAmplitude& amp, std::string name, std::vector<std::string> res);
+
+  void addCorrelation(CorrelationUtils::CovarianceMatrix& cov);
 
   void setMixing(DalitzMixing& amp);
 

@@ -36,19 +36,21 @@ DalitzMixing ConfigureAmplitude::operator()(DalitzMixing& amp)
 
 void ConfigureAmplitude::addFlatte(DalitzAmplitude& amp, std::string name, std::vector<std::string> res)
 {
+  // Set Parameter
   const int resoA    = std::stoi(res[1]);
   const int resoB    = std::stoi(res[2]);
   const int l        = std::stoi(res[3]);
   const int noRes    = 6 - resoA - resoB;
-  const Parameter m  = getParameter(amp,res[4]);
-  const Parameter w  = getParameter(amp,res[5]);
-  const Parameter r  = getParameter(amp,res[6]);
-  const Parameter c1 = getParameter(amp,res[7]);
-  const Parameter c2 = getParameter(amp,res[8]);
-  const Parameter g1 = getParameter(amp,res[9]);
-  const Parameter g2 = getParameter(amp,res[10]);
-  const Parameter mE = getParameter(amp,res[11]);
-  const Parameter mP = getParameter(amp,res[12]);
+  // Set Parameters to a reference so adress is the one in gParameterStore.
+  const Parameter& m  = getParameter(amp,res[4]);
+  const Parameter& w  = getParameter(amp,res[5]);
+  const Parameter& r  = getParameter(amp,res[6]);
+  const Parameter& c1 = getParameter(amp,res[7]);
+  const Parameter& c2 = getParameter(amp,res[8]);
+  const Parameter& g1 = getParameter(amp,res[9]);
+  const Parameter& g2 = getParameter(amp,res[10]);
+  const Parameter& mE = getParameter(amp,res[11]);
+  const Parameter& mP = getParameter(amp,res[12]);
   const Coeff c(c1,c2);
 
   Flatte* comp = new Flatte(name,c,resoA,resoB,m,w,l,r,g1,g2,mE,mP);
@@ -64,15 +66,15 @@ void ConfigureAmplitude::addFlatte(DalitzAmplitude& amp, std::string name, std::
 
 void ConfigureAmplitude::addRBW(DalitzAmplitude& amp, std::string name, std::vector<std::string> res)
 {
-  const int resoA    = std::stoi(res[1]);
-  const int resoB    = std::stoi(res[2]);
-  const int noRes    = 6 - resoA - resoB;
-  const int l        = std::stoi(res[3]);
-  const Parameter m  = getParameter(amp,res[4]);
-  const Parameter w  = getParameter(amp,res[5]);
-  const Parameter r  = getParameter(amp,res[6]);
-  const Parameter c1 = getParameter(amp,res[7]);
-  const Parameter c2 = getParameter(amp,res[8]);
+  const int resoA     = std::stoi(res[1]);
+  const int resoB     = std::stoi(res[2]);
+  const int noRes     = 6 - resoA - resoB;
+  const int l         = std::stoi(res[3]);
+  const Parameter& m  = getParameter(amp,res[4]);
+  const Parameter& w  = getParameter(amp,res[5]);
+  const Parameter& r  = getParameter(amp,res[6]);
+  const Parameter& c1 = getParameter(amp,res[7]);
+  const Parameter& c2 = getParameter(amp,res[8]);
   const Coeff c(c1,c2);
 
   RelBreitWigner* comp = new RelBreitWigner(name,c,resoA,resoB,m,w,l,r);
@@ -97,19 +99,43 @@ void ConfigureAmplitude::setMixing(DalitzMixing& amp)
 
 Parameter ConfigureAmplitude::getParameter(DalitzAmplitude& amp, std::string name)
 {
-  if ( amp.parameters().find(name) == amp.parameters().end() )
-  {
-    std::vector<std::string> assoc = m_config[name];
-    if ( assoc.size() < 3 ) {
-      const double par = std::stod(assoc[0]);
-      Parameter p( par );
-      amp.parameters().insert(std::pair<std::string,Parameter>(name,std::move( p )));
-    } else {
-      const double par = std::stod(assoc[0]);
-      const double err = std::stod(assoc[2]);
-      Parameter p( par , err );
-      amp.parameters().insert(std::pair<std::string,Parameter>(name,std::move( p )));
+  if ( gParameterStore.find(name) ) {
+    return gParameterStore.get(name);
+  }
+  std::vector<std::string> assoc = m_config[name];
+  if ( assoc.size() < 3 ) {
+    const double par = std::stod(assoc[0]);
+    Parameter p( name , par );
+    gParameterStore.addParameter( p );
+  } else {
+    const double par = std::stod(assoc[0]);
+    const double err = std::stod(assoc[2]);
+    Parameter p( name , par , err );
+    gParameterStore.addParameter( p );
+  }
+  return gParameterStore.get(name);
+}
+
+void ConfigureAmplitude::addCorrelation(CorrelationUtils::CovarianceMatrix& cov)
+{
+  std::vector<double> values, errors;
+  for (auto& name : cov.names() ) {
+    values.push_back( gParameterStore.get(name).value() );
+    values.push_back( gParameterStore.get(name).error() );
+  }
+  std::vector<double> new_values = CorrelationUtils::VaryWithinErrors(values,errors,cov());
+
+  int i = 0;
+  for (auto& name : cov.names() ) {
+    gParameterStore.get(name).setVal( new_values[i] );
+    i++;
+  }
+
+  for (auto& name : gParameterStore.names() ) {
+    for (auto& used_name : cov.names() ) {
+      if ( name == used_name ) continue;
+      gParameterStore.get(name).setRandom();
     }
   }
-  return amp.parameters().at(name);
+  return;
 }

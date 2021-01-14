@@ -45,7 +45,6 @@ public:
   void addCnjResonance(Resonance* res);
   void printResonances();
   PhaseSpace& phasespace() { return _ps; }
-  std::map<std::string,Parameter>& parameters() { return m_parameters; }
 private:
   PhaseSpace _ps;
   void addDirResonanceToList(Resonance* res);
