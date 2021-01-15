@@ -3,6 +3,7 @@
 
 // Package.
 #include "parameter.h"
+#include "msgservice.h"
 
 // SL.
 #include <iostream>

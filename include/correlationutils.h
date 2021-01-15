@@ -24,6 +24,32 @@ struct CorrelationUtils
 
   static TMatrixDSym CalculateCovMatrix(std::vector<double>& errors, TMatrixDSym& corr);
 
+  struct CorrelationMatrix
+  {
+    CorrelationMatrix() = default;
+    CorrelationMatrix(std::vector<std::string> params, TMatrixDSym cor) :
+      m_names( params ),
+      m_cor( cor )
+    {
+      for (int i = 0; i < params.size(); i++) {
+        m_params[params[i]] = 1;
+      }
+    }
+    ~CorrelationMatrix() {}
+
+    std::vector<std::string> names() { return m_names; }
+
+    TMatrixDSym& matrix() { return m_cor; }
+    TMatrixDSym& operator()() { return m_cor; }
+    double       operator()(int& i, int& j);
+    double       operator()(std::string& name1, std::string& name2);
+
+    std::vector<std::string>  m_names;
+    std::map<std::string,int> m_params;
+    TMatrixDSym               m_cor;
+
+  };
+
   struct CovarianceMatrix
   {
     CovarianceMatrix() = default;
@@ -39,6 +65,7 @@ struct CorrelationUtils
 
     std::vector<std::string> names() { return m_names; }
 
+    TMatrixDSym& matrix() { return m_cov; }
     TMatrixDSym& operator()() { return m_cov; }
     double       operator()(int& i, int& j);
     double       operator()(std::string& name1, std::string& name2);

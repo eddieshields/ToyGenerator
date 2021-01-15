@@ -5,6 +5,34 @@ using namespace DalitzModel;
 DalitzAmplitude ConfigureAmplitude::operator()(DalitzAmplitude& amp)
 {
   INFO("Defining the amplitude model from "+m_cfgfile+".");
+
+  // Define the parameters and put them in a store so they can be accessed and configured.
+  defineParameters();
+
+  if ( m_random ) {
+    // If define apply covariance matrix to parameters.
+    CorrelationUtils::CovarianceMatrix cov;
+    bool definedCorrelation = false;
+    if ( m_config.existsCovarianceMatrix() ) {
+      INFO("Covariance matrix has been defined.");
+      CorrelationUtils::CorrelationMatrix cor = m_config.Correlation();
+      std::vector<double> errors;
+      for (auto& name : cor.names()) {
+        errors.push_back( gParameterStore.get(name).error() );
+      }
+      TMatrixDSym matrix = cor.matrix();
+      cov = CorrelationUtils::CovarianceMatrix(cor.names(),matrix);
+      definedCorrelation = true;
+    } else if ( m_config.existsCorrelationMatrix() ) {
+      INFO("Correlation matrix has been defined.");
+      cov = m_config.Covariance();
+      definedCorrelation = true;
+    }
+  
+    // Add correlation if it is defined.
+    if ( definedCorrelation ) addCorrelation(cov);
+  }
+  // Define resonances last after all configuration has taken place.
   std::string name = "resos";
   for (auto& res : m_config[name])
   {
@@ -16,6 +44,10 @@ DalitzAmplitude ConfigureAmplitude::operator()(DalitzAmplitude& amp)
     } else {
       WARNING("Don't recognise type "+res+".");
     }
+  }
+
+  if ( m_polar ) {
+    Coeff::setPolar();
   }
   return amp;
 }
@@ -41,16 +73,15 @@ void ConfigureAmplitude::addFlatte(DalitzAmplitude& amp, std::string name, std::
   const int resoB    = std::stoi(res[2]);
   const int l        = std::stoi(res[3]);
   const int noRes    = 6 - resoA - resoB;
-  // Set Parameters to a reference so adress is the one in gParameterStore.
-  const Parameter& m  = getParameter(amp,res[4]);
-  const Parameter& w  = getParameter(amp,res[5]);
-  const Parameter& r  = getParameter(amp,res[6]);
-  const Parameter& c1 = getParameter(amp,res[7]);
-  const Parameter& c2 = getParameter(amp,res[8]);
-  const Parameter& g1 = getParameter(amp,res[9]);
-  const Parameter& g2 = getParameter(amp,res[10]);
-  const Parameter& mE = getParameter(amp,res[11]);
-  const Parameter& mP = getParameter(amp,res[12]);
+  const Parameter m  = getParameter(res[4]);
+  const Parameter w  = getParameter(res[5]);
+  const Parameter r  = getParameter(res[6]);
+  const Parameter c1 = getParameter(res[7]);
+  const Parameter c2 = getParameter(res[8]);
+  const Parameter g1 = getParameter(res[9]);
+  const Parameter g2 = getParameter(res[10]);
+  const Parameter mE = getParameter(res[11]);
+  const Parameter mP = getParameter(res[12]);
   const Coeff c(c1,c2);
 
   Flatte* comp = new Flatte(name,c,resoA,resoB,m,w,l,r,g1,g2,mE,mP);
@@ -70,11 +101,11 @@ void ConfigureAmplitude::addRBW(DalitzAmplitude& amp, std::string name, std::vec
   const int resoB     = std::stoi(res[2]);
   const int noRes     = 6 - resoA - resoB;
   const int l         = std::stoi(res[3]);
-  const Parameter& m  = getParameter(amp,res[4]);
-  const Parameter& w  = getParameter(amp,res[5]);
-  const Parameter& r  = getParameter(amp,res[6]);
-  const Parameter& c1 = getParameter(amp,res[7]);
-  const Parameter& c2 = getParameter(amp,res[8]);
+  const Parameter m  = getParameter(res[4]);
+  const Parameter w  = getParameter(res[5]);
+  const Parameter r  = getParameter(res[6]);
+  const Parameter c1 = getParameter(res[7]);
+  const Parameter c2 = getParameter(res[8]);
   const Coeff c(c1,c2);
 
   RelBreitWigner* comp = new RelBreitWigner(name,c,resoA,resoB,m,w,l,r);
@@ -97,22 +128,29 @@ void ConfigureAmplitude::setMixing(DalitzMixing& amp)
   return;
 }
 
-Parameter ConfigureAmplitude::getParameter(DalitzAmplitude& amp, std::string name)
+void ConfigureAmplitude::defineParameters()
 {
-  if ( gParameterStore.find(name) ) {
-    return gParameterStore.get(name);
+  std::map<std::string,std::vector<std::string>> params = m_config.parameters();
+
+  for (auto& p : params) {
+    std::string name = p.first;
+    std::vector<std::string> assoc = p.second;
+    if ( assoc.size() < 3 ) {
+      const double par = std::stod(assoc[0]);
+      Parameter p( name , par );
+      gParameterStore.addParameter( p );
+    } else {
+      const double par = std::stod(assoc[0]);
+      const double err = std::stod(assoc[2]);
+      Parameter p( name , par , err );
+      gParameterStore.addParameter( p );
+    }
   }
-  std::vector<std::string> assoc = m_config[name];
-  if ( assoc.size() < 3 ) {
-    const double par = std::stod(assoc[0]);
-    Parameter p( name , par );
-    gParameterStore.addParameter( p );
-  } else {
-    const double par = std::stod(assoc[0]);
-    const double err = std::stod(assoc[2]);
-    Parameter p( name , par , err );
-    gParameterStore.addParameter( p );
-  }
+  return;
+}
+
+Parameter& ConfigureAmplitude::getParameter(std::string name)
+{
   return gParameterStore.get(name);
 }
 

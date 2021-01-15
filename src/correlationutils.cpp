@@ -72,6 +72,18 @@ TMatrixDSym CorrelationUtils::CalculateCovMatrix(std::vector<double>& errors, TM
   return cov;
 }
 
+double CorrelationUtils::CorrelationMatrix::operator()(int& i, int& j)
+{
+  return m_cor(i,j);
+}
+
+double CorrelationUtils::CorrelationMatrix::operator()(std::string& name1, std::string& name2)
+{
+  int i = m_params[name1];
+  int j = m_params[name2];
+  return m_cor(i,j);
+}
+
 double CorrelationUtils::CovarianceMatrix::operator()(int& i, int& j)
 {
   return m_cov(i,j);

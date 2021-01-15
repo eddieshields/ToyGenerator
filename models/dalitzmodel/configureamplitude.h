@@ -36,6 +36,8 @@ public:
   void addCorrelation(CorrelationUtils::CovarianceMatrix& cov);
 
   void setMixing(DalitzMixing& amp);
+  void setRandom() { m_random = true; }
+  void setPolar()  { m_polar  = true; }
 
   DalitzAmplitude operator()(DalitzAmplitude& amp);
   DalitzAmplitude operator()();
@@ -45,7 +47,11 @@ private:
   ConfigFile  m_config;
   std::string m_cfgfile;
 
-  Parameter getParameter(DalitzAmplitude& amp, std::string name);
+  bool m_random = {false};
+  bool m_polar  = {true};
+
+  void defineParameters();
+  Parameter& getParameter(std::string name);
 };
 
 }
