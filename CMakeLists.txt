@@ -61,6 +61,9 @@ target_include_directories(${PACKAGE} PUBLIC external/json/single_include)
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
 target_link_libraries(ToyGenerator ${PACKAGE})
 
+add_executable(getFraction ${CMAKE_SOURCE_DIR}/apps/getFraction.cpp)
+target_link_libraries(getFraction ${PACKAGE})
+
 if (OpenMP_CXX_FOUND)
     add_executable(getMaxThreads ${CMAKE_SOURCE_DIR}/apps/getMaxThreads.cpp)
     target_link_libraries(getMaxThreads PUBLIC OpenMP::OpenMP_CXX)
