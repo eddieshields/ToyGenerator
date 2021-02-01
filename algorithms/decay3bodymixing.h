@@ -7,6 +7,8 @@
 #include "configureamplitude.h"
 #include "dalitzamplitude.h"
 
+#include <complex>
+
 class Decay3BodyMixing : public Algorithm
 {
 public:
@@ -18,16 +20,36 @@ public:
   } 
   ~Decay3BodyMixing() {}
 
-  DalitzModel::DalitzMixing& amp() { return m_amp; }
+  DalitzModel::DalitzAmplitude& amp() { return m_amp; }
 
-  void setX(double x) { m_amp.setX( x ); }
-  void setY(double y) { m_amp.setY( y ); }
-  void setP(double p) { m_amp.setP( p ); }
-  void setQ(double q) { m_amp.setQ( q ); }
+  // Getters.
+  const double               x() const { return m_x; }
+  const double               y() const { return m_y; }
+  const double               p() const { return m_p; }
+  const double               q() const { return m_q; }
+  const std::complex<double> z() const { return m_z; }
 
+  // Setters.
+  void setX(double x) { m_x = x; m_z = std::complex<double>(m_x,m_y); }
+  void setY(double y) { m_y = y; m_z = std::complex<double>(m_x,m_y); }
+  void setP(double p) { m_p = p; }
+  void setQ(double q) { m_q = q; }
+
+  // Operator.
   virtual void operator() (Event& ev);
 private:
-  DalitzModel::DalitzMixing m_amp;
+  DalitzModel::DalitzAmplitude m_amp;
+
+  // Mixing parameters.
+  double m_x = {0.004};
+  double m_y = {0.006};
+  double m_p = {1};
+  double m_q = {1};
+  std::complex<double> m_z = {std::complex<double>(0.004,0.006)};
+
+  // Mixing functions.
+  const std::complex<double> gp(const double& t);
+  const std::complex<double> gm(const double& t);
 };
 
 #endif
