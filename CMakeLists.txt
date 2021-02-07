@@ -1,9 +1,11 @@
 # CMakeLists.txt for ToyGenerator module. It creates a library with dictionary and a main program
-cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
-set(PACKAGE ToyGen)
+cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
+set(PACKAGE HYDRA)
 project(${PACKAGE})
 
-set (CMAKE_CXX_STANDARD 17)
+#set (CMAKE_CXX_STANDARD 17)
+# Optimization flags.
+set(CMAKE_CXX_FLAGS "-Ofast -march=native -fPIC")
 
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
@@ -17,8 +19,8 @@ include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS})
 
 #--- Use Boost
-find_package(Boost COMPONENTS system filesystem REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
+#find_package(Boost COMPONENTS system filesystem REQUIRED)
+#include_directories(${Boost_INCLUDE_DIRS})
 
 #--- Use Python
 find_package(PythonLibs REQUIRED)
@@ -26,7 +28,7 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 
 #--- Define the headers list
 include_directories(include src dict algorithms models/dalitzmodel  ${CMAKE_SOURCE_DIR})
-
+include_directories(external/json/single_include)
 if (APPLE)
     include_directories(external/json/single_include)
 endif()
@@ -39,28 +41,17 @@ file(GLOB_RECURSE headers include/*.h algorithms/*.h models/dalitzmodel/*.h)
 ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} LINKDEF dict/${PACKAGE}LinkDef.h)
 
 #--- Generate ROOT library from dictionary
-add_library(HYDRA SHARED ${sources} ${} G__${PACKAGE}.cxx)
+add_library(${PACKAGE} SHARED ${sources} ${} G__${PACKAGE}.cxx)
 
-#-- Generate general library
-add_library(${PACKAGE} SHARED ${sources} ${headers})
-
-
-target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-target_link_libraries(HYDRA      ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-
+##target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
+target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
 
 #--- External library for reading json files.
 target_include_directories(${PACKAGE} PUBLIC external/json/single_include)
-target_include_directories(HYDRA PUBLIC external/json/single_include)
 
 #--- Create an executable
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
-target_link_libraries(ToyGenerator HYDRA)
-
-if (OpenMP_CXX_FOUND)
-    add_executable(getMaxThreads ${CMAKE_SOURCE_DIR}/apps/getMaxThreads.cpp)
-    target_link_libraries(getMaxThreads PUBLIC OpenMP::OpenMP_CXX)
-endif()
+target_link_libraries(ToyGenerator ${PACKAGE})
 
 #--- Create Hydra
 execute_process(COMMAND chmod +x ${CMAKE_SOURCE_DIR}/Hydra)
