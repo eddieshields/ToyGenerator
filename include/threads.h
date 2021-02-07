@@ -19,7 +19,7 @@ public:
   Threads(FUNC& function,int& nthreads,int& nevents) :
     m_function(function),
     m_nthreads( nthreads ),
-    m_pool()
+    m_pool( nthreads )
   {
     m_list.reserve( nevents );
     ROOT::EnableImplicitMT(nthreads);
@@ -29,7 +29,7 @@ public:
   void operator()()
   {
     for (int i = 0; i < m_nthreads; i++) {
-      std::future<std::vector<Event>> t = m_pool.submit(m_function,i)
+      std::future<std::vector<Event>> t = m_pool.submit(m_function,i);
       m_threads.push_back( std::move(t) );
     }
 

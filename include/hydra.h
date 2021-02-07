@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <map>
+#include <thread>
 
 // Dirty fix, should try fix in compilation instead.
 #define BOOST_NO_CXX11_SCOPED_ENUMS

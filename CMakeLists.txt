@@ -4,8 +4,6 @@ set(PACKAGE ToyGen)
 project(${PACKAGE})
 
 set (CMAKE_CXX_STANDARD 17)
-option(TOYGEN_DEBUG "AmpGen Debug printout")
-SET(USE_OPENMP TRUE CACHE BOOL "USE_OPENMP")
 
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
@@ -46,19 +44,10 @@ add_library(HYDRA SHARED ${sources} ${} G__${PACKAGE}.cxx)
 #-- Generate general library
 add_library(${PACKAGE} SHARED ${sources} ${headers})
 
-#--- Use OpenMP
-if ( USE_OPENMP )
-    find_package(OpenMP)
-    if (OpenMP_CXX_FOUND)
-        target_link_libraries(${PACKAGE} PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-        target_link_libraries(HYDRA      PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-    else()
-        message(STATUS "OpenMP not found for CXX, you might have forgotten lb-run ROOT bash or CXX=`which g++` in CERN stack")
-    endif()
-else()
-    target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-    target_link_libraries(HYDRA      ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-endif()
+
+target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
+target_link_libraries(HYDRA      ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
+
 
 #--- External library for reading json files.
 target_include_directories(${PACKAGE} PUBLIC external/json/single_include)

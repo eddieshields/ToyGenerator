@@ -3,8 +3,8 @@
 void Hydra::run()
 {
   // If threads are wanted set them to the maximum available.
-  if ( m_configuration.NThreads == -1 || m_configuration.NThreads > omp_get_max_threads() ) {
-    m_configuration.NThreads = omp_get_max_threads();
+  if ( m_configuration.NThreads == -1 || m_configuration.NThreads > std::thread::hardware_concurrency() ) {
+    m_configuration.NThreads = std::thread::hardware_concurrency();
   }
   // Create temport directory to save files in.
   boost::filesystem::path tmp = "tmp";
@@ -45,10 +45,9 @@ std::vector<Event> Hydra::runSequence(int& thread)
     // Accepted events are saved in list, so events can be deleted.
     delete ev;
   }
-  #ifdef _OPENMP
-    #pragma omp critical
-  #endif
-      temporary_tree(thread,list);
+
+  // Make this a critical process.
+  temporary_tree(thread,list);
   return list;
 }
 
