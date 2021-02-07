@@ -1,0 +1,27 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  image: gitlab-registry.cern.ch/ci-tools/ci-worker:cc7
+  tags:
+    - cvmfs
+  script:
+    - source /cvmfs/sft.cern.ch/lcg/views/setupViews.sh LCG_97python3 x86_64-centos7-gcc8-opt
+    - git submodule update --init --recursive
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make
+    - cd ..
+  artifacts:
+    paths:
+      - build/
+
+test:
+  stage: test
+  image: gitlab-registry.cern.ch/ci-tools/ci-worker:cc7
+  script:
+    - . setup.sh
+    - Hydra options/d02kskk_options.py
