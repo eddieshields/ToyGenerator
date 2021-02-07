@@ -28,6 +28,8 @@ public:
 
   void operator()()
   {
+    //m_function();
+    /*
     for (int i = 0; i < m_nthreads; i++) {
       std::future<std::vector<Event>> t = m_pool.submit(m_function,i);
       m_threads.push_back( std::move(t) );
@@ -36,7 +38,7 @@ public:
     for (int i = 0; i < m_nthreads; i++) {
       std::vector<Event> tmp = m_threads[i].get();
     }
-
+    */
     return;
   }
 

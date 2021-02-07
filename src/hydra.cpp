@@ -7,8 +7,8 @@ void Hydra::run()
     m_configuration.NThreads = std::thread::hardware_concurrency();
   }
   // Create temport directory to save files in.
-  boost::filesystem::path tmp = "tmp";
-  boost::filesystem::create_directory( tmp );
+  //boost::filesystem::path tmp = "tmp";
+  //boost::filesystem::create_directory( tmp );
 
   // Run sequence.
   INFO("Will use " << m_configuration.NThreads << " threads");
@@ -23,7 +23,7 @@ void Hydra::run()
   merge_tree();
 
   // Delete tmp directory after merging files together.
-  boost::filesystem::remove_all( tmp );
+  //boost::filesystem::remove_all( tmp );
 }
 
 std::vector<Event> Hydra::runSequence(int& thread)

@@ -13,9 +13,9 @@
 #include <thread>
 
 // Dirty fix, should try fix in compilation instead.
-#define BOOST_NO_CXX11_SCOPED_ENUMS
-#include <boost/filesystem.hpp>
-#undef BOOST_NO_CXX11_SCOPED_ENUMS
+//#define BOOST_NO_CXX11_SCOPED_ENUMS
+//#include <boost/filesystem.hpp>
+//#undef BOOST_NO_CXX11_SCOPED_ENUMS
 
 #include "TFile.h"
 #include "TTree.h"

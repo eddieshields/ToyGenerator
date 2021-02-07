@@ -9,7 +9,7 @@
 #include <string>
 #include <map>
 
-#include <boost/any.hpp>
+//#include <boost/any.hpp>
 
 struct AlgorithmStore
 {
@@ -18,7 +18,7 @@ public:
   ~AlgorithmStore() {};
 
 private:
-  std::map<std::string,boost::any>  m_algos;
+  //std::map<std::string,boost::any>  m_algos;
   std::map<std::string,std::string> m_ptrs;
 };
 
