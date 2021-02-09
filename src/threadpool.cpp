@@ -43,7 +43,7 @@ ThreadPool::~ThreadPool()
   condition.notify_all();
   for(std::thread &worker: workers) {
     ids.erase( worker.get_id() );
-    //Random::removeThread( worker.get_id() );
+    Random::removeThread( worker.get_id() );
     worker.join();
   }
 
