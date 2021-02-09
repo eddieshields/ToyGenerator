@@ -1,5 +1,5 @@
-#ifndef TOYGENERATOR_THREADPOOL_H
-#define TOYGENERATOR_THREADPOOL_H
+#ifndef TOYGEN_THREADPOOL_H
+#define TOYGEN_THREADPOOL_H
 
 #include <vector>
 #include <queue>
