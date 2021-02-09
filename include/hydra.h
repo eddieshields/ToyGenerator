@@ -50,30 +50,14 @@ struct Configuration {
 class Hydra
 {
 public:
-  Hydra() : m_runner( this ) {WelcomeMessage();}
+  Hydra() {WelcomeMessage();}
   virtual ~Hydra() {}
 
-  // Wrapper struct that is passed to threads for execution.
-  struct Exec {
-    Exec(Hydra* _base) : base( _base ) {}
-    ~Exec() {}
-
-    std::vector<Event> operator()()
-    {
-      return base->runSequence();
-    }
-    Hydra* base;
-  };
-
   Configuration m_configuration;
-  Exec          m_runner;
-
   Configuration& operator()() { return m_configuration; }
   std::vector<Event> runSequence();
   void run();
-  TTree* tree();
-  void temporary_tree(int& thread, std::vector<Event>& list);
-  void merge_tree();
+  void make_tree();
   void addToList(std::vector<Event> tmp) { m_list.insert( m_list.end(), tmp.begin(), tmp.end() ); }
   void setDecay(std::string decay) { gDescriptor(decay); }
 

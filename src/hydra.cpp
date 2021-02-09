@@ -6,10 +6,6 @@ void Hydra::run()
   if ( m_configuration.NThreads == -1 || m_configuration.NThreads > std::thread::hardware_concurrency() ) {
     m_configuration.NThreads = std::thread::hardware_concurrency();
   }
-  // Create temport directory to save files in.
-  //boost::filesystem::path tmp = "tmp";
-  //boost::filesystem::create_directory( tmp );
-
   // Run sequence.
   INFO("Requested to generate " << m_configuration.EvtMax << " Events");
   INFO("Will use " << m_configuration.NThreads << " threads");
@@ -19,15 +15,11 @@ void Hydra::run()
   auto func = [&](){return this->runSequence();};
   // Pass task to threadpool and get evets from return.
   m_list = execute(func);
-  //m_list = execute.list();
   Clock::Stop();
   Clock::Print("generate "+std::to_string(m_configuration.EvtMax)+" events");
 
-  // Merge trees from temporary directory.
-  merge_tree();
-
-  // Delete tmp directory after merging files together.
-  //boost::filesystem::remove_all( tmp );
+  // Put events into ttree.
+  make_tree();
 }
 
 std::vector<Event> Hydra::runSequence()
@@ -50,13 +42,15 @@ std::vector<Event> Hydra::runSequence()
     delete ev;
   }
 
-  // Make this a critical process.
-  //temporary_tree(thread,list);
   return list;
 }
 
-TTree* Hydra::tree()
+void Hydra::make_tree()
 {
+  Clock::Start();
+  TFile* tfile = new TFile(m_configuration.OutputLocation.c_str(),"RECREATE");
+  tfile->cd();
+
   TTree* tree = new TTree(m_configuration.TreeName.c_str(),m_configuration.TreeTitle.c_str());
   std::map<std::string,double> m_mapping;
   for (auto& var : m_configuration.Variables) {
@@ -72,45 +66,10 @@ TTree* Hydra::tree()
     tree->Fill();
   }
 
-  return tree;
-}
-
-void Hydra::temporary_tree(int& thread, std::vector<Event>& list)
-{
-  TFile* file = new TFile(("tmp/tmp"+std::to_string(thread)+".root").c_str(),"RECREATE");
-  file->cd();
-
-  // Create new tree.
-  TTree* tree = new TTree(m_configuration.TreeName.c_str(),m_configuration.TreeTitle.c_str());
-
-  // Set branches.
-  std::map<std::string,double> m_mapping;
-  for (auto& var : m_configuration.Variables) {
-    m_mapping[var] = 0.0;
-    tree->Branch(var.c_str(),&m_mapping[var],(var+"/D").c_str());
-  }
-
-  // Fill tree.
-  for(auto& ev : list) {
-    if ( !ev.Accept ) continue;
-    for (auto& var : m_configuration.Variables) {
-      m_mapping[var] = ev[var];
-    }
-    tree->Fill();
-  }
-
-  // Save Tree.
   tree->Write();
-  file->Close();
-}
-
-void Hydra::merge_tree()
-{
-  TChain* ch = new TChain(m_configuration.TreeName.c_str());
-  for (int i = 0; i < m_configuration.NThreads; i++) {
-    ch->Add(("tmp/tmp"+std::to_string(i)+".root").c_str());
-  }
-  ch->Merge(m_configuration.OutputLocation.c_str());
+  tfile->Close();
+  Clock::Stop();
+  Clock::Print("fill TTree with "+std::to_string(m_configuration.EvtMax)+" events");
   INFO("Tree saved to: " << m_configuration.OutputLocation);
 }
 
