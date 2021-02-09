@@ -2,24 +2,49 @@
 #define TOYGEN_RANDOM_H
 
 #include <random>
+#include <map>
+#include <thread>
 
 class Random
 {
 private:
-  static std::mt19937_64                          _engine;
+  static int                                       _seed;
+  /** Map between threads and their IDs. */
+  static std::map<std::thread::id,std::mt19937_64> _engines;
 
-  static std::uniform_real_distribution< double > _uniform;
-  static std::exponential_distribution < double > _exponential;
-  static std::normal_distribution      < double > _normal;
-  static std::uniform_int_distribution < int >    _integer;
+  static std::mt19937_64                           _engine;
+
+  static std::uniform_real_distribution< double >  _uniform;
+  static std::exponential_distribution < double >  _exponential;
+  static std::normal_distribution      < double >  _normal;
+  static std::uniform_int_distribution < int >     _integer;
 
 public:
-  static std::mt19937_64& engine()
+  static void addThread(std::thread::id thread_id, int n)
   {
-    return _engine;
+    _engines.insert( std::pair<std::thread::id,std::mt19937_64>{thread_id,std::mt19937_64()} );
+    _engines.find( std::this_thread::get_id() )->second.seed(_seed+n);
   }
 
-  static void setSeed( const unsigned& seed ) { _engine.seed( seed ); }
+  static void removeThread(std::thread::id thread_id)
+  {
+    _engines.erase( thread_id );
+  }
+
+  static std::mt19937_64& engine()
+  {
+    return _engines.find( std::this_thread::get_id() )->second;
+  }
+
+  static void setSeed( const unsigned& seed )
+  { 
+    _seed = seed;
+  }
+
+  static const double Rnd()
+  {
+    return _uniform( engine() );
+  }
 
   static const double flat   ( const double& min = 0.0, const double& max = 1.0 )
   {
