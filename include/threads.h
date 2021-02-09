@@ -1,23 +1,31 @@
 #ifndef TOYGEN_THREADS_H
 #define TOYGEN_THREADS_H
 
+#include "threadpool.h"
 #include "msgservice.h"
 #include "event.h"
-#include "threadpool.h"
 
 #include <thread>
 #include <pthread.h>
 #include <vector>
 #include <future>
+#include <memory>
 
 #include "TROOT.h"
 
-template<typename FUNC>
+/** \class Threads
+ * 
+ *  Takes a function in and distributes the task to a threapool.
+ *  Gets return from functions in threads and places them into 
+ *  a vector that gets returned.
+ * 
+ *  @author Edward Shields
+ *  @dat 09/02/2021
+ */
 class Threads 
 {
 public:
-  Threads(FUNC& function,int& nthreads,int& nevents) :
-    m_function(function),
+  Threads(int& nthreads,int& nevents) :
     m_nthreads( nthreads ),
     m_pool( nthreads )
   {
@@ -26,30 +34,28 @@ public:
   }
   ~Threads() {};
 
-  void operator()()
+  template<class F, class... Args>
+  auto operator()(F&& f, Args&&... args) -> typename std::result_of<F(Args...)>::type
   {
-    //m_function();
-    /*
+    INFO("Submitting tasks to Thread pool");
+    // Need to generalise this class for template output.
+    std::vector<std::future<std::vector<Event>>> thread_futures;
     for (int i = 0; i < m_nthreads; i++) {
-      std::future<std::vector<Event>> t = m_pool.submit(m_function,i);
-      m_threads.push_back( std::move(t) );
+      std::future<std::vector<Event>> out = m_pool.submit(f,args...);
+      thread_futures.push_back( std::move( out ) );
     }
-
     for (int i = 0; i < m_nthreads; i++) {
-      std::vector<Event> tmp = m_threads[i].get();
+      std::vector<Event> tmp = thread_futures[i].get();
+      m_list.insert(m_list.end(),tmp.begin(),tmp.end());
     }
-    */
-    return;
+    return m_list;
   }
 
   std::vector<Event> list() { return m_list; }
 private:
-  ThreadPool                                   m_pool;
-  FUNC&                                        m_function;
-  const int                                    m_nthreads;
-  std::atomic<bool>                            m_complete;
-  std::vector<std::future<std::vector<Event>>> m_threads;
-  std::vector<Event>                           m_list;
+  ThreadPool         m_pool;
+  const int          m_nthreads;
+  std::vector<Event> m_list;
 };
 
 #endif

@@ -58,9 +58,9 @@ public:
     Exec(Hydra* _base) : base( _base ) {}
     ~Exec() {}
 
-    std::vector<Event> operator()(int& thread)
+    std::vector<Event> operator()()
     {
-      return base->runSequence(thread);
+      return base->runSequence();
     }
     Hydra* base;
   };
@@ -69,7 +69,7 @@ public:
   Exec          m_runner;
 
   Configuration& operator()() { return m_configuration; }
-  std::vector<Event> runSequence(int& thread);
+  std::vector<Event> runSequence();
   void run();
   TTree* tree();
   void temporary_tree(int& thread, std::vector<Event>& list);

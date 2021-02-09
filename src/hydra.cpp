@@ -11,11 +11,15 @@ void Hydra::run()
   //boost::filesystem::create_directory( tmp );
 
   // Run sequence.
+  INFO("Requested to generate " << m_configuration.EvtMax << " Events");
   INFO("Will use " << m_configuration.NThreads << " threads");
   Clock::Start();
-  Threads<Hydra::Exec> execute(m_runner,m_configuration.NThreads,m_configuration.EvtMax);
-  execute();
-  m_list = execute.list();
+  Threads execute(m_configuration.NThreads,m_configuration.EvtMax);
+  // Create a task to be passed to the threadpool.
+  auto func = [&](){return this->runSequence();};
+  // Pass task to threadpool and get evets from return.
+  m_list = execute(func);
+  //m_list = execute.list();
   Clock::Stop();
   Clock::Print("generate "+std::to_string(m_configuration.EvtMax)+" events");
 
@@ -26,7 +30,7 @@ void Hydra::run()
   //boost::filesystem::remove_all( tmp );
 }
 
-std::vector<Event> Hydra::runSequence(int& thread)
+std::vector<Event> Hydra::runSequence()
 {
   std::vector<Event> list;
   unsigned int counter = 0;
@@ -47,7 +51,7 @@ std::vector<Event> Hydra::runSequence(int& thread)
   }
 
   // Make this a critical process.
-  temporary_tree(thread,list);
+  //temporary_tree(thread,list);
   return list;
 }
 
