@@ -10,7 +10,7 @@ ThreadPool::ThreadPool(size_t threads)
 {
   INFO("Starting threadpool");
   if (!threads) { _nthreads = std::thread::hardware_concurrency(); } else { _nthreads = threads; }
-  for(size_t i = 0;i<_nthreads;++i)
+  for(size_t i = 0;i<_nthreads;++i) {
     workers.emplace_back(
       [this] {
         while(true)
@@ -28,7 +28,9 @@ ThreadPool::ThreadPool(size_t threads)
         }
       }
     );
-  ids.insert( std::pair<std::thread::id,int>{ workers.back().get_id() , workers.size()-1} );
+    ids.insert( std::pair<std::thread::id,int>{ workers.back().get_id() , workers.size()-1} );
+    Random::addThread( workers.back().get_id() , i );
+  }
 }
 
 // the destructor joins all threads
@@ -41,6 +43,7 @@ ThreadPool::~ThreadPool()
   condition.notify_all();
   for(std::thread &worker: workers) {
     ids.erase( worker.get_id() );
+    //Random::removeThread( worker.get_id() );
     worker.join();
   }
 

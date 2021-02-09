@@ -13,6 +13,7 @@
 #include <map>
 
 #include "msgservice.h"
+#include "random.h"
 
 /** ThreadPool holds a pool of threads and excutes jobs in threads.
  * 

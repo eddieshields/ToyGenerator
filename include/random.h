@@ -1,6 +1,8 @@
 #ifndef TOYGEN_RANDOM_H
 #define TOYGEN_RANDOM_H
 
+#include "msgservice.h"
+
 #include <random>
 #include <map>
 #include <thread>
@@ -23,7 +25,7 @@ public:
   static void addThread(std::thread::id thread_id, int n)
   {
     _engines.insert( std::pair<std::thread::id,std::mt19937_64>{thread_id,std::mt19937_64()} );
-    _engines.find( std::this_thread::get_id() )->second.seed(_seed+n);
+    _engines.find( thread_id )->second.seed(_seed+n);
   }
 
   static void removeThread(std::thread::id thread_id)
@@ -33,6 +35,11 @@ public:
 
   static std::mt19937_64& engine()
   {
+    // Constructs thread in main thread.
+    if ( _engines.empty() ) {
+      _engines.insert( std::pair<std::thread::id,std::mt19937_64>{std::this_thread::get_id(),std::mt19937_64()} );
+      _engines.find( std::this_thread::get_id() )->second.seed( _seed );
+    }
     return _engines.find( std::this_thread::get_id() )->second;
   }
 
