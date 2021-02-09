@@ -16,6 +16,7 @@ public:
 
   bool& isStable()           { return m_stable; }
   double& time()             { return m_ctau; }
+  double& truetime()         { return m_true_ctau; }
   TLorentzVector& momentum() { return m_p; }
   int& charge()              { return m_q; }
   int& flavour()             { return m_flavour; }
@@ -27,6 +28,7 @@ protected:
   bool        m_stable;
   double      m_mass;
   double      m_ctau;
+  double      m_true_ctau;
   int         m_q;
   int         m_flavour;
 
