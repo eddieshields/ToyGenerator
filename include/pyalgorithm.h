@@ -5,7 +5,6 @@
 #include "algorithm.h"
 
 #include <functional>
-//#include <Python.h>
 
 class PyAlgorithm : public Algorithm
 {
