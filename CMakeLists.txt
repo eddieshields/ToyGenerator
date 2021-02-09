@@ -4,8 +4,6 @@ set(PACKAGE HYDRA)
 project(${PACKAGE})
 
 #set (CMAKE_CXX_STANDARD 17)
-# Optimization flags.
-set(CMAKE_CXX_FLAGS "-Ofast -march=native -fPIC")
 
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
@@ -18,14 +16,6 @@ find_package(ROOT REQUIRED COMPONENTS Core RIO Hist Graf Graf3d Postscript Gpad
 include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS})
 
-#--- Use Boost
-#find_package(Boost COMPONENTS system filesystem REQUIRED)
-#include_directories(${Boost_INCLUDE_DIRS})
-
-#--- Use Python
-find_package(PythonLibs REQUIRED)
-include_directories(${PYTHON_INCLUDE_DIRS})
-
 #--- Define the headers list
 include_directories(include src dict algorithms models/dalitzmodel  ${CMAKE_SOURCE_DIR})
 include_directories(external/json/single_include)
@@ -36,15 +26,14 @@ endif()
 #--- Define the headers and src directories
 file(GLOB_RECURSE sources src/*.cpp algorithms/*.cpp models/dalitzmodel/*.cpp)
 file(GLOB_RECURSE headers include/*.h algorithms/*.h models/dalitzmodel/*.h)
-#file(GLOB_RECURSE json external/json/single_include/*)
 
 ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} LINKDEF dict/${PACKAGE}LinkDef.h)
 
-#--- Generate ROOT library from dictionary
+#--- Generate library with ROOT dictionary
 add_library(${PACKAGE} SHARED ${sources} ${} G__${PACKAGE}.cxx)
 
-##target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
+#--- Link libraries
+target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${CMAKE_DL_LIBS})
 
 #--- External library for reading json files.
 target_include_directories(${PACKAGE} PUBLIC external/json/single_include)
