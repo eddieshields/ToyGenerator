@@ -5,6 +5,9 @@ using namespace DalitzModel;
 ConfigFile::ConfigFile(const std::string cfgfile)
 {
   std::ifstream ifs(cfgfile);
+  if ( ifs.fail() ) {
+    FATAL("File " << cfgfile << " does not exist." );
+  }
   std::string line;
   ConfigFile::Section section = ConfigFile::None;
   while (std::getline(ifs, line)) {
