@@ -17,10 +17,10 @@ void ConfigureAmplitude::build_model_from_file()
 void ConfigureAmplitude::build_phasespace_from_file()
 {
   DEBUG("Building PhaseSpace");
-  double mM = m_config.get<double>("mMoth");
-  double m1 = m_config.get<double>("m1");
-  double m2 = m_config.get<double>("m2");
-  double m3 = m_config.get<double>("m3");
+  double mM = get<double>("mMoth");
+  double m1 = get<double>("m1");
+  double m2 = get<double>("m2");
+  double m3 = get<double>("m3");
   PhaseSpace ps(mM,m1,m2,m3);
   m_amp.setPhaseSpace( ps );
 }
@@ -54,11 +54,11 @@ void ConfigureAmplitude::appendRBW(std::string name)
       >> mass >> width >> radius
       >> coeff1 >> coeff2;
 
-  Parameter m     = m_config.get<Parameter>(mass);
-  Parameter w     = m_config.get<Parameter>(width);
-  Parameter r     = m_config.get<Parameter>(radius);
-  Parameter c1    = m_config.get<Parameter>(coeff1);
-  Parameter c2    = m_config.get<Parameter>(coeff2);
+  Parameter m     = get<Parameter>(mass);
+  Parameter w     = get<Parameter>(width);
+  Parameter r     = get<Parameter>(radius);
+  Parameter c1    = get<Parameter>(coeff1);
+  Parameter c2    = get<Parameter>(coeff2);
 
   Coefficient c( c1 , c2 );
 
@@ -79,15 +79,15 @@ void ConfigureAmplitude::appendFlatte(std::string name)
       >> coeff1 >> coeff2
       >> gam1name >> gam2name >> m1name >> m2name;
 
-  Parameter m     = m_config.get<Parameter>(mass);
-  Parameter w     = m_config.get<Parameter>(width);
-  Parameter r     = m_config.get<Parameter>(radius);
-  Parameter c1    = m_config.get<Parameter>(coeff1);
-  Parameter c2    = m_config.get<Parameter>(coeff2);
-  Parameter gam1  = m_config.get<Parameter>(gam1name);
-  Parameter gam2  = m_config.get<Parameter>(gam2name);
-  Parameter m02a  = m_config.get<Parameter>(m1name);
-  Parameter m02b  = m_config.get<Parameter>(m2name);
+  Parameter m     = get<Parameter>(mass);
+  Parameter w     = get<Parameter>(width);
+  Parameter r     = get<Parameter>(radius);
+  Parameter c1    = get<Parameter>(coeff1);
+  Parameter c2    = get<Parameter>(coeff2);
+  Parameter gam1  = get<Parameter>(gam1name);
+  Parameter gam2  = get<Parameter>(gam2name);
+  Parameter m02a  = get<Parameter>(m1name);
+  Parameter m02b  = get<Parameter>(m2name);
 
   Coefficient c( c1 , c2 );
 
