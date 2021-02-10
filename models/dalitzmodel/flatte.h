@@ -1,54 +1,96 @@
-#ifndef TOYGEN_FLATTE_H
-#define TOYGEN_FLATTE_H
+#ifndef DALITZMODEL_FLATTE_H
+#define DALITZMODEL_FLATTE_H
 
-// Package.
+// DalitzModel.
 #include "resonance.h"
+#include "msgservice.h"
 
 namespace DalitzModel {
+  namespace LineShape {
+
+using complex_t = std::complex<double>;
 
 class Flatte : public Resonance
 {
-public:
-  // Constructor/Destructor.
-  Flatte(std::string name, const Coeff& coeff, const int& resA, const int& resB,
-         const Parameter& mass, const Parameter& width, const int l, const Parameter& r,
-         const Parameter& gam1, const Parameter& gam2, const Parameter& mA2, const Parameter& mB2)
-         : Resonance(name, coeff, resA, resB, mass, width, l, r),
-         _gam1( gam1.val() ), _gam2( gam2.val() ), _mA2( mA2.val() ), _mB2( mB2.val() )
-         {};
-  ~Flatte() {};
-
-  //Getters
-  const double gamma1() const { return _gam1; }
-  const double gamma2() const { return _gam2; }
-  const double gammaSq1() const { return std::pow( _gam1 , 2 ); }
-  const double gammaSq2() const { return std::pow( _gam2 , 2 ); }
-
-  const double mA2() const { return _mA2; }
-  const double mB2() const { return _mB2; }
-
-  const double mSqA2() const { return std::pow( _mA2 , 2 ); }
-  const double mSqB2() const { return std::pow( _mB2 , 2 ); }
-
-  const double mGamma() const { return _mass*_width; }
-
-  const double g1(const PhaseSpace& ps, const double& mSqAB) const;
-  const double g2(const PhaseSpace& ps, const double& mSqAB) const;
-
-  const double rho1(const PhaseSpace& ps, const double& mSqAB) const;
-  const double rho2(const PhaseSpace& ps, const double& mSqAB) const;
-
-  const std::complex< double > propagator(const PhaseSpace& ps, const double& mSqAB ) const;
-
-  Flatte* cnj() const;
-  Flatte* copy() const;
+// Define different types of parameterisations that could be used.
+enum Parameterisation {
+  None,
+  BaBar2005,
+  BaBar2008,
+  BaBar2010,
+};
 private:
-  const double _gam1;
-  const double _gam2;
-  const double _mA2;
-  const double _mB2;
+  Parameter m_gamma1;
+  Parameter m_gamma2;
+  Parameter m_m02a;
+  Parameter m_m02b;
+
+  double m_gamma1Sq;
+  double m_gamma2Sq;
+  double m_m02aSq;
+  double m_m02bSq;
+
+  static Parameterisation m_parameterisation; 
+public:
+  Flatte() = default;
+  Flatte(std::string& name, const Coefficient& coeff,
+            const int& resoA, const int& resoB,
+            const Parameter& mass, const Parameter& width,
+            const int& l, const Parameter& r,
+            const Parameter& gamma1, const Parameter& gamma2,
+            const Parameter& m02a, const Parameter& m02b) :
+    Resonance( name , coeff , resoA , resoB , mass , width , l , r ),
+    m_gamma1( gamma1 ),
+    m_gamma2( gamma2 ),
+    m_m02a( m02a ),
+    m_m02b( m02b )
+  {
+    m_gamma1Sq = m_gamma1 * m_gamma1;
+    m_gamma2Sq = m_gamma2 * m_gamma2;
+    m_m02aSq = m_m02a * m_m02a;
+    m_m02bSq = m_m02b * m_m02b;
+  }
+  Flatte(std::string& name, const double& coeff1, const double& coeff2,
+            const int& resoA, const int& resoB,
+            const double& mass, const double& width,
+            const int& l, const double& r,
+            const double& gamma1, const double& gamma2,
+            const double& m02a, const double& m02b) :
+    Resonance( name , coeff1 , coeff2 , resoA , resoB , mass , width , l , r ),
+    m_gamma1( gamma1 ),
+    m_gamma2( gamma2 ),
+    m_m02a( m02a ),
+    m_m02b( m02b )
+  {
+    m_gamma1Sq = m_gamma1 * m_gamma1;
+    m_gamma2Sq = m_gamma2 * m_gamma2;
+    m_m02aSq = m_m02a * m_m02a;
+    m_m02bSq = m_m02b * m_m02b;
+  }
+  virtual ~Flatte() {}
+
+  virtual const complex_t propagator(const PhaseSpace& ps, const double& mSqAB) const;
+
+  const complex_t babar2005_propagator(const PhaseSpace& ps, const double& mSqAB) const;
+  const complex_t babar2008_propagator(const PhaseSpace& ps, const double& mSqAB) const;
+  const complex_t babar2010_propagator(const PhaseSpace& ps, const double& mSqAB) const;
+
+  Flatte* copy() const;
+
+  Parameter gamma1() const { return m_gamma1; }
+  Parameter gamma2() const { return m_gamma2; }
+  Parameter m02a()   const { return m_m02a; }
+  Parameter m02b()   const { return m_m02b; }
+
+  double gamma1Sq()  const { return m_gamma1Sq; }
+  double gamma2Sq()  const { return m_gamma2Sq; }
+  double m02aSq()    const { return m_m02aSq; }
+  double m02bSq()    const { return m_m02bSq; }
+
+  static void SetParameterisation(std::string parameterisation);
 };
 
-}
+  } // namespace LineShape
+} // namespace DalitzModel
 
 #endif
