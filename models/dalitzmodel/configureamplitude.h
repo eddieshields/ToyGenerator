@@ -10,6 +10,8 @@
 #include "dalitzmixing.h"
 #include "msgservice.h"
 #include "configfile.h"
+#include "parameterstore.h"
+#include "correlationutils.h"
 
 #include "string.h"
 #include <fstream>
@@ -31,7 +33,11 @@ public:
   void addFlatte(DalitzAmplitude& amp, std::string name, std::vector<std::string> res);
   void addRBW   (DalitzAmplitude& amp, std::string name, std::vector<std::string> res);
 
+  void addCorrelation(CorrelationUtils::CovarianceMatrix& cov);
+
   void setMixing(DalitzMixing& amp);
+  void setRandom() { m_random = true; }
+  void setPolar()  { m_polar  = true; }
 
   DalitzAmplitude operator()(DalitzAmplitude& amp);
   DalitzAmplitude operator()();
@@ -41,7 +47,11 @@ private:
   ConfigFile  m_config;
   std::string m_cfgfile;
 
-  Parameter getParameter(DalitzAmplitude& amp, std::string name);
+  bool m_random = {false};
+  bool m_polar  = {true};
+
+  void defineParameters();
+  Parameter& getParameter(std::string name);
 };
 
 }

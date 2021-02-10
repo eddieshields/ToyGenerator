@@ -31,11 +31,20 @@ public:
   const double               AbarSq(const double& mSq12, const double& mSq13) const;
   const double               AbarSq(const double& mSq12, const double& mSq13, const double& mSq23) const;
 
+  const std::complex<double> A1    (const double& mSq12, const double& mSq13) const ;
+  const std::complex<double> A1    (const double& mSq12, const double& mSq13, const double& mSq23) const;
+  const std::complex<double> A2    (const double& mSq12, const double& mSq13) const ;
+  const std::complex<double> A2    (const double& mSq12, const double& mSq13, const double& mSq23) const;
+
+  const double               A1Sq  (const double& mSq12, const double& mSq13) const;
+  const double               A1Sq  (const double& mSq12, const double& mSq13, const double& mSq23) const;
+  const double               A2Sq  (const double& mSq12, const double& mSq13) const;
+  const double               A2Sq  (const double& mSq12, const double& mSq13, const double& mSq23) const;
+
   void addDirResonance(Resonance* res);
   void addCnjResonance(Resonance* res);
   void printResonances();
   PhaseSpace& phasespace() { return _ps; }
-  std::map<std::string,Parameter>& parameters() { return m_parameters; }
 private:
   PhaseSpace _ps;
   void addDirResonanceToList(Resonance* res);

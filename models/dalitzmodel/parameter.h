@@ -25,22 +25,33 @@ class Parameter
 {
 public:
   /** Constructor. */
-  Parameter(const double& par, const double& err = 0.) : _par( par ), _err( Random::normal( 0 , err ) ) {};
+  Parameter(std::string& name, const double& par, const double& err = 0.) :
+    m_name( name ),
+    m_par( par ), 
+    m_err( Random::normal( 0 , err ) ) 
+  {
+    if ( m_random ) {
+      m_val = m_par + m_err;
+    } else { 
+      m_val = m_par;
+    }
+  }
   /** Destructor. */
   ~Parameter() {};
 
   /** Returns value of parameter. */
-  const double value() const { return _par; }
+  const double value() const { return m_par; }
   /** Returns error of parameter. */
-  const double error() const { return _err; }
+  const double error() const { return m_err; }
   /** Returns current value of parameter. */
-  const double val() const;
+  const double val()   const { return m_val; }
 
-  static void setRandom() { _random = true; }
-  static void setFixed()  { _random = false; }
+  void setVal(double& val ) { m_val = val; }
 
-  /** Copy method. */
-  //Parameter* copy();
+  void setRandom() { m_random = true;  m_val = m_par + m_err; }
+  void setFixed()  { m_random = false; m_val = m_par;         }
+
+  const std::string name() { return m_name; }
 
   double operator=(const double& in);
   double operator*(const double in) const;
@@ -56,9 +67,11 @@ public:
     return os;
   }
 protected:
-  static bool  _random;
-  const double _par;
-  const double _err;
+  static bool       m_random;
+  const std::string m_name;
+  const double      m_par;
+  const double      m_err;
+  double            m_val;
 };
 
 }

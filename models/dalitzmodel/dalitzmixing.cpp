@@ -4,7 +4,7 @@ using namespace DalitzModel;
 
 const std::complex<double> DalitzMixing::A(Event& ev)
 {
-  return A( ev.mother().flavour() , ev.mother().time() , ev["mSq12"] , ev["mSq13"] , ev["mSq23"] );
+  return A( ev.mother().flavour() , ev.mother().truetime() , ev["mSq12"] , ev["mSq13"] , ev["mSq23"] );
 }
 
 const std::complex<double> DalitzMixing::A(const int& flav, const double& t, const double& mSq12, const double& mSq13)

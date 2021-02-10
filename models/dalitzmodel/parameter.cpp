@@ -3,54 +3,30 @@
 using namespace DalitzModel;
 
 // Initialise random variable.
-bool Parameter::_random = false;
+bool Parameter::m_random = false;
 
-const double Parameter::val() const
-{
-  if ( _random ) return _par + _err;
-  else return _par;
-}
-
-/*
-Parameter* Parameter::copy()
-{
-  return this;
-}
-*/
 double Parameter::operator=(const double& in)
 {
-  return _par;
+  return m_par;
 }
 
 double Parameter::operator*(const double in) const
 {
-  double out;
-  if ( _random ) out = ( _par + _err ) * in;
-  else out = _par * in;
-  return out;
+  return m_val * in;
 }
 
 template <class number>
 const double Parameter::operator*(const number& in) const
 {
-  number out;
-  if ( _random ) out = ( _par + _err ) * in;
-  else out = _par * in;
-  return out;
+  return m_val * in;
 }
 
 std::complex<double> Parameter::operator*(const std::complex<double>& in) const
 {
-  std::complex<double> out;
-  if ( _random ) out = ( _par + _err ) * in;
-  else out = _par * in;
-  return out;
+  return m_val * in;
 }
 
 double Parameter::operator*(const Parameter& param) const
 {
-  double out;
-  if ( _random ) out = ( _par + _err ) * param.val();
-  else out = _par * param.val();
-  return out;
+  return m_val * param.val();
 }
