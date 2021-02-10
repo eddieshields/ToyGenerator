@@ -1,6 +1,7 @@
 #ifndef TOYGEN_CONFIGUREAMPLITUDE_H
 #define TOYGEN_CONFIGUREAMPLITUDE_H
 
+#include <filesystem>
 #include "flatte.h"
 #include "relbreitwigner.h"
 #include "parameter.h"
@@ -24,10 +25,12 @@ class DalitzAmplitude;
 class ConfigureAmplitude
 {
 public:
-  ConfigureAmplitude(std::string cfgfile) : 
+  ConfigureAmplitude(std::string cfgfile) :
     m_config( cfgfile ),
     m_cfgfile( cfgfile )
-  {}
+  {
+    if ( !(std::filesystem::exists(cfgfile)) ) FATAL( cfgfile << " not found!" );
+  }
   ~ConfigureAmplitude() {}
 
   void addFlatte(DalitzAmplitude& amp, std::string name, std::vector<std::string> res);
