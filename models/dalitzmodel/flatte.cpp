@@ -72,7 +72,7 @@ void Flatte::SetParameterisation(std::string parameterisation)
   return;
 }
 
-Flatte::Parameterisation Flatte::m_parameterisation = Flatte::Parameterisation::BaBar2010;
+Flatte::Parameterisation Flatte::m_parameterisation = Flatte::Parameterisation::None;
 
 Flatte* Flatte::copy() const
 {

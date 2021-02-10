@@ -63,12 +63,12 @@ inline double Resonance::kallen(const double& x, const double& y, const double& 
 
 double Resonance::q(const PhaseSpace& ps, const double& mSqAB) const
 {
-  return std::sqrt( kallen( mSqAB, ps.mSqMother(), ps.mSq( m_noRes ) ) )/( 2*std::sqrt(mSqAB) );
+  return std::sqrt( kallen( mSqAB, ps.mSq( m_resoA ), ps.mSq( m_resoB ) ) )/( 2*std::sqrt(mSqAB) );
 }
 
 double Resonance::p(const PhaseSpace& ps, const double& mSqAB) const
 {
-  return std::sqrt( kallen( mSqAB, ps.mSq( m_resoA ), ps.mSq( m_resoB ) ) )/( 2*std::sqrt(mSqAB) );
+  return std::sqrt( kallen( mSqAB, ps.mSqMother(), ps.mSq( m_noRes ) ) )/( 2*std::sqrt(mSqAB) );
 }
 
 double Resonance::rho(const PhaseSpace& ps, const double& mSqAB, const double& mSq1, const double& mSq2) const
@@ -78,26 +78,32 @@ double Resonance::rho(const PhaseSpace& ps, const double& mSqAB, const double& m
 
 double Resonance::rho(const PhaseSpace& ps, const double& mSqAB) const
 {
-  return std::sqrt( kallen( mSqAB, ps.mSq( m_resoA ), ps.mSq( m_resoB ) ) )/mSqAB;
+  return std::sqrt( kallen( mSqAB, ps.mSq( m_resoA ) , ps.mSq( m_resoB ) ) )/mSqAB;
 }
 
 inline double Resonance::zemach( const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC ) const
 {
-  if ( m_l == 0 ) return 1;
+  if ( m_l == 0 ) return 1.;
 
-  double diffSqMC = ps.mSqMother() - ps.mSq( m_noRes );
-  double diffSqAB = ps.mSq( m_resoA ) - ps.mSq( m_resoB );
-  double zemach1 = mSqAC - mSqBC - (diffSqMC*diffSqAB)/mSqAB;
+  // Squared mass differences that some terms depend on.
+  const double diffSqMC = ps.mSqMother()    - ps.mSq( m_noRes );
+  const double diffSqAB = ps.mSq( m_resoA ) - ps.mSq( m_resoB );
+
+  // Zemach tensor for l = 1.
+  const double zemach1  = mSqAC - mSqBC - diffSqMC * diffSqAB / mSqAB;
 
   if ( m_l == 1 ) return zemach1;
 
-  double sumSqMC = ps.mSqMother() + ps.mSq( m_noRes );
-  double sumSqAB = ps.mSq( m_resoA ) + ps.mSq( m_resoB );
-  double first  = mSqAB - 2*sumSqMC + std::pow( diffSqMC , 2 )/mSqAB;
-  double second = mSqAB - 2*sumSqAB + std::pow( diffSqAB , 2 )/mSqAB;
-        
-  if ( m_l == 2 ) return std::pow( zemach1 , 2 ) - (first*second)/3;
+  if ( m_l == 2 ) {
+    // Squared mass sums that some terms depend on.
+    const double sumSqMC = ps.mSqMother()    + ps.mSq( m_noRes );
+    const double sumSqAB = ps.mSq( m_resoA ) + ps.mSq( m_resoB );
 
+    double first  = mSqAB - 2. * sumSqMC + std::pow( diffSqMC, 2 ) / mSqAB;
+    double second = mSqAB - 2. * sumSqAB + std::pow( diffSqAB, 2 ) / mSqAB;
+
+    return std::pow( zemach1, 2 ) - first * second / 3.;
+  }
   return 0.;
 }
 
@@ -106,19 +112,25 @@ inline double Resonance::helicity( const PhaseSpace& ps, const double& mSqAB, co
 {
   if ( m_l == 0 ) return 1.;
 
-  const double& diffSqMC = ps.mSqMother() - ps.mSq( m_noRes );
-  const double& diffSqAB = ps.mSq( m_resoA ) - ps.mSq( m_resoB );
-  const double& hel1  = mSqAC - mSqBC - diffSqMC * diffSqAB / mSq();
+  // Squared mass differences that some terms depend on.
+  const double diffSqMC = ps.mSqMother()    - ps.mSq( m_noRes );
+  const double diffSqAB = ps.mSq( m_resoA ) - ps.mSq( m_resoB );
+
+  // Zemach tensor for l = 1.
+  const double hel1  = mSqAC - mSqBC - diffSqMC * diffSqAB / mSq();
 
   if ( m_l == 1 ) return hel1;
 
-  const double& sumSqMC = ps.mSqMother()   + ps.mSq( m_noRes );
-  const double& sumSqAB = ps.mSq( m_resoA ) + ps.mSq( m_resoB );
-  double first  = mSqAB - 2. * sumSqMC + std::pow( diffSqMC, 2 ) / mSq();
-  double second = mSqAB - 2. * sumSqAB + std::pow( diffSqAB, 2 ) / mSq();
+  if ( m_l == 2 ) {
+    // Squared mass sums that some terms depend on.
+    const double& sumSqMC = ps.mSqMother()    + ps.mSq( m_noRes );
+    const double& sumSqAB = ps.mSq( m_resoA ) + ps.mSq( m_resoB );
 
-  if ( m_l == 2 ) return std::pow( hel1, 2 ) - first * second / 3.;
+    double first  = mSqAB - 2. * sumSqMC + std::pow( diffSqMC, 2 ) / mSq();
+    double second = mSqAB - 2. * sumSqAB + std::pow( diffSqAB, 2 ) / mSq();
 
+    return std::pow( hel1, 2 ) - first * second / 3.;
+  }
   return 0.;
 }
 
@@ -154,13 +166,16 @@ double Resonance::blattWeisskopf(const PhaseSpace& ps, const double& mSqAB) cons
 {
   if ( m_l == 0 ) return 1.;
 
-  double q0 = q( ps, mSq() );
   double qm = q( ps, mSqAB );
-  return std::pow( qm/q0 , m_l )*blattWeisskopfPrime(ps, mSqAB);
+  double rqmSq = std::pow( r()*qm , 2 );
+
+  if ( m_l == 1 ) return std::sqrt( ( 2 * rqmSq )/( 1 + rqmSq ) );
+  if ( m_l == 2 ) return std::sqrt( ( 13 * std::pow( rqmSq , 2 ) )/( 9 + 3*rqmSq + std::pow( rqmSq , 2 ) ) );
+  return 0.;
 }
 
 double Resonance::angular(const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC) const
 {
-  if ( m_helicity ) return helicity(ps, mSqAB, mSqAC, mSqBC)*blattWeisskopfPrimeP(ps, mSqAB)*blattWeisskopfPrime(ps, mSqAB);
-  return zemach(ps, mSqAB, mSqAC, mSqBC)*blattWeisskopfPrimeP(ps, mSqAB)*blattWeisskopfPrime(ps, mSqAB);
+  if ( m_helicity ) return helicity(ps, mSqAB, mSqAC, mSqBC)*blattWeisskopfPrime(ps, mSqAB);
+  return zemach(ps, mSqAB, mSqAC, mSqBC)*blattWeisskopfPrime(ps, mSqAB);
 }
