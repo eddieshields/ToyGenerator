@@ -1,63 +1,85 @@
-#ifndef TOYGEN_CONFIGFILE_H
-#define TOYGEN_CONFIGFILE_H
+#ifndef DALITZMODEL_CONFIGFILE_H
+#define DALITZMODEL_CONFIGFILE_H
 
-#include "correlationutils.h"
-#include "msgservice.h"
-
-#include <fstream>
-#include <sstream>
-#include <vector>
+// STL.
+#include <iostream>
+#include <filesystem>
 #include <string>
 #include <map>
-#include <iostream>
-#include <iterator>  
+#include <regex>
+#include <sstream>
+#include <fstream>
+
+// DalitzModel.
+#include "msgservice.h"
 
 namespace DalitzModel {
 
 class ConfigFile
 {
-public:
   enum Section {
     None,
     Resonances,
     Parameters,
     CorrelationMatrix,
-    CovarianceMatrix,
+    CovarianceMatrix
   };
-  ConfigFile(const std::string cfgfile );
-  ~ConfigFile() {}
+public:
+  ConfigFile() = default;
+  ConfigFile(const std::string cfgfile ) 
+  { 
+    if ( !(std::filesystem::exists(cfgfile)) ) FATAL( cfgfile << " not found!" );
+    decodeConfigFile( cfgfile );
+  }
+  virtual ~ConfigFile() {}
 
-  std::map<std::string,std::vector<std::string>> resonances() { return m_resonances; }
-  std::map<std::string,std::vector<std::string>> parameters() { return m_parameters; }
+  std::string get(std::string key);
+  template<typename T>
+  T get(std::string key)
+  {
+    T out;
+    if ( m_entries.find(key) == m_entries.end() ) {
+      WARNING(key << " not found!");
+      return out;
+    }
+  
+    // Pass string into object;
+    std::string str = m_entries[key];
+    std::istringstream is(str);
+    is >> out;
+    return out;
+  }
 
-  // Get Resonances and Parameters.
-  bool find(std::string entry);
-  std::vector<std::string> operator[](std::string entry);
-
-  // Get Correlation and Covariance.
-  bool existsCorrelationMatrix() { if ( m_correlation.size() ) return true; return false; }
-  bool existsCovarianceMatrix()  { if ( m_covariance.size()  ) return true; return false; }
-
-  CorrelationUtils::CorrelationMatrix Correlation();
-  CorrelationUtils::CovarianceMatrix  Covariance();
-
+  // Operators.
+  friend std::ostream& operator<<(std::ostream& os, const ConfigFile& config)
+  {
+    // Start on new line:
+    os << "Config file = \n";
+    // Loop over all entries.
+    for (auto& entry : config.m_entries) {
+      os << entry.first << " : " << entry.second << "\n";
+    }
+    return os;
+  }
+  friend std::istream& operator>>(std::istream& is, ConfigFile& config)
+  {
+    std::string file;;
+    is >> file;
+    config.decodeConfigFile( file );
+    return is;
+  }
 
 private:
-  std::map<std::string,std::vector<std::string>> m_resonances;
-  std::map<std::string,std::vector<std::string>> m_parameters;
-  std::map<std::string,std::vector<std::string>> m_correlation;
-  std::map<std::string,std::vector<std::string>> m_covariance;
+  void decodeConfigFile(const std::string cfgfile);
 
-  std::vector<std::string> m_cor_names;
-  TMatrixDSym m_cor;
+  void decodeResonances       (const std::string line);
+  void decodeParameters       (const std::string line);
+  void decodeCorrelationMatrix(const std::string line);
+  void decodeCovarianceMatrix (const std::string line);
 
-  std::vector<std::string> m_cov_names;
-  TMatrixDSym m_cov;
+  void addEntry(const std::string line);
 
-  void decodeResonances(std::string line);
-  void decodeParameters(std::string line);
-  void decodeCorrelationMatrix(std::string line);
-  void decodeCovarianceMatrix(std::string line);
+  std::map<std::string,std::string> m_entries;
 };
 
 }

@@ -2,178 +2,96 @@
 
 using namespace DalitzModel;
 
-DalitzAmplitude ConfigureAmplitude::operator()(DalitzAmplitude& amp)
+void ConfigureAmplitude::build_model_from_file()
 {
-  INFO("Defining the amplitude model from "+m_cfgfile+".");
-
-  // Define the parameters and put them in a store so they can be accessed and configured.
-  defineParameters();
-
-  if ( m_random ) {
-    // If define apply covariance matrix to parameters.
-    CorrelationUtils::CovarianceMatrix cov;
-    bool definedCorrelation = false;
-    if ( m_config.existsCovarianceMatrix() ) {
-      INFO("Covariance matrix has been defined.");
-      CorrelationUtils::CorrelationMatrix cor = m_config.Correlation();
-      std::vector<double> errors;
-      for (auto& name : cor.names()) {
-        errors.push_back( gParameterStore.get(name).error() );
-      }
-      TMatrixDSym matrix = cor.matrix();
-      cov = CorrelationUtils::CovarianceMatrix(cor.names(),matrix);
-      definedCorrelation = true;
-    } else if ( m_config.existsCorrelationMatrix() ) {
-      INFO("Correlation matrix has been defined.");
-      cov = m_config.Covariance();
-      definedCorrelation = true;
-    }
-  
-    // Add correlation if it is defined.
-    if ( definedCorrelation ) addCorrelation(cov);
+  DEBUG("Building model");
+  build_phasespace_from_file();
+  std::stringstream resos( m_config.get("resos") );
+  std::string res;
+  while ( resos >> res ) {
+    build_resonance_from_file( res );
   }
-  // Define resonances last after all configuration has taken place.
-  std::string name = "resos";
-  for (auto& res : m_config[name])
-  {
-    if ( m_config[res][0] == "CC" ) {
-      addFlatte( amp, res, m_config[res] );
-    }
-    else if ( m_config[res][0] == "RBW" ) {
-      addRBW( amp, res, m_config[res] );
-    } else {
-      WARNING("Don't recognise type "+res+".");
-    }
-  }
-
-  if ( m_polar ) {
-    Coeff::setPolar();
-  }
-  return amp;
+  return;
 }
 
-DalitzAmplitude ConfigureAmplitude::operator()()
+void ConfigureAmplitude::build_phasespace_from_file()
 {
-  DalitzAmplitude amp;
-  return this->operator()(amp);
+  DEBUG("Building PhaseSpace");
+  double mM = get<double>("mMoth");
+  double m1 = get<double>("m1");
+  double m2 = get<double>("m2");
+  double m3 = get<double>("m3");
+  PhaseSpace ps(mM,m1,m2,m3);
+  m_amp.setPhaseSpace( ps );
 }
 
-DalitzMixing ConfigureAmplitude::operator()(DalitzMixing& amp)
+void ConfigureAmplitude::build_resonance_from_file(std::string name)
 {
+  DEBUG("Building Resonances");
+  std::stringstream res( m_config.get(name) );
+  std::string type;
+  res >> type;
 
-  this->operator()(amp.amplitude());
-  setMixing( amp );
-  return amp;
-;}
-
-void ConfigureAmplitude::addFlatte(DalitzAmplitude& amp, std::string name, std::vector<std::string> res)
-{
-  // Set Parameter
-  const int resoA    = std::stoi(res[1]);
-  const int resoB    = std::stoi(res[2]);
-  const int l        = std::stoi(res[3]);
-  const int noRes    = 6 - resoA - resoB;
-  const Parameter m  = getParameter(res[4]);
-  const Parameter w  = getParameter(res[5]);
-  const Parameter r  = getParameter(res[6]);
-  const Parameter c1 = getParameter(res[7]);
-  const Parameter c2 = getParameter(res[8]);
-  const Parameter g1 = getParameter(res[9]);
-  const Parameter g2 = getParameter(res[10]);
-  const Parameter mE = getParameter(res[11]);
-  const Parameter mP = getParameter(res[12]);
-  const Coeff c(c1,c2);
-
-  Flatte* comp = new Flatte(name,c,resoA,resoB,m,w,l,r,g1,g2,mE,mP);
-  amp.addDirResonance( comp );
-  if ( resoA == 2 ) {
-    Flatte* compCnj = new Flatte(name,c,resoB,resoA,m,w,l,r,g1,g2,mE,mP);
-    amp.addCnjResonance( compCnj );
+  if ( type == "RBW" ) {
+    appendRBW( name );
+  } else if ( type == "CC" ) {
+    appendFlatte( name );
   } else {
-    Flatte* compCnj = new Flatte(name,c,resoA,noRes,m,w,l,r,g1,g2,mE,mP);
-    amp.addCnjResonance( compCnj );
-  }
-}
-
-void ConfigureAmplitude::addRBW(DalitzAmplitude& amp, std::string name, std::vector<std::string> res)
-{
-  const int resoA     = std::stoi(res[1]);
-  const int resoB     = std::stoi(res[2]);
-  const int noRes     = 6 - resoA - resoB;
-  const int l         = std::stoi(res[3]);
-  const Parameter m  = getParameter(res[4]);
-  const Parameter w  = getParameter(res[5]);
-  const Parameter r  = getParameter(res[6]);
-  const Parameter c1 = getParameter(res[7]);
-  const Parameter c2 = getParameter(res[8]);
-  const Coeff c(c1,c2);
-
-  RelBreitWigner* comp = new RelBreitWigner(name,c,resoA,resoB,m,w,l,r);
-  amp.addDirResonance( comp );
-  if ( resoA == 2 ) {
-    RelBreitWigner* compCnj = new RelBreitWigner(name,c,resoB,resoA,m,w,l,r);
-    amp.addCnjResonance( compCnj );
-  } else {
-    RelBreitWigner* compCnj = new RelBreitWigner(name,c,resoA,noRes,m,w,l,r);
-    amp.addCnjResonance( compCnj );
-  }
-}
-
-void ConfigureAmplitude::setMixing(DalitzMixing& amp)
-{
-  if ( m_config.find("x") ) amp.setX( std::stod(m_config["x"][0]) );
-  if ( m_config.find("y") ) amp.setY( std::stod(m_config["y"][0]) );
-  if ( m_config.find("p") ) amp.setP( std::stod(m_config["p"][0]) );
-  if ( m_config.find("q") ) amp.setQ( std::stod(m_config["q"][0]) ); 
-  return;
-}
-
-void ConfigureAmplitude::defineParameters()
-{
-  std::map<std::string,std::vector<std::string>> params = m_config.parameters();
-
-  for (auto& p : params) {
-    std::string name = p.first;
-    std::vector<std::string> assoc = p.second;
-    if ( assoc.size() < 3 ) {
-      const double par = std::stod(assoc[0]);
-      Parameter p( name , par );
-      gParameterStore.addParameter( p );
-    } else {
-      const double par = std::stod(assoc[0]);
-      const double err = std::stod(assoc[2]);
-      Parameter p( name , par , err );
-      gParameterStore.addParameter( p );
-    }
+    WARNING("Unrecognised type " << type);
   }
   return;
 }
 
-Parameter& ConfigureAmplitude::getParameter(std::string name)
+void ConfigureAmplitude::appendRBW(std::string name)
 {
-  return gParameterStore.get(name);
+  DEBUG(m_config.get(name));
+  std::stringstream res( m_config.get(name) );
+
+  int resoA, resoB, l;
+  // Parameters.
+  std::string type, mass, width, radius, coeff1, coeff2;
+  res >> type >> resoA >> resoB >> l
+      >> mass >> width >> radius
+      >> coeff1 >> coeff2;
+
+  Parameter m     = get<Parameter>(mass);
+  Parameter w     = get<Parameter>(width);
+  Parameter r     = get<Parameter>(radius);
+  Parameter c1    = get<Parameter>(coeff1);
+  Parameter c2    = get<Parameter>(coeff2);
+
+  Coefficient c( c1 , c2 );
+
+  LineShape::RelBreitWigner* comp = new LineShape::RelBreitWigner(name,c,resoA,resoB,m,w,l,r);
+  m_amp.addResonance( comp );
+  DEBUG(*comp);
 }
 
-void ConfigureAmplitude::addCorrelation(CorrelationUtils::CovarianceMatrix& cov)
+void ConfigureAmplitude::appendFlatte(std::string name)
 {
-  std::vector<double> values, errors;
-  for (auto& name : cov.names() ) {
-    values.push_back( gParameterStore.get(name).value() );
-    values.push_back( gParameterStore.get(name).error() );
-  }
-  std::vector<double> new_values = CorrelationUtils::VaryWithinErrors(values,errors,cov());
+  std::stringstream res( m_config.get(name) );
 
-  int i = 0;
-  for (auto& name : cov.names() ) {
-    gParameterStore.get(name).setVal( new_values[i] );
-    i++;
-  }
+  int resoA, resoB, l;
+  // Parameters.
+  std::string type, mass, width, radius, coeff1, coeff2, gam1name, gam2name, m1name, m2name;
+  res >> type >> resoA >> resoB >> l
+      >> mass >> width >> radius
+      >> coeff1 >> coeff2
+      >> gam1name >> gam2name >> m1name >> m2name;
 
-  for (auto& name : gParameterStore.names() ) {
-    for (auto& used_name : cov.names() ) {
-      if ( name == used_name ) continue;
-      gParameterStore.get(name).setRandom();
-    }
-  }
-  return;
+  Parameter m     = get<Parameter>(mass);
+  Parameter w     = get<Parameter>(width);
+  Parameter r     = get<Parameter>(radius);
+  Parameter c1    = get<Parameter>(coeff1);
+  Parameter c2    = get<Parameter>(coeff2);
+  Parameter gam1  = get<Parameter>(gam1name);
+  Parameter gam2  = get<Parameter>(gam2name);
+  Parameter m02a  = get<Parameter>(m1name);
+  Parameter m02b  = get<Parameter>(m2name);
+
+  Coefficient c( c1 , c2 );
+
+  LineShape::Flatte* comp = new LineShape::Flatte(name,c,resoA,resoB,m,w,l,r,gam1,gam2,m02a,m02b);
+  m_amp.addResonance(comp);
+  DEBUG(*comp)
 }

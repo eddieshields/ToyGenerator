@@ -3,9 +3,8 @@
 
 #include "event.h"
 #include "algorithm.h"
-#include "dalitzmixing.h"
 #include "configureamplitude.h"
-#include "dalitzamplitude.h"
+#include "amplitude.h"
 
 #include <complex>
 
@@ -16,11 +15,11 @@ public:
     Algorithm( name )
   {
     DalitzModel::ConfigureAmplitude configure( cfgfile );
-    configure( m_amp );
+    m_amp = configure();
   } 
   ~Decay3BodyMixing() {}
 
-  DalitzModel::DalitzAmplitude& amp() { return m_amp; }
+  DalitzModel::Amplitude& amp() { return m_amp; }
 
   // Getters.
   const double               x() const { return m_x; }
@@ -38,7 +37,7 @@ public:
   // Operator.
   virtual void operator() (Event& ev);
 private:
-  DalitzModel::DalitzAmplitude m_amp;
+  DalitzModel::Amplitude m_amp;
 
   // Mixing parameters.
   double m_x = {0.004};

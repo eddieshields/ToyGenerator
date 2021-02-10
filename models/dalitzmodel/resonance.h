@@ -1,100 +1,170 @@
-#ifndef TOYGEN_RESONANCE_H
-#define TOYGEN_RESONANCE_H
+#ifndef DALITZMODEL_RESONANCE_H
+#define DALITZMODEL_RESONANCE_H
 
-// Package.
+// STL.
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <complex>
+
+// DalitzModel.
+#include "parameter.h"
 #include "coefficient.h"
 #include "phasespace.h"
-#include "parameter.h"
-#include "angular.h"
+#include "colours.h"
 #include "msgservice.h"
-
-// SL.
-#include <iostream>
-#include <vector>
-#include <complex>
-#include <string>
 
 namespace DalitzModel {
 
+using complex_t = std::complex<double>;
+
 class Resonance
 {
+protected:
+  Coefficient m_coeff;
+  Parameter   m_mass;
+  Parameter   m_width;
+  Parameter   m_r;
+  int         m_l;
+  int         m_resoA;
+  int         m_resoB;
+  int         m_noRes;
+
+  std::string m_name;
+
+  bool        m_helicity = {false};
+
+  double      m_massSq;
 public:
-  // Constructor/Destructor.
-  Resonance(std::string name, const Coeff coeff, const int& resA, const int& resB,
-            const Parameter& mass, const Parameter& width, const int l, const Parameter& r)
-            : _name( name ), _coeff( coeff ), _resA( resA ), _resB ( resB ), _mass( mass ), _width( width ), _l( l ), _r( r ), next( nullptr )
-            {};
-  virtual ~Resonance() {};
+  Resonance() = default;
+  Resonance(std::string& name, const Coefficient& coeff,
+            const int& resoA, const int& resoB,
+            const Parameter& mass, const Parameter& width,
+            const int& l, const Parameter& r) :
+    m_name( name ),
+    m_coeff( coeff ),
+    m_mass( mass ),
+    m_width( width ),
+    m_r( r ),
+    m_l( l ),
+    m_resoA( resoA ),
+    m_resoB( resoB )
+  {
+    m_massSq = m_mass * m_mass;
+    m_noRes = 6 - m_resoA - m_resoB;
+  }
+  Resonance(std::string& name, const double& coeff1, const double& coeff2,
+            const int& resoA, const int& resoB,
+            const double& mass, const double& width,
+            const int& l, const double& r) :
+    m_name( name ),
+    m_coeff( coeff1 , coeff2 ),
+    m_mass( mass ),
+    m_width( width ),
+    m_r( r ),
+    m_l( l ),
+    m_resoA( resoA ),
+    m_resoB( resoB )
+  {
+    m_massSq = m_mass * m_mass;
+    m_noRes = 6 - m_resoA - m_resoB;
+  }
+  virtual ~Resonance() {}
 
-  Resonance* next;
+  /** Conjugate copy.
+   * 
+   * Make conjugate copy of the resonance.
+   */
+  Resonance* cnj_copy() const;
+  virtual Resonance* copy() const = 0;
 
-  // Name.
-  std::string name() { return _name; }
+  // Pointer for linked list.
+  Resonance* next = {nullptr};
 
-  // Evaluate.
-  std::complex< double > evaluate(const PhaseSpace& ps, const double& mSq12, const double& mSq13);
-  std::complex< double > evaluate(const PhaseSpace& ps, const double& mSq12, const double& mSq13, const double& mSq23);
+  // Propagator.
+  virtual const complex_t propagator(const PhaseSpace& ps, const double& mSqAB) const = 0;
 
-  // Propogator.
-  virtual const std::complex< double > propagator(const PhaseSpace& ps, const double& mSqAB ) const = 0;
+  // Operators.
+  friend std::ostream& operator<<(std::ostream& os, const Resonance& reso)
+    {
+    os << MAGENTA << std::left << std::setw( 9 ) << reso.m_name << ": ";
+    os << MAGENTA << "coeff = " << reso.m_coeff << MAGENTA <<", ";
+    os << MAGENTA << "resoA = " << reso.m_resoA << MAGENTA <<", ";
+    os << MAGENTA << "resoB = " << reso.m_resoB << MAGENTA <<", ";
+    os << MAGENTA << "mass = "  << reso.m_mass  << MAGENTA <<", ";
+    os << MAGENTA << "width = " << reso.m_width << MAGENTA <<", ";
+    os << MAGENTA << "l = "     << reso.m_l     << MAGENTA <<", ";
+    os << MAGENTA << "rBW = "   << reso.m_r;
+    os << RESET;
 
-  // Normalize.
-  void setNorm(const PhaseSpace& ps);
+    return os;
+  }
+  friend std::istream& operator>>(std::istream& is, Resonance& reso)
+  {
+    // Input of the form "c1 c2 resoA resoB mass width l rBW".
+    double c1, c2;
+    is >> c1 >> c2
+       >> reso.m_resoA
+       >> reso.m_resoB
+       >> reso.m_mass
+       >> reso.m_width
+       >> reso.m_l
+       >> reso.m_r;
+    reso.m_coeff = Coefficient(c1,c2);
+    return is;
+  }
+
   // Getters.
-  const Parameter mass()  const { return _mass;  }
-  const Parameter m()     const { return _mass;  }
-  const double mSq()      const { return _mSq;   }
-  const Parameter width() const { return _width; }
-  const int l()           const { return _l;     }
-  const Parameter r()     const { return _r;     }
+  std::string name()  const { return m_name; }
+  Parameter   mass()  const { return m_mass; }
+  Parameter   m()     const { return m_mass; }
+  double      mSq()   const { return m_massSq; }
+  Parameter   width() const { return m_width; }
+  Parameter   r()     const { return m_r; }
+  int         l()     const { return m_l; }
+
+  const complex_t evaluate(const PhaseSpace& ps, const double& mSq12, const double& mSq13);
+  const complex_t evaluate(const PhaseSpace& ps, const double& mSq12, const double& mSq13, const double& mSq23);
 
   const double M2AB(const double& mSq12, const double& mSq13, const double& mSq23) const;
   const double M2AC(const double& mSq12, const double& mSq13, const double& mSq23) const;
   const double M2BC(const double& mSq12, const double& mSq13, const double& mSq23) const;
 
   // Methods.
-  double kallen(const double& x, const double& y, const double& z) const;
-  double q(const PhaseSpace& ps, const double& mSqAB) const;
-  double p(const PhaseSpace& ps, const double& mSqAB) const;
-  double rho(const PhaseSpace& ps, const double& mSqAB) const;
-  double zemach(const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC) const;
-  double helicity(const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC) const;
-  double blattWeisskopfPrime(const PhaseSpace& ps, const double& mSqAB) const;
+  /** Kallen function.
+   * 
+   *  Returns lambda( x, y, z ) = x^2 + y^2 + z^2 - 2xy - 2xz - 2yz.
+   */
+  double kallen              (const double& x, const double& y, const double& z) const;
+  /** Momentum of a resonant particle in the rest frame of the resonant pair.
+   */
+  double q                   (const PhaseSpace& ps, const double& mSqAB) const;
+  /** Momentum of the non-resonant particle in the rest frame of the resonant pair.
+   */
+  double p                   (const PhaseSpace& ps, const double& mSqAB) const;
+  /** Phase space factor
+   * 
+   * 2 q / m, where q is the momentum of a resonant particle in the
+   * rest frame of the resonant pair, and m is the invariant mass of the resonant pair.
+   * \param mSq1 Squared mass of first particle is resonant pair.
+   * \param mSq2 Squared mass of second particle in resonance pair.
+   */
+  double rho                 (const PhaseSpace& ps, const double& mSqAB, const double& mSq1, const double& mSq2) const;
+  /** Phase space factor
+   * 
+   * 2 q / m, where q is the momentum of a resonant particle in the
+   * rest frame of the resonant pair, and m is the invariant mass of the resonant pair.
+   */
+  double rho                 (const PhaseSpace& ps, const double& mSqAB) const;
+  /** Zemach tensor.
+   */
+  double zemach              (const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC) const;
+  double helicity            (const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC) const;
+  double blattWeisskopfPrime (const PhaseSpace& ps, const double& mSqAB) const;
   double blattWeisskopfPrimeP(const PhaseSpace& ps, const double& mSqAB) const;
-  double blattWeisskopf(const PhaseSpace& ps, const double& mSqAB) const;
-  double angular(const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC) const;
+  double blattWeisskopf      (const PhaseSpace& ps, const double& mSqAB) const;
+  double angular             (const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC) const;
 
-  static void isHelicity() { _helicity = true; }
-  static void isZemach()   { _helicity = false; }
-
-  // Conjugate.
-  virtual Resonance* cnj() const = 0;
-
-  // Copy.
-  virtual Resonance* copy() const = 0;
-
-protected:
-  std::string _name;
-  std::complex< double > evaluateUnormalised(const PhaseSpace& ps, const double& mSq12, const double& mSq13);
-  std::complex< double > evaluateUnormalised(const PhaseSpace& ps, const double& mSq12, const double& mSq13, const double& mSq23);
-  // Particle indices.
-  int _resA;
-  int _resB;
-  int _noRes = 6 - _resA - _resB;
-
-  // Basic resonance parameters.
-  double _norm = {1.};
-  Coeff _coeff;
-  const Parameter _mass;
-  const double _mSq = (_mass * _mass);
-  const Parameter _width;
-  const int _l;
-  const Parameter _r;
-  static bool _helicity;
-
-  // Conjugate.
-  void makeCnj();
-  bool _isCnj = {false};
 };
 
 }

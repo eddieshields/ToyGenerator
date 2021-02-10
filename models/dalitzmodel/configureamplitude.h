@@ -1,60 +1,66 @@
-#ifndef TOYGEN_CONFIGUREAMPLITUDE_H
-#define TOYGEN_CONFIGUREAMPLITUDE_H
+#ifndef DALITZMODEL_CONFIGUREAMPLITUDE_H
+#define DALITZMODEL_CONFIGUREAMPLITUDE_H
 
-#include <filesystem>
-#include "flatte.h"
+// DalitzModel.
 #include "relbreitwigner.h"
-#include "parameter.h"
+#include "flatte.h"
 #include "coefficient.h"
-#include "resonance.h"
-#include "dalitzamplitude.h"
-#include "dalitzmixing.h"
-#include "msgservice.h"
+#include "parameter.h"
+#include "amplitude.h"
 #include "configfile.h"
-#include "parameterstore.h"
-#include "correlationutils.h"
+#include "msgservice.h"
 
-#include "string.h"
-#include <fstream>
-#include <sstream>
+#include <any>
+#include <map>
 
 namespace DalitzModel {
 
-class DalitzAmplitude;
-
 class ConfigureAmplitude
 {
-public:
-  ConfigureAmplitude(std::string cfgfile) :
-    m_config( cfgfile ),
-    m_cfgfile( cfgfile )
-  {
-    if ( !(std::filesystem::exists(cfgfile)) ) FATAL( cfgfile << " not found!" );
-  }
-  ~ConfigureAmplitude() {}
-
-  void addFlatte(DalitzAmplitude& amp, std::string name, std::vector<std::string> res);
-  void addRBW   (DalitzAmplitude& amp, std::string name, std::vector<std::string> res);
-
-  void addCorrelation(CorrelationUtils::CovarianceMatrix& cov);
-
-  void setMixing(DalitzMixing& amp);
-  void setRandom() { m_random = true; }
-  void setPolar()  { m_polar  = true; }
-
-  DalitzAmplitude operator()(DalitzAmplitude& amp);
-  DalitzAmplitude operator()();
-
-  DalitzMixing    operator()(DalitzMixing& amp);
 private:
-  ConfigFile  m_config;
-  std::string m_cfgfile;
+  std::map<std::string,std::any> m_objects;
+  ConfigFile m_config;
+  Amplitude  m_amp;
 
-  bool m_random = {false};
-  bool m_polar  = {true};
+  void build_model_from_file();
+  void build_phasespace_from_file();
+  void build_resonance_from_file(std::string name);
 
-  void defineParameters();
-  Parameter& getParameter(std::string name);
+  template<typename T>
+  T get(std::string key)
+  {
+    // If it is not already stored get the object.
+    if ( m_objects.find(key) == m_objects.end() ) {
+      // Get object from configuration file.
+      std::any object = m_config.get<T>(key);
+      // Add to memory
+      m_objects.insert( std::pair<std::string,std::any>{ key , std::move(object) } );
+    }
+    // Return the object from class memory.
+    return std::any_cast<T>( m_objects[key] );
+  }
+public:
+  ConfigureAmplitude() = default;
+  ConfigureAmplitude(const std::string cfgfile) :
+    m_config( cfgfile )
+  {}
+  virtual ~ConfigureAmplitude() {}
+
+  // Operators.
+  friend std::ostream& operator<<(std::ostream& os, const ConfigureAmplitude& cfgamp)
+  {
+    return os;
+  }
+  friend std::istream& operator>>(std::istream& is, ConfigureAmplitude& cfgamp)
+  {
+    is >> cfgamp.m_config;
+    return is;
+  }
+
+  void appendRBW(std::string name);
+  void appendFlatte(std::string name);
+
+  Amplitude operator()() { build_model_from_file(); return m_amp; }
 };
 
 }

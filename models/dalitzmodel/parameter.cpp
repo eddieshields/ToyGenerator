@@ -2,31 +2,15 @@
 
 using namespace DalitzModel;
 
-// Initialise random variable.
+std::vector<Parameter*> Parameter::m_parameters = std::vector<Parameter*>();
+
 bool Parameter::m_random = false;
 
-double Parameter::operator=(const double& in)
+void Parameter::SetRandom(bool flag)
 {
-  return m_par;
-}
-
-double Parameter::operator*(const double in) const
-{
-  return m_val * in;
-}
-
-template <class number>
-const double Parameter::operator*(const number& in) const
-{
-  return m_val * in;
-}
-
-std::complex<double> Parameter::operator*(const std::complex<double>& in) const
-{
-  return m_val * in;
-}
-
-double Parameter::operator*(const Parameter& param) const
-{
-  return m_val * param.val();
+  m_random = flag;
+  for (auto p : Parameter::m_parameters) {
+    if ( Parameter::m_random ) p->m_state = p->m_value + p->m_error;
+    else p->m_state = p->m_value;
+  }
 }

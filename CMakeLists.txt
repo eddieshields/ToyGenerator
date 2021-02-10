@@ -17,11 +17,17 @@ include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS})
 
 #--- Define the headers list
-include_directories(include src dict algorithms models/dalitzmodel  ${CMAKE_SOURCE_DIR})
+include_directories(include src dict algorithms ${CMAKE_SOURCE_DIR})
+
+# Fix this section of compilation for lxplus.
 include_directories(external/json/single_include)
 if (APPLE)
     include_directories(external/json/single_include)
 endif()
+
+#--- Add subdirectory
+include_directories(models/dalitzmodel)
+#add_subdirectory(models/dalitzmodel)
 
 #--- Define the headers and src directories
 file(GLOB_RECURSE sources src/*.cpp algorithms/*.cpp models/dalitzmodel/*.cpp)
@@ -29,8 +35,10 @@ file(GLOB_RECURSE headers include/*.h algorithms/*.h models/dalitzmodel/*.h)
 
 ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} LINKDEF dict/${PACKAGE}LinkDef.h)
 
+
 #--- Generate library with ROOT dictionary
 add_library(${PACKAGE} SHARED ${sources} ${} G__${PACKAGE}.cxx)
+
 
 #--- Link libraries
 target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${CMAKE_DL_LIBS})
