@@ -33,12 +33,10 @@
 #include "tupling.h"
 
 // Models.
-#include "angular.h"
 #include "coefficient.h"
 #include "configfile.h"
 #include "configureamplitude.h"
-#include "dalitzamplitude.h"
-#include "dalitzmixing.h"
+#include "amplitude.h"
 #include "flatte.h"
 #include "parameter.h"
 #include "phasespace.h"

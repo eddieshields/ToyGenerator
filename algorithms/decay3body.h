@@ -4,7 +4,7 @@
 #include "event.h"
 #include "algorithm.h"
 #include "configureamplitude.h"
-#include "dalitzamplitude.h"
+#include "amplitude.h"
 #include "msgservice.h"
 
 class Decay3Body : public Algorithm
@@ -14,14 +14,14 @@ public:
     Algorithm(name)
   {
     DalitzModel::ConfigureAmplitude configure( cfgfile );
-    configure( m_amp );
+    m_amp = configure();
   }
   ~Decay3Body() {}
 
   virtual void operator() (Event& ev);
 
 private:
-  DalitzModel::DalitzAmplitude m_amp;
+  DalitzModel::Amplitude m_amp;
 };
 
 #endif

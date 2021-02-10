@@ -18,7 +18,6 @@ from ROOT import ( Hydra,
   
 # Import Algorithms.
 from ROOT import ( Accept,
-                   Amplitude,
                    CompositeParam,
                    D02K3Pi,
                    Decay3Body,
