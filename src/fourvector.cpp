@@ -1,7 +1,7 @@
 #include "fourvector.h"
 
-real_t FourVector::operator[](int i) const { return v[i]; }
-real_t FourVector::operator()(int i) const { return v[i]; }
+real_t& FourVector::operator[](int i)       { return v[i]; }
+real_t  FourVector::operator()(int i) const { return v[i]; }
 
 void FourVector::SetX(real_t x) { vX = x; }
 void FourVector::SetY(real_t y) { vY = y; }

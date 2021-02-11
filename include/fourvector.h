@@ -41,8 +41,8 @@ public:
   virtual ~FourVector() {}
 
   // Access by index.
-  real_t operator[](int i) const;
-  real_t operator()(int i) const;
+  real_t& operator[](int i);
+  real_t  operator()(int i) const;
 
   // Setters and getters.
   void SetX(real_t x);
