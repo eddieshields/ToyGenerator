@@ -2,4 +2,8 @@
 
 using namespace DalitzModel;
 
-Coordinates Coefficient::Coords = Coordinates::Rectangular;
+std::vector<Coefficient*> Coefficient::m_coefficients = std::vector<Coefficient*>();
+
+Coordinates Coefficient::CoefficientCoordinates::Type = Coordinates::Rectangular;
+
+Coefficient::CoefficientCoordinates Coefficient::CoordinatesSystem = Coefficient::CoefficientCoordinates();
