@@ -1,0 +1,9 @@
+<lcgdict>
+
+  <class name="Algorithm" />
+  <class name="Event" />
+  <class name="Hydra" />
+  <class name="Particle" />
+  <class name="Sequence" />
+
+</lcgdict>

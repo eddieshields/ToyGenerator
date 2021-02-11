@@ -1,49 +1,43 @@
 #ifndef TOYGEN_CLOCK_H
 #define TOYGEN_CLOCK_H
 
-// Package.
-#include "msgservice.h"
+// DalitzModel.
+#include "colours.h"
 
-// SL.
+// STL.
 #include <iostream>
-#include <string>
+#include <iomanip>
+#include <chrono>
+#include <ctime>
 
-// ROOT.
-#include "TStopwatch.h"
+using clock_r = std::chrono::time_point<std::chrono::high_resolution_clock>;
 
-
-/** @brief Clock class used for timings across package.
+/** @brief Clock.
  * 
- * Used for timings. Clock::Start() and Clock::Stop() can be used around a section of 
- * code to time it.
+ * Class to help with timings. Simply call Start() to start the clock and then stop 
+ * to stop the clock. Will then print CPU time and real time.
  * 
  * @author Edward Shields
- * @date   05/11/2020
+ * @date   22/01/2021
  */
 class Clock
 {
-public:
-  /** Start the clock. */
-  static void Start() { m_clock->Reset(); m_clock->Start(); }
-  /** Stop the clock. */
-  static void Stop()  { m_clock->Stop();  }
-  /** Reset the clock. */
-  static void Reset() { m_clock->Reset(); }
-
-  /** Print " Time to \param:". */
-  static void Print(std::string task = "") {
-    INFO("Time to "+task+":");
-    INFO("Real time = "+std::to_string(m_clock->RealTime()));
-    INFO("CPU time = "+std::to_string(m_clock->CpuTime()));
-    /*
-    if ( task != "" ) std::cout << "Time to " << task << std::endl;
-    std::cout << "Real time = " << m_clock->RealTime() << std::endl;
-    std::cout << "Cpu time =  " << m_clock->CpuTime()  << std::endl;
-    */
-  }
-
 private:
-  static TStopwatch* m_clock;
+  static std::clock_t c_start;   
+  static std::clock_t c_end;
+  static clock_r      t_start;
+  static clock_r      t_end;
+
+public:
+  /** Start the clock */
+  static void Start();
+  /** Stop the clock */
+  static void Stop();
+  /** Print timings.
+   * 
+   * \param task task that was completed. Will print "Time to task:" then timings. */
+  static void Print(std::string task);
+
 };
 
 #endif

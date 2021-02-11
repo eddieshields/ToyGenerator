@@ -59,7 +59,7 @@ int main()
   hy().Variables = tup.getVariables();
   hy.run();
   */
-  DalitzModel::Coefficient::Coords = DalitzModel::Coordinates::Polar;
+  DalitzModel::Coefficient::CoordinatesSystem = DalitzModel::Coordinates::Polar;
   DalitzModel::ConfigureAmplitude configure("cfg/babar2010.cfg");
   DalitzModel::Amplitude amp = configure();
   //DalitzModel::LineShape::Flatte::SetParameterisation( "BaBar2010" );

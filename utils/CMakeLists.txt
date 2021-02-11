@@ -22,3 +22,4 @@ ROOT_GENERATE_DICTIONARY(G__${SUBPACKAGE} ${HEADERS} LINKDEF dict/${SUBPACKAGE}L
 
 #--- Generate library with ROOT dictionary
 add_library(${SUBPACKAGE} SHARED ${SOURCES} ${} G__${SUBPACKAGE}.cxx)
+target_link_libraries(${SUBPACKAGE} ${ROOT_LIBRARIES})
