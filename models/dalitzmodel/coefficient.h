@@ -28,12 +28,12 @@ public:
   Coefficient(const double& c1, const double& c2) :
     m_c1( c1 ),
     m_c2( c2 ),
-    m_state( m_c1.m_state , m_c2.m_state )
+    m_state( std::polar( c1 , c2 ) )
   {}
   Coefficient(const Parameter& c1, const Parameter& c2) :
     m_c1( c1 ),
     m_c2( c2 ),
-    m_state( m_c1.m_state , m_c2.m_state )
+    m_state( std::polar( m_c1.m_state , m_c2.m_state ) )
   {}
   virtual ~Coefficient() {}
 
@@ -50,7 +50,7 @@ public:
     // Input of the form " c1 , c2".
     std::string comma;
     is >> coeff.m_c1 >> comma >> coeff.m_c2;
-    coeff.m_state = complex_t(coeff.m_c1.m_state,coeff.m_c2.m_state);
+    coeff.m_state = std::polar(coeff.m_c1.m_state,coeff.m_c2.m_state);
     return is;
   }
 
