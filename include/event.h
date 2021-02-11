@@ -2,6 +2,7 @@
 #define TOYGEN_EVENT_H
 
 #include "particle.h"
+#include "msgservice.h"
 
 #include <vector>
 #include <map>
@@ -37,8 +38,8 @@ public:
   double&    operator[](std::string name) { return m_v[name]; }
   Particle& operator()(int index)         { return m_particles[index]; }
 
-  std::vector<Particle> m_particles;
-  std::vector<double>   m_data;
+  std::vector<Particle>          m_particles;
+  std::vector<double>            m_data;
   std::map<std::string,double>   m_v;
 
   void updateMasses()

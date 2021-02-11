@@ -65,17 +65,22 @@ public:
 
   static const double exponential( const double& lambda = 1.0 )
   {
-    return _exponential( _engine );
+    return _exponential( engine() );
   }
 
   static const double normal( const double& mu = 0.0, const double& sigma = 1.0 )
   {
-    return mu + sigma * _normal( _engine );
+    return mu + sigma * _normal( engine() );
   }
 
   static const int integer( const int& a = 0, const int& b = 1 )
   {
-    return _integer( _engine );
+    return _integer( engine() );
+  }
+
+  static const bool Bool()
+  {
+    return _integer( engine() );
   }
 };
 

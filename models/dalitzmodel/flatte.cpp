@@ -54,8 +54,8 @@ const complex_t Flatte::babar2008_propagator(const PhaseSpace& ps, const double&
 const complex_t Flatte::babar2010_propagator(const PhaseSpace& ps, const double& mSqAB) const
 {
   const std::complex< double > I( 0., 1. );
-  const double rho1  = rho( ps, mSqAB , ps.mSq( m_resoA ) , ps.mSq( m_resoB ) );
-  const double rho2  = std::sqrt( kallen( mSqAB, m02aSq(), m02bSq() ) ) / mSqAB;
+  const double rho2  = rho( ps, mSqAB , ps.mSq( m_resoA ) , ps.mSq( m_resoB ) );
+  const double rho1  = std::sqrt( kallen( mSqAB, m02aSq(), m02bSq() ) ) / mSqAB;
 
   return gamma1() / mSq() - mSqAB - I * ( rho1 * gamma1Sq() + rho2 * gamma2Sq() );
 }
@@ -72,7 +72,7 @@ void Flatte::SetParameterisation(std::string parameterisation)
   return;
 }
 
-Flatte::Parameterisation Flatte::m_parameterisation = Flatte::Parameterisation::None;
+Flatte::Parameterisation Flatte::m_parameterisation = Flatte::Parameterisation::BaBar2010;
 
 Flatte* Flatte::copy() const
 {

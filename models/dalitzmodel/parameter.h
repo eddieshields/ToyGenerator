@@ -16,7 +16,7 @@ using complex_t = std::complex<double>;
 
 class Parameter
 {
-private:
+protected:
   static std::vector<Parameter*> m_parameters;
   static bool m_random;
   double m_value = {0.};
