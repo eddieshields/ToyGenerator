@@ -1,6 +1,5 @@
-# CMakeLists.txt for ToyGenerator module. It creates a library with dictionary and a main program
 cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
-set(SUBPACKAGE DalitzModel)
+set(SUBPACKAGE Utils)
 project(${SUBPACKAGE})
 
 # Tell CMake where to find ROOT.

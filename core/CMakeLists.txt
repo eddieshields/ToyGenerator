@@ -1,6 +1,6 @@
 # CMakeLists.txt for ToyGenerator module. It creates a library with dictionary and a main program
 cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
-set(SUBPACKAGE DalitzModel)
+set(SUBPACKAGE Core)
 project(${SUBPACKAGE})
 
 # Tell CMake where to find ROOT.
@@ -14,6 +14,10 @@ include_directories(${ROOT_INCLUDE_DIRS})
 
 #--- Define the headers list
 include_directories(include)
+
+#--- Include external JSON library needed.
+# Fix this section of compilation for lxplus.
+include_directories(${CMAKE_SOURCE_DIR}/external/json/single_include)
 
 #--- Define the header and src directories
 file(GLOB_RECURSE HEADERS include/*.h)

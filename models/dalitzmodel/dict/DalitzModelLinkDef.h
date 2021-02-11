@@ -5,12 +5,11 @@
 #pragma link off all functions;
 #pragma link C++ nestedclasses;
 
-#pragma link C++ class Angular+;
-#pragma link C++ class Coeff+;
+#pragma link C++ class Amplitude+;
+#pragma link C++ class Coefficient+;
 #pragma link C++ class ConfigFile+;
 #pragma link C++ class ConfigureAmplitude+;
-#pragma link C++ class DalitzAmplitude+;
-#pragma link C++ class DalitzMixing+;
+#pragma link C++ class DalitzPlot+;
 #pragma link C++ class Flatte+;
 #pragma link C++ class Parameter+;
 #pragma link C++ class PhaseSpace+;
