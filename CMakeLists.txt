@@ -3,52 +3,45 @@ cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
 set(PACKAGE HYDRA)
 project(${PACKAGE})
 
-#set (CMAKE_CXX_STANDARD 17)
+include_directories(utils/include)
+add_subdirectory(utils)
+
+#include_directories(algorithms/include)
+#add_subdirectory(algorithms)
+#
+#include_directories(models/dalitzmodel/include)
+#add_subdirectory(models)
 
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 #--- Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
-find_package(ROOT REQUIRED COMPONENTS Core RIO Hist Graf Graf3d Postscript Gpad
-                             RooFit RooFitCore Tree MathCore Foam Physics
-                             Proof ProofBench ProofDraw ProofPlayer)
+find_package(ROOT REQUIRED COMPONENTS Core RooFit RooFitCore Tree MathCore Physics Hist)
 
 #--- Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS})
 
-#--- Define the headers list
-include_directories(include src dict algorithms ${CMAKE_SOURCE_DIR})
+include_directories(core/include)
 
+#--- Include external JSON library needed.
 # Fix this section of compilation for lxplus.
-include_directories(external/json/single_include)
-if (APPLE)
-    include_directories(external/json/single_include)
-endif()
+include_directories(${CMAKE_SOURCE_DIR}/external/json/single_include)
 
-#--- Add subdirectory
-include_directories(models/dalitzmodel)
-#add_subdirectory(models/dalitzmodel)
+#--- Define the header and src directories
+file(GLOB_RECURSE HEADERS core/include/*.h)
+file(GLOB_RECURSE SOURCES core/Core/*.cpp)
 
-#--- Define the headers and src directories
-file(GLOB_RECURSE sources src/*.cpp algorithms/*.cpp models/dalitzmodel/*.cpp)
-file(GLOB_RECURSE headers include/*.h algorithms/*.h models/dalitzmodel/*.h)
-
-ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} LINKDEF dict/${PACKAGE}LinkDef.h)
-
+ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${HEADERS} LINKDEF core/dict/CoreLinkDef.h)
 
 #--- Generate library with ROOT dictionary
-add_library(${PACKAGE} SHARED ${sources} ${} G__${PACKAGE}.cxx)
-
-
-#--- Link libraries
+add_library(${PACKAGE} SHARED ${SOURCES} ${} G__${PACKAGE}.cxx)
 target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${CMAKE_DL_LIBS})
-
-#--- External library for reading json files.
-target_include_directories(${PACKAGE} PUBLIC external/json/single_include)
-
-#--- Create an executable
-add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
-target_link_libraries(ToyGenerator ${PACKAGE})
-
-#--- Create Hydra
-execute_process(COMMAND chmod +x ${CMAKE_SOURCE_DIR}/Hydra)
+#--- Link libraries
+#target_link_libraries(${PACKAGE} Utils Algorithms DalitzModel ${ROOT_LIBRARIES} ${CMAKE_DL_LIBS})
+#
+##--- Create an executable
+#add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
+#target_link_libraries(ToyGenerator ${PACKAGE})
+#
+##--- Create Hydra
+#execute_process(COMMAND chmod +x ${CMAKE_SOURCE_DIR}/Hydra)
