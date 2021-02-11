@@ -15,12 +15,19 @@ using complex_t = std::complex<double>;
 
 class Parameter;
 
+enum Coordinates {
+  Rectangular,
+  Polar
+};
+
 class Coefficient
 {
 friend class Parameter;
 private:
+  
+  static Coordinates m_coords;
   Parameter m_c1 = {0.};
-  Parameter m_c2 = {0.}; 
+  Parameter m_c2 = {0.};
 
 public:
   complex_t m_state = {complex_t(0.,0.)};
@@ -28,13 +35,27 @@ public:
   Coefficient(const double& c1, const double& c2) :
     m_c1( c1 ),
     m_c2( c2 ),
-    m_state( std::polar( c1 , c2 ) )
-  {}
+  {
+    switch( m_coords )
+    {
+    case Coordinates::Polar:
+      m_state = std::polar( c1 , c2 );
+    default:
+      m_state = complex_t( c1 , c2 );
+    }
+  }
   Coefficient(const Parameter& c1, const Parameter& c2) :
     m_c1( c1 ),
     m_c2( c2 ),
-    m_state( std::polar( m_c1.m_state , m_c2.m_state ) )
-  {}
+  {
+    switch( m_coords )
+    {
+    case Coordinates::Polar:
+      m_state = std::polar( c1.m_state , c2.m_state );
+    default:
+      m_state = complex_t( c1.m_state , c2.m_state );
+    }
+  }
   virtual ~Coefficient() {}
 
   // Operators.
@@ -50,7 +71,13 @@ public:
     // Input of the form " c1 , c2".
     std::string comma;
     is >> coeff.m_c1 >> comma >> coeff.m_c2;
-    coeff.m_state = std::polar(coeff.m_c1.m_state,coeff.m_c2.m_state);
+    switch( m_coords )
+    {
+    case Coordinates::Polar:
+      coeff.m_state = std::polar(coeff.m_c1.m_state,coeff.m_c2.m_state);
+    default:
+      coeff.m_state = complex_t(coeff.m_c1.m_state,coeff.m_c2.m_state);
+    }
     return is;
   }
 
