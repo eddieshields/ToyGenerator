@@ -20,8 +20,8 @@ include_directories(include)
 include_directories(${CMAKE_SOURCE_DIR}/external/json/single_include)
 
 #--- Define the header and src directories
-file(GLOB_RECURSE HEADERS include/*.h)
-file(GLOB_RECURSE SOURCES ${SUBPACKAGE}/*.cpp)
+file(GLOB_RECURSE HEADERS ${SUBPACKAGE}/*.h)
+file(GLOB_RECURSE SOURCES src/*.cpp)
 
 ROOT_GENERATE_DICTIONARY(G__${SUBPACKAGE} ${HEADERS} LINKDEF dict/${SUBPACKAGE}LinkDef.h)
 

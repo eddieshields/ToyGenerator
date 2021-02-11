@@ -13,19 +13,19 @@ if (APPLE)
 endif()
 
 #--- Include Utils
-include_directories(utils/include)
+include_directories(utils/Utils)
 add_subdirectory(utils)
 
 #--- Include Core
-include_directories(core/include)
+include_directories(core/Core)
 add_subdirectory(core)
 
 #--- Include DalitzModel
-include_directories(models/dalitzmodel/include)
+include_directories(models/dalitzmodel/DalitzModel)
 add_subdirectory(models)
 
 #--- Include Algorithms
-include_directories(algorithms/include)
+include_directories(algorithms/Algorithms)
 add_subdirectory(algorithms)
 
 # Tell CMake where to find ROOT.
