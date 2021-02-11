@@ -24,19 +24,18 @@ class Coefficient
 {
 friend class Parameter;
 private:
-  
-  static Coordinates m_coords;
   Parameter m_c1 = {0.};
   Parameter m_c2 = {0.};
 
 public:
+  static Coordinates Coords;
   complex_t m_state = {complex_t(0.,0.)};
   Coefficient() = default;
   Coefficient(const double& c1, const double& c2) :
     m_c1( c1 ),
     m_c2( c2 )
   {
-    switch( m_coords )
+    switch( Coords )
     {
     case Coordinates::Polar:
       m_state = std::polar( c1 , c2 );
@@ -48,7 +47,7 @@ public:
     m_c1( c1 ),
     m_c2( c2 )
   {
-    switch( m_coords )
+    switch( Coords )
     {
     case Coordinates::Polar:
       m_state = std::polar( c1.m_state , c2.m_state );
@@ -71,7 +70,7 @@ public:
     // Input of the form " c1 , c2".
     std::string comma;
     is >> coeff.m_c1 >> comma >> coeff.m_c2;
-    switch( m_coords )
+    switch( Coords )
     {
     case Coordinates::Polar:
       coeff.m_state = std::polar(coeff.m_c1.m_state,coeff.m_c2.m_state);

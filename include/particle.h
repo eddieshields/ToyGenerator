@@ -2,6 +2,7 @@
 #define TOYGEN_PARTICLE_H
 
 #include "particlestore.h"
+#include "fourvector.h"
 
 #include <string>
 
@@ -14,14 +15,17 @@ public:
   Particle() {};
   virtual ~Particle() {};
 
-  bool& isStable()           { return m_stable; }
-  double& time()             { return m_ctau; }
-  double& truetime()         { return m_true_ctau; }
-  TLorentzVector& momentum() { return m_p; }
-  int& charge()              { return m_q; }
-  int& flavour()             { return m_flavour; }
+  bool&            isStable()     { return m_stable; }
+  double&          time()         { return m_ctau; }
+  double&          truetime()     { return m_true_ctau; }
+  TLorentzVector&  momentum()     { return m_p; }
+  FourVector&      new_momentum() { return m_n_p; }
+  int&             charge()       { return m_q; }
+  int&             flavour()      { return m_flavour; }
 
-  Particle operator+(Particle& part2);
+  void SetMomentum(FourVector p) { m_n_p = std::move(p); }
+
+  Particle operator+ (Particle& part2);
   Particle operator+=(Particle& part2);
 protected:
   std::string m_name;
@@ -32,6 +36,7 @@ protected:
   int         m_q;
   int         m_flavour;
 
+  FourVector     m_n_p;
   TLorentzVector m_p;
   TLorentzVector m_true_p;
 };
