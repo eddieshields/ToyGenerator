@@ -34,7 +34,7 @@ public:
   Coefficient() = default;
   Coefficient(const double& c1, const double& c2) :
     m_c1( c1 ),
-    m_c2( c2 ),
+    m_c2( c2 )
   {
     switch( m_coords )
     {
@@ -46,7 +46,7 @@ public:
   }
   Coefficient(const Parameter& c1, const Parameter& c2) :
     m_c1( c1 ),
-    m_c2( c2 ),
+    m_c2( c2 )
   {
     switch( m_coords )
     {
