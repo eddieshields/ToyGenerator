@@ -21,6 +21,14 @@ private:
   std::vector<Resonance*> m_resonances;
   std::vector<Resonance*> m_cnjresonances;
 
+  // Linked list of resonances.
+  Resonance* headDir = {nullptr};
+  Resonance* tailDir = {nullptr};
+  Resonance* headCnj = {nullptr};
+  Resonance* tailCnj = {nullptr};
+  void addDirResonanceToList(Resonance* res);
+  void addCnjResonanceToList(Resonance* res);
+
   PhaseSpace m_ps;
 public:
   Amplitude() = default;
@@ -45,8 +53,11 @@ public:
   {
     std::string out = "Resonances = \n";
     os << out;
-    for (int i = 0; i < amp.size(); i++) {
-      os << *amp.m_resonances[i] << "\n";
+    Resonance* res = nullptr;
+    res = amp.headCnj;
+    while ( res != nullptr ) {
+      os << *res << "\n";
+      res = res->next;
     }
     return os;
   }
