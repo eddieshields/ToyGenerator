@@ -20,6 +20,7 @@ public:
 
   virtual void operator() (Event& ev);
 
+  DalitzModel::Amplitude amp() { return m_amp; }
 private:
   DalitzModel::Amplitude m_amp;
 };
