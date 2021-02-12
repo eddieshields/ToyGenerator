@@ -8,7 +8,9 @@ from ROOT import ( Hydra,
                    Event,
                    Particle,
                    ParticleStore,
-                   Sequence
+                   Sequence,
+                   DistributeTask,
+                   ThreadPool
                  )
 
 # Import Utils.

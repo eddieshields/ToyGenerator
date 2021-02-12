@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
 set(SUBPACKAGE Core)
 project(${SUBPACKAGE})
 
+set(CMAKE_CXX_STANDARD 17)
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 #--- Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
@@ -19,6 +20,9 @@ include_directories(include)
 # Fix this section of compilation for lxplus.
 include_directories(${CMAKE_SOURCE_DIR}/external/json/single_include)
 
+#--- Find threads.
+find_package(Threads REQUIRED)
+
 #--- Define the header and src directories
 file(GLOB_RECURSE HEADERS ${SUBPACKAGE}/*.h)
 file(GLOB_RECURSE SOURCES src/*.cpp)
@@ -27,4 +31,4 @@ ROOT_GENERATE_DICTIONARY(G__${SUBPACKAGE} ${HEADERS} LINKDEF dict/${SUBPACKAGE}L
 
 #--- Generate library with ROOT dictionary
 add_library(${SUBPACKAGE} SHARED ${SOURCES} ${} G__${SUBPACKAGE}.cxx)
-target_link_libraries(${SUBPACKAGE} Utils ${ROOT_LIBRARIES})
+target_link_libraries(${SUBPACKAGE} Utils ${ROOT_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})

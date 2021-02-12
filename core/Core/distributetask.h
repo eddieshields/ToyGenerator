@@ -20,7 +20,7 @@
  *  a vector that gets returned.
  * 
  *  @author Edward Shields
- *  @dat 12/02/2021
+ *  @date 12/02/2021
  */
 class DistributeTask 
 {
