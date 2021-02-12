@@ -10,12 +10,11 @@ void Hydra::run()
   INFO("Requested to generate " << m_configuration.EvtMax << " Events");
   INFO("Will use " << m_configuration.NThreads << " threads");
   Clock::Start();
-  //Threads execute(m_configuration.NThreads,m_configuration.EvtMax);
-  //// Create a task to be passed to the threadpool.
-  //auto func = [&](){return this->runSequence();};
-  //// Pass task to threadpool and get evets from return.
-  //m_list = execute(func);
-  runSequence();
+  DistributeTask execute(m_configuration.NThreads);
+  // Create a task to be passed to the threadpool.
+  auto func = [&](){return this->runSequence();};
+  // Pass task to threadpool and get evets from return.
+  m_list = execute(func);
   Clock::Stop();
   Clock::Print("generate "+std::to_string(m_configuration.EvtMax)+" events");
 
