@@ -116,11 +116,11 @@ public:
 
   // Getters.
   std::string name()  const { return m_name; }
-  Parameter   mass()  const { return m_mass; }
-  Parameter   m()     const { return m_mass; }
+  double      mass()  const { return m_mass.m_state; }
+  double      m()     const { return m_mass.m_state; }
   double      mSq()   const { return m_massSq; }
-  Parameter   width() const { return m_width; }
-  Parameter   r()     const { return m_r; }
+  double      width() const { return m_width.m_state; }
+  double      r()     const { return m_r.m_state; }
   int         l()     const { return m_l; }
 
   const complex_t evaluate(const PhaseSpace& ps, const double& mSq12, const double& mSq13);

@@ -37,7 +37,7 @@ public:
   const complex_t propagator(const PhaseSpace& ps, const double& mSqAB) const
   {
     complex_t I( 0., 1. );
-    return 1. /( mSq() - mSqAB - ( m() * I * runningWidth(ps,mSqAB) ) );
+    return 1. /( this->mSq() - mSqAB - ( this->m() * I * this->runningWidth(ps,mSqAB) ) );
   }
   
   /** Running width $\f \Gamma_{AB}\left( m_{AB} \right)\f$
@@ -50,7 +50,7 @@ public:
    */
   const double runningWidth(const PhaseSpace& ps, const double& mSqAB) const
   {
-    return width() * std::pow( q( ps, mSqAB )/q( ps, mSq() ) , (2*m_l + 1) ) * ( m() / std::sqrt( mSqAB ) ) * std::pow( blattWeisskopfPrime(ps,mSqAB) , 2 );
+    return this->width() * std::pow( this->q( ps, mSqAB )/this->q( ps, this->mSq() ) , (2*m_l + 1) ) * ( this->m() / std::sqrt( mSqAB ) ) * std::pow( this->blattWeisskopfPrime(ps,mSqAB) , 2 );
   }
 
   RelBreitWigner* copy() const
