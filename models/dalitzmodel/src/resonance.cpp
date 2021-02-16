@@ -23,8 +23,7 @@ const complex_t Resonance::evaluate(const PhaseSpace& ps, const double& mSq12, c
   double mSqAB = M2AB(mSq12, mSq13, mSq23);
   double mSqAC = M2AC(mSq12, mSq13, mSq23);
   double mSqBC = M2BC(mSq12, mSq13, mSq23);
-  complex_t out = this->m_coeff * this->propagator( ps , mSqAB ) * this->angular( ps , mSqAB , mSqAC , mSqBC);
-  return out;
+  return m_coeff * propagator( ps , mSqAB ) * angular( ps , mSqAB , mSqAC , mSqBC);
 }
 
 const complex_t Resonance::evaluate(const PhaseSpace& ps, const double& mSq12, const double& mSq13)

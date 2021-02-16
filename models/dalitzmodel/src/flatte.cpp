@@ -18,17 +18,17 @@ const complex_t Flatte::propagator(const PhaseSpace& ps, const double& mSqAB) co
   }
   const std::complex< double > I( 0., 1. );
 
-  const double mGamma0 = this->mass() * this->width();
+  const double mGamma0 = mass() * width();
 
-  const double rho10 = this->rho( ps, mSq() , ps.mSq( m_resoA ) , ps.mSq( m_resoB ) );
-  const double rho1  = this->rho( ps, mSqAB , ps.mSq( m_resoA ) , ps.mSq( m_resoB ) );
-  const double g1    = this->gamma1Sq() * rho1 / rho10;
+  const double rho10 = rho( ps, mSq() , ps.mSq( m_resoA ) , ps.mSq( m_resoB ) );
+  const double rho1  = rho( ps, mSqAB , ps.mSq( m_resoA ) , ps.mSq( m_resoB ) );
+  const double g1    = gamma1Sq() * rho1 / rho10;
 
-  const double rho20 = std::sqrt( this->kallen( this->mSq(), this->m02aSq(), this->m02bSq() ) ) / mSqAB;
-  const double rho2  = std::sqrt( this->kallen( mSqAB,       this->m02aSq(), this->m02bSq() ) ) / mSqAB;
-  const double g2    = this->gamma2Sq() * rho2 / rho20;
+  const double rho20 = std::sqrt( kallen( mSq(), m02aSq(), m02bSq() ) ) / mSqAB;
+  const double rho2  = std::sqrt( kallen( mSqAB, m02aSq(), m02bSq() ) ) / mSqAB;
+  const double g2    = gamma2Sq() * rho2 / rho20;
   
-  complex_t out = mGamma0 * this->gamma1Sq() / ( this->mSq() - mSqAB - I * mGamma0 * ( g1 + g2 ) * std::pow( this->blattWeisskopf( ps, mSqAB ), 2 ) );
+  complex_t out = mGamma0 * gamma1Sq() / ( mSq() - mSqAB - I * mGamma0 * ( g1 + g2 ) * std::pow( blattWeisskopf( ps, mSqAB ), 2 ) );
 
   return out;
 }
@@ -72,7 +72,7 @@ void Flatte::SetParameterisation(std::string parameterisation)
   return;
 }
 
-Flatte::Parameterisation Flatte::m_parameterisation = Flatte::Parameterisation::BaBar2010;
+Flatte::Parameterisation Flatte::m_parameterisation = Flatte::Parameterisation::None;
 
 Flatte* Flatte::copy() const
 {
