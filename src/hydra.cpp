@@ -42,7 +42,6 @@ std::vector<Event> Hydra::runSequence()
     // Accepted events are saved in list, so events can be deleted.
     delete ev;
   }
-
   return list;
 }
 

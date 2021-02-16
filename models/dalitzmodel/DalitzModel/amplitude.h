@@ -54,7 +54,7 @@ public:
     std::string out = "Resonances = \n";
     os << out;
     Resonance* res = nullptr;
-    res = amp.headCnj;
+    res = amp.headDir;
     while ( res != nullptr ) {
       os << *res << "\n";
       res = res->next;
