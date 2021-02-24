@@ -40,10 +40,10 @@ class D02K3Pi : public Algorithm
 public:
   D02K3Pi(std::string name) : 
     Algorithm(name),
+    m_dcs_offset( 0.0601387 * std::exp( std::complex<double>(0,1) * 1.04827 * M_PI / 180. ) ),
     dcs( "models/WSdcs.so" , "AMP" ),
     cf(  "models/WScf.so"  , "AMP" ),
-    rs(  "models/RScf.so"  , "AMP" ),
-    m_dcs_offset( 0.0601387 * std::exp( std::complex<double>(0,1) * 1.04827 * M_PI / 180. ) )
+    rs(  "models/RScf.so"  , "AMP" )
   {}
   ~D02K3Pi() {}
 

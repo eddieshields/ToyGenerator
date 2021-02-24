@@ -41,14 +41,14 @@ public:
             const int& resoA, const int& resoB,
             const Parameter& mass, const Parameter& width,
             const int& l, const Parameter& r) :
-    m_name( name ),
     m_coeff( coeff ),
     m_mass( mass ),
     m_width( width ),
     m_r( r ),
     m_l( l ),
     m_resoA( resoA ),
-    m_resoB( resoB )
+    m_resoB( resoB ),
+    m_name( name )
   {
     m_massSq = m_mass * m_mass;
     m_noRes = 6 - m_resoA - m_resoB;
@@ -57,27 +57,27 @@ public:
             const int& resoA, const int& resoB,
             const double& mass, const double& width,
             const int& l, const double& r) :
-    m_name( name ),
     m_coeff( coeff1 , coeff2 ),
     m_mass( mass ),
     m_width( width ),
     m_r( r ),
     m_l( l ),
     m_resoA( resoA ),
-    m_resoB( resoB )
+    m_resoB( resoB ),
+    m_name( name )
   {
     m_massSq = m_mass * m_mass;
     m_noRes = 6 - m_resoA - m_resoB;
   }
   Resonance(const Resonance& other) :
-    m_name( other.m_name ),
     m_coeff( other.m_coeff ),
     m_mass( other.m_mass ),
     m_width( other.m_width ),
     m_r( other.m_r ),
     m_l( other.m_l ),
     m_resoA( other.m_resoA ),
-    m_resoB( other.m_resoB )
+    m_resoB( other.m_resoB ),
+    m_name( other.m_name )
   {
     m_massSq = m_mass * m_mass;
     m_noRes = 6 - m_resoA - m_resoB;

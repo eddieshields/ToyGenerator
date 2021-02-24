@@ -31,7 +31,7 @@ TCanvas* DalitzPlot::plotProjection(TH2* his, std::string var)
   TCanvas* canv = new TCanvas("canv","canv",650,600);
   canv->cd();
 
-  TH1* proj;
+  TH1* proj = nullptr;
   if ( var == std::string("x") ) proj = his->ProjectionX();
   else if ( var == std::string("y") ) {
     proj = his->ProjectionY();
@@ -54,7 +54,7 @@ TCanvas* DalitzPlot::plotProjection(std::vector<TH2*> hiss, std::string var)
   TCanvas* canv = new TCanvas("canv","canv",650,600);
   canv->cd();
 
-  TH1* proj;
+  TH1* proj = nullptr;
   if ( var == std::string("x") ) proj = hiss[0]->ProjectionX();
   else if ( var == std::string("y") ) {
     proj = hiss[0]->ProjectionY();
@@ -120,17 +120,6 @@ TGraph* DalitzPlot::setBoundary(const int& boundary_points)
 }
 
 void DalitzPlot::lhcbStyle() {
-  // define names for colours
-  Int_t black  = 1;
-  Int_t red    = 2;
-  Int_t green  = 3;
-  Int_t blue   = 4;
-  Int_t yellow = 5;
-  Int_t magenta= 6;
-  Int_t cyan   = 7;
-  Int_t purple = 9;
-
-
   ////////////////////////////////////////////////////////////////////
   // PURPOSE:
   //

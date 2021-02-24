@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
   hy().EvtMax = 100000;
   hy().TreeName = "d02kshh";
   hy().AlgoSequence = flow;
-  hy().NThreads = 1;
+  hy().NThreads = -1;
   hy().OutputLocation = "d02kskk.root";
   hy().Variables = tup.getVariables();
   hy.run();

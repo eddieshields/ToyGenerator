@@ -26,8 +26,8 @@ class DistributeTask
 {
 public:
   DistributeTask(int& nthreads) :
-    m_nthreads( nthreads ),
-    m_pool( nthreads )
+    m_pool( nthreads ),
+    m_nthreads( nthreads )
   {
     //m_list.reserve( nevents );
     ROOT::EnableImplicitMT(nthreads);

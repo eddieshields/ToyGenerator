@@ -67,7 +67,6 @@ public:
 private:
   std::vector<Event> m_list;
   void addToList(Event ev) { m_list.push_back(ev); } 
-  unsigned int m_counter = {0};
 
 };
 

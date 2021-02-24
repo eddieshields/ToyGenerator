@@ -37,7 +37,7 @@ public:
   template<typename T>
   T get(std::string key)
   {
-    T out;
+    T out = 0.0;
     if ( m_entries.find(key) == m_entries.end() ) {
       WARNING(key << " not found!");
       return out;
