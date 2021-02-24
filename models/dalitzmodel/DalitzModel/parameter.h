@@ -14,6 +14,11 @@ namespace DalitzModel {
 
 using complex_t = std::complex<double>;
 
+enum Uncertainty {
+  Fixed,
+  Floating
+};
+
 class Parameter
 {
 protected:
@@ -42,8 +47,60 @@ public:
   }
   virtual ~Parameter()
   {
-    // Remove parameter from list;
+    m_parameters.erase(std::remove(m_parameters.begin(), m_parameters.end(), this), m_parameters.end());
   }
+
+  void set_state()
+  {
+    switch( ParameterUncertaintyType::Type )
+    {
+    case Uncertainty::Floating:
+      m_state = m_value + m_error;
+      break;
+    default:
+      m_state = m_value;
+      break;
+    }
+  }
+
+  /** ParameterUncertainty  
+   * 
+   * Nested class that can be used to change the system of coordinates
+   * used for the Coefficients.
+   */
+  struct ParameterUncertaintyType
+  {
+    static Uncertainty Type;
+    void operator=(Uncertainty uncert_type)
+    {
+      if ( uncert_type == Type ) return;
+      switchUncertaintySystem( uncert_type );
+    }
+    void switchUncertaintySystem(Uncertainty uncert_type)
+    {
+      if ( uncert_type == Type ) return;
+      switch(uncert_type)
+      {
+      case Uncertainty::Fixed:
+        INFO("Switching to fixed uncertainty");
+        for (auto p : Parameter::m_parameters) {
+          p->m_state = p->m_value;
+          INFO(p->m_state);
+        }
+        break;
+      case Uncertainty::Floating:
+        INFO("Switching to floating uncertainty");
+        for (auto p : Parameter::m_parameters) {
+          p->m_state = p->m_value + p->m_error;
+          INFO(p->m_state);
+        }
+        break;
+      default:
+        break;
+      }
+    }
+  };
+  static ParameterUncertaintyType ParameterUncertainty;
 
   double value() const { return m_value; }
   double error() const { return m_error; }

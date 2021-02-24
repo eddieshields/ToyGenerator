@@ -40,31 +40,40 @@ public:
     m_c1( c1 ),
     m_c2( c2 )
   {
-    switch( CoefficientCoordinates::Type )
-    {
-    case Coordinates::Polar:
-      m_state = std::polar( c1 , c2 );
-    default:
-      m_state = complex_t( c1 , c2 );
-    }
+    set_state();
     m_coefficients.push_back( this );
   }
   Coefficient(const Parameter& c1, const Parameter& c2) :
     m_c1( c1 ),
     m_c2( c2 )
   {
-    switch( CoefficientCoordinates::Type )
-    {
-    case Coordinates::Polar:
-      m_state = std::polar( c1.m_state , c2.m_state );
-    default:
-      m_state = complex_t( c1.m_state , c2.m_state );
-    }
+    set_state();
     m_coefficients.push_back( this );
   }
+  Coefficient(const Coefficient& coeff) :
+    m_c1( coeff.m_c1 ),
+    m_c2( coeff.m_c2 )
+  {
+    set_state();
+    m_coefficients.push_back( this );
+  }
+
   virtual ~Coefficient()
   {
     m_coefficients.erase(std::remove(m_coefficients.begin(), m_coefficients.end(), this), m_coefficients.end());
+  }
+
+  void set_state()
+  {
+    switch( CoefficientCoordinates::Type )
+    {
+    case Coordinates::Polar:
+      m_state = std::polar( m_c1.m_state , m_c2.m_state );
+      break;
+    default:
+      m_state = complex_t( m_c1.m_state , m_c2.m_state );
+      break;
+    }
   }
 
 
@@ -87,13 +96,17 @@ public:
       switch(coord_type)
       {
       case Coordinates::Polar:
+        INFO("Switching to polar coordinates");
         for (auto c : Coefficient::m_coefficients) {
           c->m_state = std::polar( c->m_c1.m_state , c->m_c2.m_state );
+          INFO(c->m_state);
         }
         break;
       case Coordinates::Rectangular:
+        INFO("Switching to rectangular coordinates");
         for (auto c : Coefficient::m_coefficients) {
           c->m_state = complex_t( c->m_c1.m_state , c->m_c2.m_state );
+          INFO(c->m_state);
         }
         break;
       default:
@@ -106,9 +119,9 @@ public:
   // Operators.
   friend std::ostream& operator<<(std::ostream& os, const Coefficient& coeff)
   {
-    os << MAGENTA << "(" << std::fixed << std::setprecision(5) << coeff.m_c1.m_state 
-                  << "," << std::fixed << std::setprecision(5) << coeff.m_c2.m_state 
-                  << ")" << RESET;
+    os << MAGENTA << coeff.m_state << RESET; //<< "(" << std::fixed << std::setprecision(5) << coeff.m_c1.m_state 
+                  //<< "," << std::fixed << std::setprecision(5) << coeff.m_c2.m_state 
+                  //<< ")" << RESET;
     return os;
   }
   friend std::istream& operator>>(std::istream& is, Coefficient& coeff)
