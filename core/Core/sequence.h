@@ -21,7 +21,7 @@ public:
   void addAlgorithm(IN_TYPE& input)
   {
     Algorithm* tmp = nullptr ;
-    tmp = &input;
+    tmp = static_cast<Algorithm*>(&input);
     tmp->next=nullptr ;
     if ( head == nullptr ) {
       head=tmp;
@@ -47,8 +47,8 @@ public:
     return;
   }
   
-  Algorithm* head;
-  Algorithm* tail;
+  Algorithm* head = {nullptr};
+  Algorithm* tail = {nullptr};
 };
 
 #endif
