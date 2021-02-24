@@ -50,11 +50,12 @@ add_library(${PACKAGE} SHARED ${SOURCES} ${} G__${PACKAGE}.cxx)
 target_link_libraries(${PACKAGE} Utils Core DalitzModel Algorithms ${ROOT_LIBRARIES} ${CMAKE_DL_LIBS})
 
 #--- Link libraries
-#target_link_libraries(${PACKAGE} Utils Algorithms DalitzModel ${ROOT_LIBRARIES} ${CMAKE_DL_LIBS})
-#
+include_directories(external/cxxopts/include)
+
 ##--- Create an executable
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
 target_link_libraries(ToyGenerator ${PACKAGE})
-#
-##--- Create Hydra
-#execute_process(COMMAND chmod +x ${CMAKE_SOURCE_DIR}/Hydra)
+
+##--- Create an executable
+add_executable(PlotDalitzModel ${CMAKE_SOURCE_DIR}/apps/PlotDalitzModel.cpp)
+target_link_libraries(PlotDalitzModel ${PACKAGE})
