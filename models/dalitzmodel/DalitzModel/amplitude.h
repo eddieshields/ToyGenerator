@@ -45,8 +45,8 @@ public:
   PhaseSpace& phasespace() { return m_ps; }
   PhaseSpace& ps()         { return m_ps; }
 
-  bool       find(std::string res);
-  Resonance* get (std::string res);
+  bool       find(std::string res) const;
+  Resonance* get (std::string res) const;
 
   // Operators.
   friend std::ostream& operator<<(std::ostream& os, const Amplitude& amp)

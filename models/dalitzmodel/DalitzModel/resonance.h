@@ -69,6 +69,16 @@ public:
     m_massSq = m_mass * m_mass;
     m_noRes = 6 - m_resoA - m_resoB;
   }
+  Resonance(const Resonance& other) :
+    m_name( other.m_name ),
+    m_coeff( other.m_coeff ),
+    m_mass( other.m_mass ),
+    m_width( other.m_width ),
+    m_r( other.m_r ),
+    m_l( other.m_l ),
+    m_resoA( other.m_resoA ),
+    m_resoB( other.m_resoB )
+  {}
   virtual ~Resonance() {}
 
   /** Conjugate copy.

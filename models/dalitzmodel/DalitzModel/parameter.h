@@ -40,7 +40,7 @@ public:
   }
   Parameter(const Parameter& other) :
     m_value( other.m_value ),
-    m_error( other.m_error),
+    m_error( other.m_error ),
     m_state( other.m_state )
   {
     Parameter::m_parameters.push_back( this );

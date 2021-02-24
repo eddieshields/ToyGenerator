@@ -15,6 +15,7 @@ void Amplitude::addResonance(Resonance* reso)
   Resonance* resoCnj = m_resonances[m_resonances.size()-1]->cnj_copy();
   m_cnjresonances.push_back( std::move( resoCnj ) );
   addCnjResonanceToList( m_cnjresonances[m_cnjresonances.size()-1] );
+  INFO( *m_cnjresonances[m_cnjresonances.size()-1] );
 }
 
 void Amplitude::addDirResonanceToList(Resonance* res)
@@ -49,7 +50,7 @@ void Amplitude::addCnjResonanceToList(Resonance* res)
   return;
 }
 
-bool Amplitude::find(std::string res)
+bool Amplitude::find(std::string res) const
 {
   for (auto r : m_resonances) {
     if ( r->name() == res) return true;
@@ -60,7 +61,7 @@ bool Amplitude::find(std::string res)
   return false;
 }
 
-Resonance* Amplitude::get(std::string res)
+Resonance* Amplitude::get(std::string res) const
 {
   for (auto r : m_resonances) {
     if ( r->name() == res) return r;
@@ -184,54 +185,22 @@ const double Amplitude::A2Sq(const double& mSq12, const double& mSq13, const dou
 // Individual resonances.
 const complex_t Amplitude::Adir(std::string name, const double& mSq12, const double& mSq13) const
 {
-  complex_t A(0.,0.);
-  Resonance* res = nullptr;
-  res = headDir;
-  while ( res != nullptr ) {
-    if ( res->name() != name ) continue;
-    A += res->evaluate( m_ps , mSq12 , mSq13);
-    res = res->next;
-  }
-  return A;
+  return get( name )->evaluate( m_ps , mSq12 , mSq13 );
 }
 
 const complex_t Amplitude::Adir(std::string name, const double& mSq12, const double& mSq13, const double& mSq23) const
 {
-  complex_t A(0.,0.);
-  Resonance* res = nullptr;
-  res = headDir;
-  while ( res != nullptr ) {
-    if ( res->name() != name ) continue;
-    A += res->evaluate( m_ps , mSq12 , mSq13 , mSq23 );
-    res = res->next;
-  }
-  return A;
+  return get( name )->evaluate( m_ps , mSq12 , mSq13 , mSq23 );
 }
 
 const complex_t Amplitude::Abar(std::string name, const double& mSq12, const double& mSq13) const
 {
-  complex_t A(0.,0.);
-  Resonance* res = nullptr;
-  res = headCnj;
-  while ( res != nullptr ) {
-    if ( res->name() != name+"_cnj" ) continue;
-    A += res->evaluate( m_ps , mSq12 , mSq13 );
-    res = res->next;
-  }
-  return A;
+  return get( name+"_cnj" )->evaluate( m_ps , mSq12 , mSq13 );
 }
 
 const complex_t Amplitude::Abar(std::string name, const double& mSq12, const double& mSq13, const double& mSq23) const
 {
-  complex_t A(0.,0.);
-  Resonance* res = nullptr;
-  res = headCnj;
-  while ( res != nullptr ) {
-    if ( res->name() != name+"_cnj" ) continue;
-    A += res->evaluate( m_ps , mSq12 , mSq13 );
-    res = res->next;
-  }
-  return A;
+  return get( name+"_cnj" )->evaluate( m_ps , mSq12 , mSq13 , mSq23 );
 }
 
 const double Amplitude::AdirSq(std::string name, const double& mSq12, const double& mSq13) const

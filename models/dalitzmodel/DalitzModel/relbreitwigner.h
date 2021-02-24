@@ -25,6 +25,9 @@ public:
             const int& l, const double& r) :
     Resonance( name , coeff1 , coeff2 , resoA , resoB , mass , width , l , r )
   {}
+  RelBreitWigner(const RelBreitWigner& other) :
+    Resonance( other )
+  {}
   ~RelBreitWigner() {}
 
   // Implementation of propagator.
