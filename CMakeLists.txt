@@ -3,8 +3,15 @@ cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
 set(PACKAGE HYDRA)
 project(${PACKAGE})
 
+#--- Options
+option(DEBUG "Debug" OFF)
+
 #--- Add compiler optimization flags.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -march=native -flto -Wall -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -march=native -flto")
+
+if (DEBUG)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
+endif()
 
 #--- Include core directory
 include_directories(core/include)
