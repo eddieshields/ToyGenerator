@@ -15,7 +15,6 @@ void Amplitude::addResonance(Resonance* reso)
   Resonance* resoCnj = m_resonances[m_resonances.size()-1]->cnj_copy();
   m_cnjresonances.push_back( std::move( resoCnj ) );
   addCnjResonanceToList( m_cnjresonances[m_cnjresonances.size()-1] );
-  INFO( *m_cnjresonances[m_cnjresonances.size()-1] );
 }
 
 void Amplitude::addDirResonanceToList(Resonance* res)
