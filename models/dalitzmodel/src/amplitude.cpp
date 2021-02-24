@@ -74,50 +74,50 @@ Resonance* Amplitude::get(std::string res)
 
 const complex_t Amplitude::Adir(const double& mSq12, const double& mSq13) const
 {
-  complex_t A(0.,0.);
-  Resonance* res = nullptr;
-  res = headCnj;
-  while ( res != nullptr ) {
-    A += res->evaluate( m_ps , mSq12 , mSq13 );
-    res = res->next;
+  std::vector<complex_t> A;
+  const auto n = m_resonances.size();
+  A.resize( n );
+  // Make vectorizable.
+  for (std::size_t i = 0; i < n; ++i) {
+    A[i] = m_resonances[i]->evaluate( m_ps , mSq12 , mSq13);
   }
-  return A;
+  return std::accumulate(A.begin(),A.end(),complex_t());
 }
 
 const complex_t Amplitude::Adir(const double& mSq12, const double& mSq13, const double& mSq23) const
 {
-  complex_t A(0.,0.);
-  Resonance* res = nullptr;
-  res = headDir;
-  while ( res != nullptr ) {
-    A += res->evaluate( m_ps , mSq12 , mSq13 , mSq23 );
-    res = res->next;
+  std::vector<complex_t> A;
+  const auto n = m_resonances.size();
+  A.resize( n );
+  // Make vectorizable.
+  for (std::size_t i = 0; i < n; ++i) {
+    A[i] = m_resonances[i]->evaluate( m_ps , mSq12 , mSq13 , mSq23 );
   }
-  return A;
+  return std::accumulate(A.begin(),A.end(),complex_t());
 }
 
 const complex_t Amplitude::Abar(const double& mSq12, const double& mSq13) const
 {
-  complex_t A(0.,0.);
-  Resonance* res = nullptr;
-  res = headCnj;
-  while ( res != nullptr ) {
-    A += res->evaluate( m_ps , mSq12 , mSq13 );
-    res = res->next;
+  std::vector<complex_t> A;
+  const auto n = m_resonances.size();
+  A.resize( n );
+  // Make vectorizable.
+  for (std::size_t i = 0; i < n; ++i) {
+    A[i] = m_cnjresonances[i]->evaluate( m_ps , mSq12 , mSq13 );
   }
-  return A;
+  return std::accumulate(A.begin(),A.end(),complex_t());
 }
 
 const complex_t Amplitude::Abar(const double& mSq12, const double& mSq13, const double& mSq23) const
 {
-  complex_t A(0.,0.);
-  Resonance* res = nullptr;
-  res = headCnj;
-  while ( res != nullptr ) {
-    A += res->evaluate( m_ps , mSq12 , mSq13 , mSq23 );
-    res = res->next;
+  std::vector<complex_t> A;
+  const auto n = m_resonances.size();
+  A.resize( n );
+  // Make vectorizable.
+  for (std::size_t i = 0; i < n; ++i) {
+    A[i] = m_cnjresonances[i]->evaluate( m_ps , mSq12 , mSq13 , mSq23 );
   }
-  return A;
+  return std::accumulate(A.begin(),A.end(),complex_t());
 }
 
 const double Amplitude::AdirSq(const double& mSq12, const double& mSq13) const
