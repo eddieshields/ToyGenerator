@@ -77,10 +77,10 @@ public:
 
   Flatte* copy() const;
 
-  double gamma1() const { return m_gamma1.m_state; }
-  double gamma2() const { return m_gamma2.m_state; }
-  double m02a()   const { return m_m02a.m_state; }
-  double m02b()   const { return m_m02b.m_state; }
+  Parameter gamma1() const { return m_gamma1; }
+  Parameter gamma2() const { return m_gamma2; }
+  Parameter m02a()   const { return m_m02a; }
+  Parameter m02b()   const { return m_m02b; }
 
   double gamma1Sq()  const { return m_gamma1Sq; }
   double gamma2Sq()  const { return m_gamma2Sq; }
