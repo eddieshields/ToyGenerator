@@ -56,7 +56,7 @@ const double Resonance::M2BC(const double& mSq12, const double& mSq13, const dou
   return 0.;
 }
 
-inline double Resonance::kallen(const double& x, const double& y, const double& z) const
+double Resonance::kallen(const double& x, const double& y, const double& z) const
 {
   return std::pow( x , 2 ) + std::pow( y , 2 ) + std::pow( z , 2) - 2*x*y - 2*x*z - 2*y*z;
 }
@@ -81,7 +81,7 @@ double Resonance::rho(const PhaseSpace& ps, const double& mSqAB) const
   return std::sqrt( this->kallen( mSqAB, ps.mSq( m_resoA ) , ps.mSq( m_resoB ) ) )/mSqAB;
 }
 
-inline double Resonance::zemach( const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC ) const
+double Resonance::zemach( const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC ) const
 {
   if ( m_l == 0 ) return 1.;
 
@@ -108,7 +108,7 @@ inline double Resonance::zemach( const PhaseSpace& ps, const double& mSqAB, cons
 }
 
 
-inline double Resonance::helicity( const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC ) const
+double Resonance::helicity( const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC ) const
 {
   if ( m_l == 0 ) return 1.;
 
@@ -134,7 +134,7 @@ inline double Resonance::helicity( const PhaseSpace& ps, const double& mSqAB, co
   return 0.;
 }
 
-inline double Resonance::blattWeisskopfPrime(const PhaseSpace& ps, const double& mSqAB) const
+double Resonance::blattWeisskopfPrime(const PhaseSpace& ps, const double& mSqAB) const
 {
   if ( m_l == 0 ) return 1.;
 
@@ -148,7 +148,7 @@ inline double Resonance::blattWeisskopfPrime(const PhaseSpace& ps, const double&
   return 1.;
 }
 
-inline double Resonance::blattWeisskopfPrimeP(const PhaseSpace& ps, const double& mSqAB) const
+double Resonance::blattWeisskopfPrimeP(const PhaseSpace& ps, const double& mSqAB) const
 {
   if ( m_l == 0 ) return 1.;
 
