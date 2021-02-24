@@ -78,7 +78,10 @@ public:
     m_l( other.m_l ),
     m_resoA( other.m_resoA ),
     m_resoB( other.m_resoB )
-  {}
+  {
+    m_massSq = m_mass * m_mass;
+    m_noRes = 6 - m_resoA - m_resoB;
+  }
   virtual ~Resonance() {}
 
   /** Conjugate copy.

@@ -73,7 +73,12 @@ public:
     m_gamma2( other.m_gamma2 ),
     m_m02a( other.m_m02a ),
     m_m02b( other.m_m02b )
-  {}
+  {
+    m_gamma1Sq = m_gamma1 * m_gamma1;
+    m_gamma2Sq = m_gamma2 * m_gamma2;
+    m_m02aSq = m_m02a * m_m02a;
+    m_m02bSq = m_m02b * m_m02b;
+  }
   virtual ~Flatte() {}
 
   virtual const complex_t propagator(const PhaseSpace& ps, const double& mSqAB) const;
