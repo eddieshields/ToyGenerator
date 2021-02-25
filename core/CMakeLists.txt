@@ -1,8 +1,9 @@
 # CMakeLists.txt for ToyGenerator module. It creates a library with dictionary and a main program
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
-set(DALITZMODEL DalitzModel)
-project(${DALITZMODEL})
+set(CORE HydraCore)
+project(${CORE})
 
+set(CMAKE_CXX_STANDARD 17)
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 #--- Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
@@ -12,12 +13,19 @@ find_package(ROOT REQUIRED COMPONENTS Core RooFit RooFitCore Tree MathCore Physi
 include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS})
 
-#--- Define the header and src directories
-file(GLOB_RECURSE HEADERS ${DALITZMODEL}/*.h)
-file(GLOB_RECURSE SOURCES src/*.cpp)
+#--- Include external JSON library needed.
+# Fix this section of compilation for lxplus.
+include_directories(${CMAKE_SOURCE_DIR}/external/json/single_include)
 
-ROOT_GENERATE_DICTIONARY(G__${DALITZMODEL} ${HEADERS} LINKDEF dict/${DALITZMODEL}LinkDef.h)
+#--- Find threads.
+find_package(Threads REQUIRED)
+
+#--- Define the header and src directories
+file(GLOB_RECURSE CORE_HEADERS ${CORE}/*.h)
+file(GLOB_RECURSE CORE_SOURCES src/*.cpp)
+
+ROOT_GENERATE_DICTIONARY(G__${CORE} ${CORE_HEADERS} LINKDEF dict/${CORE}LinkDef.h)
 
 #--- Generate library with ROOT dictionary
-add_library(${DALITZMODEL} SHARED ${SOURCES} ${} G__${DALITZMODEL}.cxx)
-target_link_libraries(${DALITZMODEL} Utils ${ROOT_LIBRARIES})
+add_library(${CORE} SHARED ${CORE_SOURCES} ${} G__${CORE}.cxx)
+target_link_libraries(${CORE} Utils ${ROOT_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})

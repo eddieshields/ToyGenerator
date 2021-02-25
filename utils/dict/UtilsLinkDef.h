@@ -5,6 +5,9 @@
 #pragma link off all functions;
 #pragma link C++ nestedclasses;
 
-#pragma link C++ class Hydra+;
+#pragma link C++ class FourVector+;
+#pragma link C++ class Clock+;
+#pragma link C++ class Random+;
+#pragma link C++ class CorrelationUtils+;
 
 #endif

@@ -1,7 +1,6 @@
-# CMakeLists.txt for ToyGenerator module. It creates a library with dictionary and a main program
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
-set(DALITZMODEL DalitzModel)
-project(${DALITZMODEL})
+set(UTILS Utils)
+project(${UTILS})
 
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
@@ -12,12 +11,15 @@ find_package(ROOT REQUIRED COMPONENTS Core RooFit RooFitCore Tree MathCore Physi
 include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS})
 
+#--- Define the headers list
+include_directories(include)
+
 #--- Define the header and src directories
-file(GLOB_RECURSE HEADERS ${DALITZMODEL}/*.h)
+file(GLOB_RECURSE HEADERS ${UTILS}/*.h)
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
-ROOT_GENERATE_DICTIONARY(G__${DALITZMODEL} ${HEADERS} LINKDEF dict/${DALITZMODEL}LinkDef.h)
+ROOT_GENERATE_DICTIONARY(G__${UTILS} ${HEADERS} LINKDEF dict/${UTILS}LinkDef.h)
 
 #--- Generate library with ROOT dictionary
-add_library(${DALITZMODEL} SHARED ${SOURCES} ${} G__${DALITZMODEL}.cxx)
-target_link_libraries(${DALITZMODEL} Utils ${ROOT_LIBRARIES})
+add_library(${UTILS} SHARED ${SOURCES} ${} G__${UTILS}.cxx)
+target_link_libraries(${UTILS} ${ROOT_LIBRARIES})

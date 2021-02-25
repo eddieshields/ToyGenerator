@@ -1,4 +1,5 @@
 #include "hydra.h"
+#include "distributetask.h"
 
 void Hydra::run()
 {
@@ -10,7 +11,7 @@ void Hydra::run()
   INFO("Requested to generate " << m_configuration.EvtMax << " Events");
   INFO("Will use " << m_configuration.NThreads << " threads");
   Clock::Start();
-  Threads execute(m_configuration.NThreads,m_configuration.EvtMax);
+  DistributeTask execute(m_configuration.NThreads);
   // Create a task to be passed to the threadpool.
   auto func = [&](){return this->runSequence();};
   // Pass task to threadpool and get evets from return.
@@ -41,7 +42,6 @@ std::vector<Event> Hydra::runSequence()
     // Accepted events are saved in list, so events can be deleted.
     delete ev;
   }
-
   return list;
 }
 
