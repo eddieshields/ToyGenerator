@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
-set(SUBPACKAGE Utils)
-project(${SUBPACKAGE})
+cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
+set(UTILS Utils)
+project(${UTILS})
 
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
@@ -15,11 +15,11 @@ include_directories(${ROOT_INCLUDE_DIRS})
 include_directories(include)
 
 #--- Define the header and src directories
-file(GLOB_RECURSE HEADERS ${SUBPACKAGE}/*.h)
+file(GLOB_RECURSE HEADERS ${UTILS}/*.h)
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
-ROOT_GENERATE_DICTIONARY(G__${SUBPACKAGE} ${HEADERS} LINKDEF dict/${SUBPACKAGE}LinkDef.h)
+ROOT_GENERATE_DICTIONARY(G__${UTILS} ${HEADERS} LINKDEF dict/${UTILS}LinkDef.h)
 
 #--- Generate library with ROOT dictionary
-add_library(${SUBPACKAGE} SHARED ${SOURCES} ${} G__${SUBPACKAGE}.cxx)
-target_link_libraries(${SUBPACKAGE} ${ROOT_LIBRARIES})
+add_library(${UTILS} SHARED ${SOURCES} ${} G__${UTILS}.cxx)
+target_link_libraries(${UTILS} ${ROOT_LIBRARIES})
