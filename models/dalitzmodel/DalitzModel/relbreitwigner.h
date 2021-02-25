@@ -3,11 +3,10 @@
 
 // DalitzModel.
 #include "resonance.h"
+#include "types.h"
 
 namespace DalitzModel {
   namespace LineShape {
-
-using complex_t = std::complex<double>;
 
 class RelBreitWigner : public Resonance
 {

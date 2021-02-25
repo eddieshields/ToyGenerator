@@ -13,10 +13,9 @@
 #include "phasespace.h"
 #include "colours.h"
 #include "msgservice.h"
+#include "types.h"
 
 namespace DalitzModel {
-
-using complex_t = std::complex<double>;
 
 class Resonance
 {
@@ -34,7 +33,7 @@ protected:
 
   bool        m_helicity = {false};
 
-  double      m_massSq;
+  real_t      m_massSq;
 public:
   Resonance() = default;
   Resonance(std::string& name, const Coefficient& coeff,
@@ -53,10 +52,10 @@ public:
     m_massSq = m_mass * m_mass;
     m_noRes = 6 - m_resoA - m_resoB;
   }
-  Resonance(std::string& name, const double& coeff1, const double& coeff2,
+  Resonance(std::string& name, const real_t& coeff1, const real_t& coeff2,
             const int& resoA, const int& resoB,
-            const double& mass, const double& width,
-            const int& l, const double& r) :
+            const real_t& mass, const real_t& width,
+            const int& l, const real_t& r) :
     m_coeff( coeff1 , coeff2 ),
     m_mass( mass ),
     m_width( width ),
@@ -95,7 +94,7 @@ public:
   Resonance* next = {nullptr};
 
   // Propagator.
-  virtual const complex_t propagator(const PhaseSpace& ps, const double& mSqAB) const = 0;
+  virtual const complex_t propagator(const PhaseSpace& ps, const real_t& mSqAB) const = 0;
 
   // Operators.
   friend std::ostream& operator<<(std::ostream& os, const Resonance& reso)
@@ -115,7 +114,7 @@ public:
   friend std::istream& operator>>(std::istream& is, Resonance& reso)
   {
     // Input of the form "c1 c2 resoA resoB mass width l rBW".
-    double c1, c2;
+    real_t c1, c2;
     is >> c1 >> c2
        >> reso.m_resoA
        >> reso.m_resoB
@@ -129,32 +128,32 @@ public:
 
   // Getters.
   std::string name()  const { return m_name; }
-  double      mass()  const { return m_mass.m_state; }
-  double      m()     const { return m_mass.m_state; }
-  double      mSq()   const { return m_massSq; }
-  double      width() const { return m_width.m_state; }
-  double      r()     const { return m_r.m_state; }
+  real_t      mass()  const { return m_mass.m_state; }
+  real_t      m()     const { return m_mass.m_state; }
+  real_t      mSq()   const { return m_massSq; }
+  real_t      width() const { return m_width.m_state; }
+  real_t      r()     const { return m_r.m_state; }
   int         l()     const { return m_l; }
 
-  const complex_t evaluate(const PhaseSpace& ps, const double& mSq12, const double& mSq13);
-  const complex_t evaluate(const PhaseSpace& ps, const double& mSq12, const double& mSq13, const double& mSq23);
+  const complex_t evaluate(const PhaseSpace& ps, const real_t& mSq12, const real_t& mSq13);
+  const complex_t evaluate(const PhaseSpace& ps, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23);
 
-  const double M2AB(const double& mSq12, const double& mSq13, const double& mSq23) const;
-  const double M2AC(const double& mSq12, const double& mSq13, const double& mSq23) const;
-  const double M2BC(const double& mSq12, const double& mSq13, const double& mSq23) const;
+  const real_t M2AB(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const real_t M2AC(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const real_t M2BC(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 
   // Methods.
   /** Kallen function.
    * 
    *  Returns lambda( x, y, z ) = x^2 + y^2 + z^2 - 2xy - 2xz - 2yz.
    */
-  double kallen              (const double& x, const double& y, const double& z) const;
+  real_t kallen              (const real_t& x, const real_t& y, const real_t& z) const;
   /** Momentum of a resonant particle in the rest frame of the resonant pair.
    */
-  double q                   (const PhaseSpace& ps, const double& mSqAB) const;
+  real_t q                   (const PhaseSpace& ps, const real_t& mSqAB) const;
   /** Momentum of the non-resonant particle in the rest frame of the resonant pair.
    */
-  double p                   (const PhaseSpace& ps, const double& mSqAB) const;
+  real_t p                   (const PhaseSpace& ps, const real_t& mSqAB) const;
   /** Phase space factor
    * 
    * 2 q / m, where q is the momentum of a resonant particle in the
@@ -162,21 +161,21 @@ public:
    * \param mSq1 Squared mass of first particle is resonant pair.
    * \param mSq2 Squared mass of second particle in resonance pair.
    */
-  double rho                 (const PhaseSpace& ps, const double& mSqAB, const double& mSq1, const double& mSq2) const;
+  real_t rho                 (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSq1, const real_t& mSq2) const;
   /** Phase space factor
    * 
    * 2 q / m, where q is the momentum of a resonant particle in the
    * rest frame of the resonant pair, and m is the invariant mass of the resonant pair.
    */
-  double rho                 (const PhaseSpace& ps, const double& mSqAB) const;
+  real_t rho                 (const PhaseSpace& ps, const real_t& mSqAB) const;
   /** Zemach tensor.
    */
-  double zemach              (const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC) const;
-  double helicity            (const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC) const;
-  double blattWeisskopfPrime (const PhaseSpace& ps, const double& mSqAB) const;
-  double blattWeisskopfPrimeP(const PhaseSpace& ps, const double& mSqAB) const;
-  double blattWeisskopf      (const PhaseSpace& ps, const double& mSqAB) const;
-  double angular             (const PhaseSpace& ps, const double& mSqAB, const double& mSqAC, const double& mSqBC) const;
+  real_t zemach              (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC) const;
+  real_t helicity            (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC) const;
+  real_t blattWeisskopfPrime (const PhaseSpace& ps, const real_t& mSqAB) const;
+  real_t blattWeisskopfPrimeP(const PhaseSpace& ps, const real_t& mSqAB) const;
+  real_t blattWeisskopf      (const PhaseSpace& ps, const real_t& mSqAB) const;
+  real_t angular             (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC) const;
 
 };
 
