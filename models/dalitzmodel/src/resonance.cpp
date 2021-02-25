@@ -83,7 +83,7 @@ real_t Resonance::rho(const PhaseSpace& ps, const real_t& mSqAB) const
 
 real_t Resonance::zemach( const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC ) const
 {
-  if ( m_l == 0 ) return 1.;
+  if ( m_l == 0 ) return 1.f;
 
   // Squared mass differences that some terms depend on.
   const real_t diffSqMC = ps.mSqMother()    - ps.mSq( m_noRes );
@@ -102,15 +102,15 @@ real_t Resonance::zemach( const PhaseSpace& ps, const real_t& mSqAB, const real_
     real_t first  = mSqAB - 2. * sumSqMC + std::pow( diffSqMC, 2 ) / mSqAB;
     real_t second = mSqAB - 2. * sumSqAB + std::pow( diffSqAB, 2 ) / mSqAB;
 
-    return std::pow( zemach1, 2 ) - first * second / 3.;
+    return std::pow( zemach1, 2 ) - first * second / 3.f;
   }
-  return 0.;
+  return 0.f;
 }
 
 
 real_t Resonance::helicity( const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC ) const
 {
-  if ( m_l == 0 ) return 1.;
+  if ( m_l == 0 ) return 1.f;
 
   // Squared mass differences that some terms depend on.
   const real_t diffSqMC = ps.mSqMother()    - ps.mSq( m_noRes );
@@ -129,9 +129,9 @@ real_t Resonance::helicity( const PhaseSpace& ps, const real_t& mSqAB, const rea
     real_t first  = mSqAB - 2. * sumSqMC + std::pow( diffSqMC, 2 ) / mSq();
     real_t second = mSqAB - 2. * sumSqAB + std::pow( diffSqAB, 2 ) / mSq();
 
-    return std::pow( hel1, 2 ) - first * second / 3.;
+    return std::pow( hel1, 2 ) - first * second / 3.f;
   }
-  return 0.;
+  return 0.f;
 }
 
 real_t Resonance::blattWeisskopfPrime(const PhaseSpace& ps, const real_t& mSqAB) const
@@ -145,12 +145,12 @@ real_t Resonance::blattWeisskopfPrime(const PhaseSpace& ps, const real_t& mSqAB)
 
   if ( m_l == 1 ) return std::sqrt( ( 1 + rq0Sq )/( 1 + rqmSq ) );
   if ( m_l == 2 ) return std::sqrt( ( 9 + 3*rq0Sq + std::pow( rq0Sq , 2 ) )/( 9 + 3*rqmSq + std::pow( rqmSq , 2 ) ) );
-  return 1.;
+  return 1.f;
 }
 
 real_t Resonance::blattWeisskopfPrimeP(const PhaseSpace& ps, const real_t& mSqAB) const
 {
-  if ( m_l == 0 ) return 1.;
+  if ( m_l == 0 ) return 1.f;
 
   real_t p0 = this->p( ps, this->mSq() );
   real_t pm = this->p( ps, mSqAB       );
@@ -159,19 +159,19 @@ real_t Resonance::blattWeisskopfPrimeP(const PhaseSpace& ps, const real_t& mSqAB
 
   if ( m_l == 1 ) return std::sqrt( ( 1 + rp0Sq )/( 1 + rpmSq ) );
   if ( m_l == 2 ) return std::sqrt( ( 9 + 3*rp0Sq + std::pow( rp0Sq , 2 ) )/( 9 + 3*rpmSq + std::pow( rpmSq , 2 ) ) );
-  return 0.;
+  return 0.f;
 }
 
 real_t Resonance::blattWeisskopf(const PhaseSpace& ps, const real_t& mSqAB) const 
 {
-  if ( m_l == 0 ) return 1.;
+  if ( m_l == 0 ) return 1.f;
 
   real_t qm = this->q( ps, mSqAB );
   real_t rqmSq = std::pow( r()*qm , 2 );
 
   if ( m_l == 1 ) return std::sqrt( ( 2 * rqmSq )/( 1 + rqmSq ) );
   if ( m_l == 2 ) return std::sqrt( ( 13 * std::pow( rqmSq , 2 ) )/( 9 + 3*rqmSq + std::pow( rqmSq , 2 ) ) );
-  return 0.;
+  return 0.f;
 }
 
 real_t Resonance::angular(const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC) const

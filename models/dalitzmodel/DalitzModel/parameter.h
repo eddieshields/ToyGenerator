@@ -186,27 +186,7 @@ public:
   friend const real_t operator/(const Parameter& left, const real_t& right)
   {
     return left.m_state / right;
-  }
-  
-  friend const real_t operator+(const Parameter& left, const float& right)
-  {
-    return left.m_state + (real_t)right;
-  }
-  
-  friend const real_t operator-(const Parameter& left, const float& right)
-  {
-    return left.m_state - (real_t)right;
-  }
-  
-  friend const real_t operator*(const Parameter& left, const float& right)
-  {
-    return left.m_state * (real_t)right;
-  }
-  
-  friend const real_t operator/(const Parameter& left, const float& right)
-  {
-    return left.m_state / (real_t)right;
-  }
+  }  
   
   friend const complex_t operator+(const Parameter& left, const complex_t& right)
   {
@@ -266,26 +246,6 @@ public:
   friend const real_t operator/(const real_t& left, const Parameter& right)
   {
     return left / right.m_state;
-  }
-  
-  friend const real_t operator+(const float& left, const Parameter& right)
-  {
-    return (real_t)left + right.m_state;
-  }
-  
-  friend const real_t operator-(const float& left, const Parameter& right)
-  {
-    return (real_t)left - right.m_state;
-  }
-  
-  friend const real_t operator*(const float& left, const Parameter& right)
-  {
-    return (real_t)left * right.m_state;
-  }
-  
-  friend const real_t operator/(const float& left, const Parameter& right)
-  {
-    return (real_t)left / right.m_state;
   }
   
   friend const complex_t operator+(const complex_t& left, const Parameter& right)

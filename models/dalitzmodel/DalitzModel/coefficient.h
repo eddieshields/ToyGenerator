@@ -210,26 +210,6 @@ public:
     return left.m_state / right;
   }
   
-  friend const complex_t operator+(const Coefficient& left, const float& right)
-  {
-    return left.m_state + (real_t)right;
-  }
-  
-  friend const complex_t operator-(const Coefficient& left, const float& right)
-  {
-    return left.m_state - (real_t)right;
-  }
-  
-  friend const complex_t operator*(const Coefficient& left, const float& right)
-  {
-    return left.m_state * (real_t)right;
-  }
-  
-  friend const complex_t operator/(const Coefficient& left, const float& right)
-  {
-    return left.m_state / (real_t)right;
-  }
-  
   friend const complex_t operator+(const Coefficient& left, const complex_t& right)
   {
     return left.m_state + right;
@@ -308,26 +288,6 @@ public:
   friend const complex_t operator/(const real_t& left, const Coefficient& right)
   {
     return left / right.m_state;
-  }
-  
-  friend const complex_t operator+(const float& left, const Coefficient& right)
-  {
-    return (real_t)left + right.m_state;
-  }
-  
-  friend const complex_t operator-(const float& left, const Coefficient& right)
-  {
-    return (real_t)left - right.m_state;
-  }
-  
-  friend const complex_t operator*(const float& left, const Coefficient& right)
-  {
-    return (real_t)left * right.m_state;
-  }
-  
-  friend const complex_t operator/(const float& left, const Coefficient& right)
-  {
-    return (real_t)left / right.m_state;
   }
   
   friend const complex_t operator+(const complex_t& left, const Coefficient& right)

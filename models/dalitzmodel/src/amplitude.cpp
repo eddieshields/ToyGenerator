@@ -142,23 +142,23 @@ const real_t Amplitude::AbarSq(const real_t& mSq12, const real_t& mSq13, const r
 
 const complex_t Amplitude::A1(const real_t& mSq12, const real_t& mSq13) const
 {
-  return ( this->Adir( mSq12 , mSq13 ) + this->Abar( mSq12 , mSq13 ) ) / 2.;
+  return ( this->Adir( mSq12 , mSq13 ) + this->Abar( mSq12 , mSq13 ) ) / (real_t)2.;
 }
 
 const complex_t Amplitude::A1(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
 {
-  return ( this->Adir( mSq12 , mSq13 , mSq23 ) + this->Abar( mSq12 , mSq13 , mSq23 ) ) / 2.;
+  return ( this->Adir( mSq12 , mSq13 , mSq23 ) + this->Abar( mSq12 , mSq13 , mSq23 ) ) / (real_t)2.;
 }
 
 const complex_t Amplitude::A2(const real_t& mSq12, const real_t& mSq13) const
 {
-  return ( this->Adir( mSq12 , mSq13 ) - this->Abar( mSq12 , mSq13 ) ) / 2.;
+  return ( this->Adir( mSq12 , mSq13 ) - this->Abar( mSq12 , mSq13 ) ) / (real_t)2.;
 }
 
 
 const complex_t Amplitude::A2(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
 {
-  return ( this->Adir( mSq12 , mSq13 , mSq23 ) - this->Abar( mSq12 , mSq13 , mSq23 ) ) / 2.;
+  return ( this->Adir( mSq12 , mSq13 , mSq23 ) - this->Abar( mSq12 , mSq13 , mSq23 ) ) / (real_t)2.;
 }
 
 const real_t Amplitude::A1Sq(const real_t& mSq12, const real_t& mSq13) const
@@ -224,23 +224,23 @@ const real_t Amplitude::AbarSq(std::string name, const real_t& mSq12, const real
 
 const complex_t Amplitude::A1(std::string name, const real_t& mSq12, const real_t& mSq13) const
 {
-  return ( this->Adir( name, mSq12 , mSq13 ) + this->Abar( name, mSq12 , mSq13 ) ) / 2.;
+  return ( this->Adir( name, mSq12 , mSq13 ) + this->Abar( name, mSq12 , mSq13 ) ) / (real_t)2.;
 }
 
 const complex_t Amplitude::A1(std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
 {
-  return ( this->Adir( name, mSq12 , mSq13 , mSq23 ) + this->Abar( name, mSq12 , mSq13 , mSq23 ) ) / 2.;
+  return ( this->Adir( name, mSq12 , mSq13 , mSq23 ) + this->Abar( name, mSq12 , mSq13 , mSq23 ) ) / (real_t)2.;
 }
 
 const complex_t Amplitude::A2(std::string name, const real_t& mSq12, const real_t& mSq13) const
 {
-  return ( this->Adir( name, mSq12 , mSq13 ) - this->Abar( name, mSq12 , mSq13 ) ) / 2.;
+  return ( this->Adir( name, mSq12 , mSq13 ) - this->Abar( name, mSq12 , mSq13 ) ) / (real_t)2.;
 }
 
 
 const complex_t Amplitude::A2(std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
 {
-  return ( this->Adir( name, mSq12 , mSq13 , mSq23 ) - this->Abar( name, mSq12 , mSq13 , mSq23 ) ) / 2.;
+  return ( this->Adir( name, mSq12 , mSq13 , mSq23 ) - this->Abar( name, mSq12 , mSq13 , mSq23 ) ) / (real_t)2.;
 }
 
 const real_t Amplitude::A1Sq(std::string name, const real_t& mSq12, const real_t& mSq13) const
