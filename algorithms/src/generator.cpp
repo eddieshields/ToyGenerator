@@ -17,16 +17,11 @@ void Generator::operator()(Event& ev)
     ev.particle(i).flavour() = m_flavours[i];
   }
 
-  // Make unweighted.
-  real_t wt = 1; 
-  do {
-    wt = phsp.Generate();
-  } while( wt < Random::Rnd() );
+  // Generate event.
   auto daughts = Generate();
 
   for (int i = 1; i < m_particles.size(); i++) {
-    ev.daughter(i).momentum() = *phsp.GetDecay(i-1);
-    ev.daughter(i).SetMomentum( daughts[i] );
+    ev.daughter(i).SetMomentum( daughts[i-1] );
   }
   // Set decay time.
   if ( !ev.mother().charge() ) ev.mother().flavour() = ( Random::Bool() ? -1 : 1 );

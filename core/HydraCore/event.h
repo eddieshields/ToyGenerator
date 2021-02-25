@@ -43,15 +43,11 @@ public:
   std::map<std::string,double>   m_v;
 
   void updateMasses()
-  {  
-    TLorentzVector p1 = m_particles[1].momentum();
-    TLorentzVector p2 = m_particles[2].momentum();
-    TLorentzVector p3 = m_particles[3].momentum();
+  { 
+    FourVector p12 = m_particles[1].momentum() + m_particles[2].momentum();
+    FourVector p13 = m_particles[1].momentum() + m_particles[3].momentum();
+    FourVector p23 = m_particles[2].momentum() + m_particles[3].momentum();
 
-    TLorentzVector p12 = p1 + p2;
-    TLorentzVector p13 = p1 + p3;
-    TLorentzVector p23 = p2 + p3;
-  
     m_v["mSq12"] = p12.M2();
     m_v["mSq13"] = p13.M2();
     m_v["mSq23"] = p23.M2();
@@ -59,7 +55,7 @@ public:
 
   void makeData()
   {
-    std::vector<TLorentzVector> pVec;
+    std::vector<FourVector> pVec;
     for (int i = 0; i < m_particles.size(); i++) {
       pVec.push_back( m_particles[i].momentum() );
     }
