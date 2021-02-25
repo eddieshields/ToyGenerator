@@ -7,7 +7,9 @@
 
 struct Algorithm
 {
-  Algorithm() : m_name("") {}
+  Algorithm() : 
+    m_name("")
+  {}
   Algorithm(std::string name) :
     m_name(name)
   {}

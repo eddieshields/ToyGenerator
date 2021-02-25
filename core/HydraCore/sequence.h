@@ -51,4 +51,6 @@ public:
   Algorithm* tail = {nullptr};
 };
 
+extern Sequence gSequence;
+
 #endif
