@@ -1,6 +1,6 @@
 #include "eventparam.h"
 
-const double EventParam::eval(Event& ev)
+const real_t EventParam::eval(Event& ev)
 {
   switch (m_type)
   {

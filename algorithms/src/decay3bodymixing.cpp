@@ -25,14 +25,14 @@ void Decay3BodyMixing::operator()(Event& ev)
   return;
 }
 
-const std::complex<double> Decay3BodyMixing::gp(const double& t)
+const complex_t Decay3BodyMixing::gp(const real_t& t)
 {
-  std::complex<double> I(0,1);
+  complex_t I(0,1);
   return std::cos( - I * z() * ( t/2 ) );
 }
 
-const std::complex<double> Decay3BodyMixing::gm(const double& t)
+const complex_t Decay3BodyMixing::gm(const real_t& t)
 {
-  std::complex<double> I(0,1);
+  complex_t I(0,1);
   return std::sin( - I * z() * ( t/2 ) );
 }

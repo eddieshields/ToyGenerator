@@ -3,6 +3,7 @@
 
 #include "event.h"
 #include "param.h"
+#include "types.h"
 
 #include <functional>
 
@@ -15,7 +16,7 @@ public:
   CustomParam(std::string name) :
     Param(name)
   {}
-  CustomParam(std::string name, std::function<const double(Event&)> func) :
+  CustomParam(std::string name, std::function<const real_t(Event&)> func) :
     Param( name ),
     m_func( func )
   {}
@@ -24,7 +25,7 @@ public:
   virtual void operator() (Event& ev) { ev[m_name] = m_func(ev); }
 
 private:
-  std::function<const double(Event&)> m_func;
+  std::function<const real_t(Event&)> m_func;
 };
 
 #endif

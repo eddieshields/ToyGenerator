@@ -6,9 +6,9 @@
 #include "generator.h"
 #include "random.h"
 #include "msgservice.h"
+#include "types.h"
 
 #include <iostream>
-#include <complex>
 #include <vector>
 #include <cmath>
 #include <math.h>
@@ -40,7 +40,7 @@ class D02K3Pi : public Algorithm
 public:
   D02K3Pi(std::string name) : 
     Algorithm(name),
-    m_dcs_offset( 0.0601387 * std::exp( std::complex<double>(0,1) * 1.04827 * M_PI / 180. ) ),
+    m_dcs_offset( 0.0601387 * std::exp( complex_t(0,1) * 1.04827 * M_PI / 180. ) ),
     dcs( "models/WSdcs.so" , "AMP" ),
     cf(  "models/WScf.so"  , "AMP" ),
     rs(  "models/RScf.so"  , "AMP" )
@@ -50,25 +50,25 @@ public:
   virtual void operator() (Event& ev);
 
 
-  const double getR(Generator& gen);
+  const real_t getR(Generator& gen);
 private:
-  const double& x() const { return m_x; }
-  const double& y() const { return m_y; }
-  const std::complex<double>& z() const { return m_z; }
-  std::complex<double> gp(const double& t);
-  std::complex<double> gm(const double& t);
+  const real_t& x() const { return m_x; }
+  const real_t& y() const { return m_y; }
+  const complex_t& z() const { return m_z; }
+  complex_t gp(const real_t& t);
+  complex_t gm(const real_t& t);
 
-  const double               m_x = {0.004};
-  const double               m_y = {0.006};
-  const std::complex<double> m_z = {std::complex<double>(0.004,0.006)};
+  const real_t               m_x = {0.004};
+  const real_t               m_y = {0.006};
+  const complex_t m_z = {complex_t(0.004,0.006)};
 
-  const double               m_p = {1};
-  const double               m_q = {1};
+  const real_t               m_p = {1};
+  const real_t               m_q = {1};
 
-  const std::complex<double> m_dcs_offset;
-  DynamicFCN<std::complex<double>(double const*, const int&) > dcs;
-  DynamicFCN<std::complex<double>(double const*, const int&) > cf;
-  DynamicFCN<std::complex<double>(double const*, const int&) > rs;
+  const complex_t m_dcs_offset;
+  DynamicFCN<complex_t(real_t const*, const int&) > dcs;
+  DynamicFCN<complex_t(real_t const*, const int&) > cf;
+  DynamicFCN<complex_t(real_t const*, const int&) > rs;
 };
 
 #endif

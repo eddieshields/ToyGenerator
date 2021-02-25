@@ -3,6 +3,7 @@
 
 #include "event.h"
 #include "param.h"
+#include "types.h"
 
 class EventParam : public Param
 {
@@ -17,7 +18,7 @@ public:
 
   virtual void operator()(Event& ev) { ev[m_name] = eval( ev ); }
 private:
-  const double eval(Event& ev);
+  const real_t eval(Event& ev);
 };
 
 #endif

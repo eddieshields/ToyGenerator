@@ -34,23 +34,23 @@ real_t Generator::q( real_t m, real_t m1, real_t m2 ) const
 
 std::vector<FourVector> Generator::Generate()
 {
-  std::array<double, kMAXP> rno;
-  std::array<double, kMAXP> pd;
-  std::array<double, kMAXP> invMas; 
+  std::array<real_t, kMAXP> rno;
+  std::array<real_t, kMAXP> pd;
+  std::array<real_t, kMAXP> invMas; 
   std::vector<FourVector> rt;
   // Resize for daughters + mother;
   rt.resize(m_nt+1);
 
   rno[0] = 0;
   size_t n;
-  double wt = m_wtMax;
+  real_t wt = m_wtMax;
   do {
     wt     = m_wtMax;
     rno[0] = 0;
     for( n = 1; n < m_nt - 1; n++ ) rno[n] = Random::Rnd(); // m_nt-2 random numbers
     rno[m_nt - 1]                          = 1;
     std::sort( rno.begin() + 1, rno.begin() + m_nt );
-    double sum = 0;
+    real_t sum = 0;
     for ( n = 0; n < m_nt; n++ ) {
       sum += m_mass[n];
       invMas[n] = rno[n] * m_teCmTm + sum;
@@ -66,18 +66,18 @@ std::vector<FourVector> Generator::Generate()
   rt[0][3] = sqrt( pd[0] * pd[0] + m_mass[0] * m_mass[0] );
   for(size_t i = 1 ; i != m_nt ; ++i ){  
     rt[i].SetPxPyPzE( 0, -pd[i-1], 0, sqrt( pd[i-1] * pd[i-1] + m_mass[i] * m_mass[i] ) );
-    double cZ   = 2 * Random::Rnd() - 1;
-    double sZ   = sqrt( 1 - cZ * cZ );
-    double angY = 2 * M_PI * Random::Rnd();
-    double cY   = cos(angY);
-    double sY   = sin(angY);
-    double beta  = (i == m_nt-1) ? 0 : pd[i] / sqrt( pd[i] * pd[i] + invMas[i] * invMas[i] );
-    double gamma = (i == m_nt-1) ? 1 : 1./sqrt( 1 - beta*beta);    
+    real_t cZ   = 2 * Random::Rnd() - 1;
+    real_t sZ   = sqrt( 1 - cZ * cZ );
+    real_t angY = 2 * M_PI * Random::Rnd();
+    real_t cY   = cos(angY);
+    real_t sY   = sin(angY);
+    real_t beta  = (i == m_nt-1) ? 0 : pd[i] / sqrt( pd[i] * pd[i] + invMas[i] * invMas[i] );
+    real_t gamma = (i == m_nt-1) ? 1 : 1./sqrt( 1 - beta*beta);    
     for (size_t j = 0; j <= i; j++ ) {
-      double x          = rt[j][0];
-      double y          = rt[j][1];
-      double z          = rt[j][2];
-      double E          = rt[j][3];
+      real_t x          = rt[j][0];
+      real_t y          = rt[j][1];
+      real_t z          = rt[j][2];
+      real_t E          = rt[j][3];
       rt[j][0] = cY * (cZ * x - sZ * y ) - sY * z;
       rt[j][1] = gamma*( sZ * x + cZ * y + beta * E );
       rt[j][2] = sY * (cZ * x - sZ * y )  + cY * z;

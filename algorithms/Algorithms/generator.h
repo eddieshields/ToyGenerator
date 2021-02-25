@@ -9,12 +9,11 @@
 #include "random.h"
 #include "descriptor.h"
 #include "fourvector.h"
+#include "types.h"
 
 #include <vector>
 #include <array>
 #include <memory>
-
-using real_t = double;
 
 class Generator : public Algorithm
 {

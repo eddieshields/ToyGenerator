@@ -4,6 +4,7 @@
 #include "event.h"
 #include "particle.h"
 #include "param.h"
+#include "types.h"
 
 class ParticleParam : public Param
 {
@@ -25,7 +26,7 @@ public:
   virtual void operator()(Event& ev) { ev[m_name] = eval( ev.particle(m_particle_index)); }
 protected:
   const int         m_particle_index;
-  const double      eval(Particle& part);
+  const real_t      eval(Particle& part);
 };
 
 #endif

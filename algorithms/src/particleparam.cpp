@@ -1,6 +1,6 @@
 #include "particleparam.h"
 
-const double ParticleParam::eval(Particle& part)
+const real_t ParticleParam::eval(Particle& part)
 {
   
   switch (m_type)
