@@ -10,8 +10,6 @@ Particle Particle::operator+(Particle& part2)
   part.m_flavour = 0;
 
   part.m_p = part1.m_p + part2.m_p;
-  part.m_n_p = part1.m_n_p + part2.m_n_p;
-  part.m_true_p = part1.m_true_p + part2.m_true_p;
   
   return part;
 }
@@ -23,8 +21,6 @@ Particle Particle::operator+=(Particle& part2)
   this->m_flavour = 0;
 
   this->m_p += part2.m_p;
-  this->m_n_p += part2.m_n_p;
-  this->m_true_p += part2.m_true_p;
-  
+
   return *this;
 }

@@ -6,8 +6,6 @@
 
 #include <string>
 
-#include "TLorentzVector.h"
-
 
 class Particle
 {
@@ -18,12 +16,11 @@ public:
   bool&            isStable()     { return m_stable; }
   double&          time()         { return m_ctau; }
   double&          truetime()     { return m_true_ctau; }
-  TLorentzVector&  old_momentum()     { return m_p; }
-  FourVector&      momentum() { return m_n_p; }
+  FourVector&      momentum()     { return m_p; }
   int&             charge()       { return m_q; }
   int&             flavour()      { return m_flavour; }
 
-  void SetMomentum(FourVector& p) { m_n_p = std::move(p); }
+  void SetMomentum(FourVector& p) { m_p = std::move(p); }
 
   Particle operator+ (Particle& part2);
   Particle operator+=(Particle& part2);
@@ -36,9 +33,7 @@ protected:
   int         m_q;
   int         m_flavour;
 
-  FourVector     m_n_p;
-  TLorentzVector m_p;
-  TLorentzVector m_true_p;
+  FourVector  m_p;
 };
 
 #endif

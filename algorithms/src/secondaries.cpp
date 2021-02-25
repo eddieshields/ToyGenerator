@@ -4,7 +4,7 @@ void Secondaries::operator()(Event& ev)
 {
   if ( !ev.Accept ) return;
   double t_reco = ev.mother().time();
-  if ( fraction( t_reco ) > gRandom->Rndm() ) {
+  if ( fraction( t_reco ) > Random::Rnd() ) {
     ev.mother().truetime() = true_time( t_reco );
     ev["isTruePrompt"] = 0;
   } else {

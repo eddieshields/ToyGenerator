@@ -5,6 +5,7 @@
 #include "algorithm.h"
 #include "correlationutils.h"
 #include "msgservice.h"
+#include "random.h"
 
 #include <string>
 #include <vector>
@@ -16,7 +17,6 @@
 #include "TH2.h"
 #include "TFormula.h"
 #include "TFitResult.h"
-#include "TRandom.h"
 
 class Secondaries : public Algorithm
 {

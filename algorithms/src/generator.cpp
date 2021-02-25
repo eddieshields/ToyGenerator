@@ -4,10 +4,6 @@ const int kMAXP = 18;
 
 void Generator::operator()(Event& ev)
 {
-  // Need to add multithreaded support so we dont need new TGen in each loop.
-  // Generate event.
-  TGenPhaseSpace phsp(m_phsp);
-
   // Add particles.
   int cnj = 1;
   if ( Random::Bool() ) cnj *= -1;
