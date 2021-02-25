@@ -1,6 +1,8 @@
 #ifndef TOYGEN_PARTICLESTORE_H
 #define TOYGEN_PARTICLESTORE_H
 
+#include "types.h"
+
 // json.
 #include "nlohmann/json.hpp"
 using json = nlohmann::json;
@@ -17,7 +19,7 @@ struct ParticleStore {
 
   json m_particles;
 
-  double operator()(std::string name, std::string variable) { return m_particles[name][variable].get<double>(); }
+  real_t operator()(std::string name, std::string variable) { return m_particles[name][variable].get<real_t>(); }
 };
 
 extern ParticleStore gParticleStore;

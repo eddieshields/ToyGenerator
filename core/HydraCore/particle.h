@@ -3,6 +3,7 @@
 
 #include "particlestore.h"
 #include "fourvector.h"
+#include "types.h"
 
 #include <string>
 
@@ -14,8 +15,8 @@ public:
   virtual ~Particle() {};
 
   bool&            isStable()     { return m_stable; }
-  double&          time()         { return m_ctau; }
-  double&          truetime()     { return m_true_ctau; }
+  real_t&          time()         { return m_ctau; }
+  real_t&          truetime()     { return m_true_ctau; }
   FourVector&      momentum()     { return m_p; }
   int&             charge()       { return m_q; }
   int&             flavour()      { return m_flavour; }
@@ -27,9 +28,9 @@ public:
 protected:
   std::string m_name;
   bool        m_stable;
-  double      m_mass;
-  double      m_ctau;
-  double      m_true_ctau;
+  real_t      m_mass;
+  real_t      m_ctau;
+  real_t      m_true_ctau;
   int         m_q;
   int         m_flavour;
 

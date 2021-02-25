@@ -3,6 +3,7 @@
 
 #include "particle.h"
 #include "msgservice.h"
+#include "types.h"
 
 #include <vector>
 #include <map>
@@ -24,23 +25,23 @@ public:
   };
   virtual ~Event() {};
 
-  double pdf = {1};
-  double efficiency = {1};
-  double weight = {1};
+  real_t pdf = {1};
+  real_t efficiency = {1};
+  real_t weight = {1};
   bool   Accept = {true};
 
   std::vector<Particle>& particles() { return m_particles; }
   Particle& particle(int index)      { return m_particles[index]; }       
   Particle& mother()                 { return m_particles[0]; }
   Particle& daughter(int index)      { return m_particles[index]; }
-  double* data()                     { makeData(); return m_data.data(); } 
+  real_t* data()                     { makeData(); return m_data.data(); } 
 
-  double&    operator[](std::string name) { return m_v[name]; }
+  real_t&    operator[](std::string name) { return m_v[name]; }
   Particle& operator()(int index)         { return m_particles[index]; }
 
   std::vector<Particle>          m_particles;
-  std::vector<double>            m_data;
-  std::map<std::string,double>   m_v;
+  std::vector<real_t>            m_data;
+  std::map<std::string,real_t>   m_v;
 
   void updateMasses()
   { 
