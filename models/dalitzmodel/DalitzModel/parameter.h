@@ -5,6 +5,7 @@
 #include <iostream>
 #include <complex>
 #include <vector>
+#include <algorithm>
 
 // DalitzModel.
 #include "random.h"
