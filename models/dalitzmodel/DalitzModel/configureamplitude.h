@@ -25,8 +25,14 @@ private:
   void build_model_from_file();
   void build_phasespace_from_file();
   void build_resonance_from_file(std::string name);
+  void set_properties_from_file();
 
-  template<typename T>
+  bool find(std::string key)
+  {
+    if ( m_config.find(key) ) return true;
+    return false;
+  }
+  template<typename T=std::string>
   T get(std::string key)
   {
     // If it is not already stored get the object.

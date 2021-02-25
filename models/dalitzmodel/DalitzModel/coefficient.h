@@ -90,6 +90,18 @@ public:
       if ( coord_type == Type ) return;
       switchCoordinateSystem( coord_type );
     }
+    void operator=(std::string coord_type)
+    {
+      Coordinates tmp;
+      if ( coord_type == "Rectangular" ) {
+        tmp = Coordinates::Rectangular;
+      } else if ( coord_type == "Polar" ) {
+        tmp = Coordinates::Polar;
+      } else {
+        return;
+      }
+      switchCoordinateSystem( tmp );
+    }
     void switchCoordinateSystem(Coordinates coord_type)
     {
       if ( coord_type == Type ) return;
@@ -99,14 +111,12 @@ public:
         INFO("Switching to polar coordinates");
         for (auto c : Coefficient::m_coefficients) {
           c->m_state = std::polar( c->m_c1.m_state , c->m_c2.m_state );
-          INFO(c->m_state);
         }
         break;
       case Coordinates::Rectangular:
         INFO("Switching to rectangular coordinates");
         for (auto c : Coefficient::m_coefficients) {
           c->m_state = complex_t( c->m_c1.m_state , c->m_c2.m_state );
-          INFO(c->m_state);
         }
         break;
       default:

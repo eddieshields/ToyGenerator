@@ -86,14 +86,12 @@ public:
         INFO("Switching to fixed uncertainty");
         for (auto p : Parameter::m_parameters) {
           p->m_state = p->m_value;
-          INFO(p->m_state);
         }
         break;
       case Uncertainty::Floating:
         INFO("Switching to floating uncertainty");
         for (auto p : Parameter::m_parameters) {
           p->m_state = p->m_value + p->m_error;
-          INFO(p->m_state);
         }
         break;
       default:

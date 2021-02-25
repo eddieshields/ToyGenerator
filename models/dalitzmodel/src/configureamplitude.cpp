@@ -11,6 +11,7 @@ void ConfigureAmplitude::build_model_from_file()
   while ( resos >> res ) {
     build_resonance_from_file( res );
   }
+  set_properties_from_file();
   return;
 }
 
@@ -94,4 +95,10 @@ void ConfigureAmplitude::appendFlatte(std::string name)
   LineShape::Flatte* comp = new LineShape::Flatte(name,c,resoA,resoB,m,w,l,r,gam1,gam2,m02a,m02b);
   m_amp.addResonance(comp);
   DEBUG(*comp)
+}
+
+void ConfigureAmplitude::set_properties_from_file()
+{
+  if ( find("CoordinateSystem") ) Coefficient::CoordinatesSystem = get("CoordinateSystem");
+  if ( find("FlatteParameterisation") ) LineShape::Flatte::SetParameterisation( get("FlatteParameterisation") );
 }

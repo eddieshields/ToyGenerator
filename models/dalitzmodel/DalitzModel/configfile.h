@@ -31,11 +31,12 @@ public:
   }
   virtual ~ConfigFile() {}
 
+  bool find(std::string key);
   std::string get(std::string key);
   template<typename T>
   T get(std::string key)
   {
-    T out = 0.0;
+    T out;
     if ( m_entries.find(key) == m_entries.end() ) {
       WARNING(key << " not found!");
       return out;

@@ -63,10 +63,13 @@ const complex_t Flatte::babar2010_propagator(const PhaseSpace& ps, const double&
 void Flatte::SetParameterisation(std::string parameterisation)
 {
   if ( parameterisation == "BaBar2005" || parameterisation == "babar2005" ) {
+    INFO("Will use BaBar 2005 Flatte parameterisation");
     m_parameterisation = Parameterisation::BaBar2005;
   } else if ( parameterisation == "BaBar2008" || parameterisation == "babar2008" ) {
+    INFO("Will use BaBar 2008 Flatte parameterisation");
     m_parameterisation = Parameterisation::BaBar2008;
   } else if ( parameterisation == "BaBar2010" || parameterisation == "babar2010" ) {
+    INFO("Will use BaBar 2010 Flatte parameterisation");
     m_parameterisation = Parameterisation::BaBar2010;
   }
   return;

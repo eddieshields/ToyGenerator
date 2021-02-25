@@ -2,6 +2,11 @@
 
 using namespace DalitzModel;
 
+bool ConfigFile::find(std::string key)
+{
+  if ( m_entries.find(key) == m_entries.end() ) return false;
+  return true;
+}
 
 std::string ConfigFile::get(std::string key)
 {
