@@ -3,7 +3,6 @@
 
 // STL.
 #include <iostream>
-#include <filesystem>
 #include <string>
 #include <map>
 #include <regex>
@@ -28,7 +27,6 @@ public:
   ConfigFile() = default;
   ConfigFile(const std::string cfgfile ) 
   { 
-    if ( !(std::filesystem::exists(cfgfile)) ) FATAL( cfgfile << " not found!" );
     decodeConfigFile( cfgfile );
   }
   virtual ~ConfigFile() {}
@@ -76,6 +74,8 @@ private:
   void decodeParameters       (const std::string line);
   void decodeCorrelationMatrix(const std::string line);
   void decodeCovarianceMatrix (const std::string line);
+
+  bool is_empty(std::ifstream& file);
 
   void addEntry(const std::string line);
 

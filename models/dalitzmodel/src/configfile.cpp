@@ -18,9 +18,9 @@ std::string ConfigFile::get(std::string key)
 
 void ConfigFile::decodeConfigFile(const std::string cfgfile)
 {
-  INFO("Will configure model from " << cfgfile);
   std::ifstream ifs(cfgfile);
-  
+  if ( is_empty( ifs ) ) FATAL( cfgfile << " not found!" );
+  INFO("Will configure model from " << cfgfile); 
   std::string line;
   ConfigFile::Section section = ConfigFile::None;
   while (std::getline(ifs, line)) {
@@ -113,4 +113,9 @@ void ConfigFile::decodeCorrelationMatrix(const std::string line)
 void ConfigFile::decodeCovarianceMatrix(const std::string line)
 {
   return;
+}
+
+bool ConfigFile::is_empty(std::ifstream& file)
+{
+  return file.peek() == std::ifstream::traits_type::eof();
 }
