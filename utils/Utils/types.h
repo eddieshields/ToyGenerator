@@ -5,12 +5,12 @@
 #include <immintrin.h>
 
 // Define real.
-#ifdef SINGLE_PRECISION
-  using real_t = float;
-  using __m = __m128;
-#else
+#ifdef DOUBLE_PRECISION
   using real_t = double;
   using __m = __m256d;
+#else
+  using real_t = float;
+  using __m = __m128;
 #endif
 
 // Define complex.

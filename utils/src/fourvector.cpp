@@ -36,53 +36,34 @@ real_t FourVector::E () const { return vT; }
 
 FourVector FourVector::operator+(const FourVector& other)
 {
-  #ifdef VECTORIZATION
-    return FourVector( _mm_add_ps( this->v4 , other.v4) );
-  #else
-    return FourVector( this->vX + other.vX , this->vY + other.vY, this->vZ + other.vZ, this->vT + other.vT );
-  #endif
+  return FourVector( intrinsic_add( this->v4 , other.v4) );
 }
 
 FourVector FourVector::operator-(const FourVector& other)
 {
-  #ifdef VECTORIZATION
-    return FourVector( _mm_sub_ps( this->v4 , other.v4 ) );
-  #else
-    return FourVector( this->vX - other.vX , this->vY - other.vY, this->vZ - other.vZ, this->vT - other.vT );
-  #endif
+  return FourVector( intrinsic_sub( this->v4 , other.v4 ) );
 }
 
 real_t FourVector::operator*(const FourVector& other)
 {
-  #ifdef VECTORIZATION
-    __m128 t4;
-    // Multiply the two vectors together v1 = {v11,v12,v13,v14}, v2 = {v21,v22,v23,v24}.
-    //  t = {v11*v21,v12*v22,v13*v23,v14*v24}.
-    t4 = _mm_mul_ps( this->v4 , other.v4 );
-    // Hadd the two vectors, now t becomes.
-    // t = {v11*v21 + v12*v22, v13*v23 + v14*v24, v11*v21 + v12*v22, v13*v23 + v14*v24}.
-    t4 = _mm_hadd_ps( t4 , t4 );
-    // Hadd again so all elements become
-    // ti = v11*v21 + v12*v22 + v13*v23 + v14*v24.
-    t4 = _mm_hadd_ps( t4 , t4 );
-    // Return first element of t1.
-    // All elements are the same, the dot product of v1 and v2.
-    return _mm_cvtss_f32(t4);
-  #else
-    return (this->vX*other.vX + this->vY*other.vY + this->vZ*other.vZ + this->vT*other.vT);
-  #endif
+  __m t4;
+  // Multiply the two vectors together v1 = {v11,v12,v13,v14}, v2 = {v21,v22,v23,v24}.
+  //  t = {v11*v21,v12*v22,v13*v23,v14*v24}.
+  t4 = intrinsic_mul( this->v4 , other.v4 );
+  // Hadd the two vectors, now t becomes.
+  // t = {v11*v21 + v12*v22, v13*v23 + v14*v24, v11*v21 + v12*v22, v13*v23 + v14*v24}.
+  t4 = intrinsic_hadd( t4 , t4 );
+  // Hadd again so all elements become
+  // ti = v11*v21 + v12*v22 + v13*v23 + v14*v24.
+  t4 = intrinsic_hadd( t4 , t4 );
+  // Return first element of t1.
+  // All elements are the same, the dot product of v1 and v2.
+  return intrinsic_first_element(t4);
 }
 
 void FourVector::operator+=(const FourVector& other)
 {
-  #ifdef VECTORIZATION
-    v4 = _mm_add_ps( this->v4 , other.v4 );
-  #else
-    vX += other.vX;
-    vY += other.vY;
-    vZ += other.vZ;
-    vT += other.vT;
-  #endif
+  v4 = intrinsic_add( this->v4 , other.v4 );
 }
 
 real_t FourVector::M() const

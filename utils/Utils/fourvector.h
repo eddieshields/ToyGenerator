@@ -9,6 +9,7 @@
 #include <iostream>
 #include "colours.h"
 #include "types.h"
+#include "operations.h"
 
 class FourVector
 {
@@ -27,9 +28,9 @@ public:
   FourVector(const real_t fv[4]) :
     vX( fv[0] ), vY( fv[1] ), vZ( fv[2] ), vT( fv[3] )
   {}
-  //FourVector(const __m& fv) :
-  //  v4( fv )
-  //{}
+  FourVector(const __m& fv) :
+    v4( fv )
+  {}
   FourVector(const FourVector& fv) :
     v4( fv.v4 )
   {}
