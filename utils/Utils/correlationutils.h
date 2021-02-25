@@ -2,6 +2,7 @@
 #define TOYGEN_CORRELATIONUTILS_H
 
 #include "msgservice.h"
+#include "types.h"
 
 #include <stdlib.h>
 #include <map>
@@ -20,9 +21,9 @@ struct CorrelationUtils
 {
   static TF1* VaryFunction(TF1* function, TFitResultPtr* resultptr);
   static TF1* VaryFunction(TF1* function, TFitResult* result);
-  static std::vector<double> VaryWithinErrors(std::vector<double>& params, std::vector<double>& errors, TMatrixDSym& cov);
+  static std::vector<real_t> VaryWithinErrors(std::vector<real_t>& params, std::vector<real_t>& errors, TMatrixDSym& cov);
 
-  static TMatrixDSym CalculateCovMatrix(std::vector<double>& errors, TMatrixDSym& corr);
+  static TMatrixDSym CalculateCovMatrix(std::vector<real_t>& errors, TMatrixDSym& corr);
 
   struct CorrelationMatrix
   {
@@ -41,8 +42,8 @@ struct CorrelationUtils
 
     TMatrixDSym& matrix() { return m_cor; }
     TMatrixDSym& operator()() { return m_cor; }
-    double       operator()(int& i, int& j);
-    double       operator()(std::string& name1, std::string& name2);
+    real_t       operator()(int& i, int& j);
+    real_t       operator()(std::string& name1, std::string& name2);
 
     std::vector<std::string>  m_names;
     std::map<std::string,int> m_params;
@@ -67,8 +68,8 @@ struct CorrelationUtils
 
     TMatrixDSym& matrix() { return m_cov; }
     TMatrixDSym& operator()() { return m_cov; }
-    double       operator()(int& i, int& j);
-    double       operator()(std::string& name1, std::string& name2);
+    real_t       operator()(int& i, int& j);
+    real_t       operator()(std::string& name1, std::string& name2);
 
     std::vector<std::string>  m_names;
     std::map<std::string,int> m_params;

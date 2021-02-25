@@ -8,7 +8,7 @@ TF1* CorrelationUtils::VaryFunction(TF1* function, TFitResultPtr* resultptr)
 
 TF1* CorrelationUtils::VaryFunction(TF1* function, TFitResult* result)
 {
-  std::vector<double> params, errors;
+  std::vector<real_t> params, errors;
   for (int i = 0; i < function->GetNpar(); i++) {
     params.push_back( result->Parameter(i) );
     errors.push_back( result->ParError(i) );
@@ -16,7 +16,7 @@ TF1* CorrelationUtils::VaryFunction(TF1* function, TFitResult* result)
 
   TMatrixDSym cov = result->GetCovarianceMatrix();
   
-  std::vector<double> new_params = VaryWithinErrors(params,errors,cov);
+  std::vector<real_t> new_params = VaryWithinErrors(params,errors,cov);
 
   for (int i = 0; i < function->GetNpar(); i++) {
     function->FixParameter(i,new_params[i]);
@@ -24,7 +24,7 @@ TF1* CorrelationUtils::VaryFunction(TF1* function, TFitResult* result)
   return function;
 }
 
-std::vector<double> CorrelationUtils::VaryWithinErrors(std::vector<double>& params, std::vector<double>& errors, TMatrixDSym& cov)
+std::vector<real_t> CorrelationUtils::VaryWithinErrors(std::vector<real_t>& params, std::vector<real_t>& errors, TMatrixDSym& cov)
 {
   // Get the number of params.
   int npars = params.size();
@@ -49,7 +49,7 @@ std::vector<double> CorrelationUtils::VaryWithinErrors(std::vector<double>& para
   RooArgList* list = (RooArgList*)data->get(0);
 
   // Move values into new list;
-  std::vector<double> out_params;
+  std::vector<real_t> out_params;
   out_params.resize( npars );
   for (int i = 0; i < npars; i++) {
     RooRealVar* p = (RooRealVar*)list->at(i);
@@ -59,7 +59,7 @@ std::vector<double> CorrelationUtils::VaryWithinErrors(std::vector<double>& para
   return out_params;
 }
 
-TMatrixDSym CorrelationUtils::CalculateCovMatrix(std::vector<double>& errors, TMatrixDSym& corr)
+TMatrixDSym CorrelationUtils::CalculateCovMatrix(std::vector<real_t>& errors, TMatrixDSym& corr)
 {
   int dim = errors.size();
   TMatrixDSym cov(dim);
@@ -72,24 +72,24 @@ TMatrixDSym CorrelationUtils::CalculateCovMatrix(std::vector<double>& errors, TM
   return cov;
 }
 
-double CorrelationUtils::CorrelationMatrix::operator()(int& i, int& j)
+real_t CorrelationUtils::CorrelationMatrix::operator()(int& i, int& j)
 {
   return m_cor(i,j);
 }
 
-double CorrelationUtils::CorrelationMatrix::operator()(std::string& name1, std::string& name2)
+real_t CorrelationUtils::CorrelationMatrix::operator()(std::string& name1, std::string& name2)
 {
   int i = m_params[name1];
   int j = m_params[name2];
   return m_cor(i,j);
 }
 
-double CorrelationUtils::CovarianceMatrix::operator()(int& i, int& j)
+real_t CorrelationUtils::CovarianceMatrix::operator()(int& i, int& j)
 {
   return m_cov(i,j);
 }
 
-double CorrelationUtils::CovarianceMatrix::operator()(std::string& name1, std::string& name2)
+real_t CorrelationUtils::CovarianceMatrix::operator()(std::string& name1, std::string& name2)
 {
   int i = m_params[name1];
   int j = m_params[name2];

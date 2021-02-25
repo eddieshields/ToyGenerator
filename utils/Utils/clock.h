@@ -3,6 +3,7 @@
 
 // DalitzModel.
 #include "colours.h"
+#include "types.h"
 
 // STL.
 #include <iostream>
