@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
   flow.printAlgorithmSequence();
 
   hy().EvtMax = 100000;
-  hy().TreeName = "d02kshh";
+  hy().TreeName = "d02kskk";
   hy().AlgoSequence = flow;
   hy().NThreads = -1;
   hy().OutputLocation = "d02kskk.root";

@@ -7,6 +7,7 @@
 #include "dalitzplot.h"
 #include "msgservice.h"
 #include "clock.h"
+#include "types.h"
 
 // ROOT.
 #include "TH2.h"
@@ -30,13 +31,13 @@ int main(int argc, char *argv[])
   TH2D* hist = new TH2D("hist","hist",1000,amp.ps().mSq12min(),amp.ps().mSq12max(),1000,amp.ps().mSq13min(),amp.ps().mSq13max());
 
   PRINT( amp );
-  double mSq12, mSq13;
+  real_t mSq12, mSq13;
   Clock::Start();
   for (int i = 1; i < hist->GetNbinsX() + 1; i++) {
     for (int j = 1; j < hist->GetNbinsY() + 1; j++) {
       mSq12 = hist->GetXaxis()->GetBinCenter(i);
       mSq13 = hist->GetYaxis()->GetBinCenter(j);
-      double A = amp.AdirSq(mSq12,mSq13);
+      real_t A = amp.AdirSq(mSq12,mSq13);
       hist->SetBinContent(i,j,A);
     }
   }

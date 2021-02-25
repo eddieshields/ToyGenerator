@@ -5,6 +5,8 @@
 #include "algorithm.h"
 #include "correlationutils.h"
 #include "msgservice.h"
+#include "random.h"
+#include "types.h"
 
 #include <string>
 #include <vector>
@@ -16,7 +18,6 @@
 #include "TH2.h"
 #include "TFormula.h"
 #include "TFitResult.h"
-#include "TRandom.h"
 
 class Secondaries : public Algorithm
 {
@@ -31,8 +32,8 @@ public:
 
   virtual void operator() (Event& ev);
 
-  const double fraction (const double& t_reco);
-  const double true_time(const double& t_reco);
+  const real_t fraction (const real_t& t_reco);
+  const real_t true_time(const real_t& t_reco);
 
   std::vector<std::string> getVariables() { return std::vector<std::string>{"isTruePrompt"}; }
 private:

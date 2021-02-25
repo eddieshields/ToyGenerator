@@ -18,10 +18,10 @@ void ConfigureAmplitude::build_model_from_file()
 void ConfigureAmplitude::build_phasespace_from_file()
 {
   DEBUG("Building PhaseSpace");
-  double mM = get<double>("mMoth");
-  double m1 = get<double>("m1");
-  double m2 = get<double>("m2");
-  double m3 = get<double>("m3");
+  real_t mM = get<real_t>("mMoth");
+  real_t m1 = get<real_t>("m1");
+  real_t m2 = get<real_t>("m2");
+  real_t m3 = get<real_t>("m3");
   PhaseSpace ps(mM,m1,m2,m3);
   m_amp.setPhaseSpace( ps );
 }

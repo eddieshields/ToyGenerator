@@ -15,7 +15,7 @@ void Clock::Stop()
 
 void Clock::Print(std::string task)
 {
-  std::chrono::duration<double> diff = t_end - t_start;
+  std::chrono::duration<real_t> diff = t_end - t_start;
   std::cout << GREEN << "Time to " << task << ":\n"
             << std::fixed << std::setprecision(5) << "CPU time  :"
             << " " << (float)(c_end - c_start) / CLOCKS_PER_SEC << " s\n"

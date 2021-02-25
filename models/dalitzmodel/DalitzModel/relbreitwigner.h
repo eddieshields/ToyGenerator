@@ -3,11 +3,10 @@
 
 // DalitzModel.
 #include "resonance.h"
+#include "types.h"
 
 namespace DalitzModel {
   namespace LineShape {
-
-using complex_t = std::complex<double>;
 
 class RelBreitWigner : public Resonance
 {
@@ -37,10 +36,10 @@ public:
    *   T_{R}\left( m_{AB} \right) = \frac{1}{m_{R}^{2} - m_{AB}^{2} - im_{R}\Gamma_{AB}\left( m_{AB} \right)}
    * \f]
    */
-  const complex_t propagator(const PhaseSpace& ps, const double& mSqAB) const
+  const complex_t propagator(const PhaseSpace& ps, const real_t& mSqAB) const
   {
-    complex_t I( 0., 1. );
-    return 1. /( this->mSq() - mSqAB - ( this->m() * I * this->runningWidth(ps,mSqAB) ) );
+    complex_t I( (real_t)0., (real_t)1. );
+    return (real_t)1. /( mSq() - mSqAB - ( m() * I * runningWidth(ps,mSqAB) ) );
   }
   
   /** Running width $\f \Gamma_{AB}\left( m_{AB} \right)\f$
@@ -51,9 +50,9 @@ public:
    *                                      B_{L}^{'2}\left( q,q_{0} \right)
    * \f]
    */
-  const double runningWidth(const PhaseSpace& ps, const double& mSqAB) const
+  const real_t runningWidth(const PhaseSpace& ps, const real_t& mSqAB) const
   {
-    return this->width() * std::pow( this->q( ps, mSqAB )/this->q( ps, this->mSq() ) , (2*m_l + 1) ) * ( this->m() / std::sqrt( mSqAB ) ) * std::pow( this->blattWeisskopfPrime(ps,mSqAB) , 2 );
+    return width() * std::pow( q( ps, mSqAB )/q( ps, mSq() ) , (2*m_l + 1) ) * ( m() / std::sqrt( mSqAB ) ) * std::pow( blattWeisskopfPrime(ps,mSqAB) , 2 );
   }
 
   RelBreitWigner* copy() const

@@ -3,8 +3,8 @@
 void Secondaries::operator()(Event& ev)
 {
   if ( !ev.Accept ) return;
-  double t_reco = ev.mother().time();
-  if ( fraction( t_reco ) > gRandom->Rndm() ) {
+  real_t t_reco = ev.mother().time();
+  if ( fraction( t_reco ) > Random::Rnd() ) {
     ev.mother().truetime() = true_time( t_reco );
     ev["isTruePrompt"] = 0;
   } else {
@@ -52,19 +52,19 @@ void Secondaries::m_construct_hist_vector()
   }
 }
 
-const double Secondaries::fraction(const double& t_reco)
+const real_t Secondaries::fraction(const real_t& t_reco)
 {
   return m_fraction->Eval( t_reco );
 }
 
 
-const double Secondaries::true_time(const double& t_reco)
+const real_t Secondaries::true_time(const real_t& t_reco)
 {
   int bin;
   bin = m_hist->GetXaxis()->FindBin( t_reco ) - 1;
   if ( bin < m_hists.size() ) {
     if ( m_hists[bin]->GetEntries() ) {
-      double t_true;
+      real_t t_true;
       t_true = m_hists[bin]->GetRandom();
       return t_true;
     }

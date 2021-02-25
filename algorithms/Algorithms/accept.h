@@ -4,6 +4,7 @@
 #include "event.h"
 #include "algorithm.h"
 #include "random.h"
+#include "types.h"
 
 class Accept : public Algorithm
 {
@@ -13,10 +14,10 @@ public:
 
   virtual void operator() (Event& ev);
 
-  void setMaxPdf(const double maxPdf) { m_maxPdf = maxPdf; }
+  void setMaxPdf(const real_t maxPdf) { m_maxPdf = maxPdf; }
 
 private:
-  double m_maxPdf = {1.};
+  real_t m_maxPdf = {1.};
 };
 
 #endif
