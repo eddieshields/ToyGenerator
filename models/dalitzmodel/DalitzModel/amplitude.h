@@ -10,10 +10,9 @@
 #include "resonance.h"
 #include "phasespace.h"
 #include "msgservice.h"
+#include "types.h"
 
 namespace DalitzModel {
-
-using complex_t = std::complex<double>;
 
 class Amplitude
 {
@@ -62,46 +61,46 @@ public:
     return os;
   }
 
-  const complex_t Adir  (const double& mSq12, const double& mSq13) const ;
-  const complex_t Adir  (const double& mSq12, const double& mSq13, const double& mSq23) const;
-  const complex_t Abar  (const double& mSq12, const double& mSq13) const ;
-  const complex_t Abar  (const double& mSq12, const double& mSq13, const double& mSq23) const;
+  const complex_t Adir  (const real_t& mSq12, const real_t& mSq13) const ;
+  const complex_t Adir  (const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const complex_t Abar  (const real_t& mSq12, const real_t& mSq13) const ;
+  const complex_t Abar  (const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 
-  const double    AdirSq(const double& mSq12, const double& mSq13) const;
-  const double    AdirSq(const double& mSq12, const double& mSq13, const double& mSq23) const;
-  const double    AbarSq(const double& mSq12, const double& mSq13) const;
-  const double    AbarSq(const double& mSq12, const double& mSq13, const double& mSq23) const;
+  const real_t    AdirSq(const real_t& mSq12, const real_t& mSq13) const;
+  const real_t    AdirSq(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const real_t    AbarSq(const real_t& mSq12, const real_t& mSq13) const;
+  const real_t    AbarSq(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 
-  const complex_t A1    (const double& mSq12, const double& mSq13) const ;
-  const complex_t A1    (const double& mSq12, const double& mSq13, const double& mSq23) const;
-  const complex_t A2    (const double& mSq12, const double& mSq13) const ;
-  const complex_t A2    (const double& mSq12, const double& mSq13, const double& mSq23) const;
+  const complex_t A1    (const real_t& mSq12, const real_t& mSq13) const ;
+  const complex_t A1    (const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const complex_t A2    (const real_t& mSq12, const real_t& mSq13) const ;
+  const complex_t A2    (const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 
-  const double    A1Sq  (const double& mSq12, const double& mSq13) const;
-  const double    A1Sq  (const double& mSq12, const double& mSq13, const double& mSq23) const;
-  const double    A2Sq  (const double& mSq12, const double& mSq13) const;
-  const double    A2Sq  (const double& mSq12, const double& mSq13, const double& mSq23) const;
+  const real_t    A1Sq  (const real_t& mSq12, const real_t& mSq13) const;
+  const real_t    A1Sq  (const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const real_t    A2Sq  (const real_t& mSq12, const real_t& mSq13) const;
+  const real_t    A2Sq  (const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 
   // Individual resonances.
-  const complex_t Adir  (std::string name, const double& mSq12, const double& mSq13) const ;
-  const complex_t Adir  (std::string name, const double& mSq12, const double& mSq13, const double& mSq23) const;
-  const complex_t Abar  (std::string name, const double& mSq12, const double& mSq13) const ;
-  const complex_t Abar  (std::string name, const double& mSq12, const double& mSq13, const double& mSq23) const;
+  const complex_t Adir  (std::string name, const real_t& mSq12, const real_t& mSq13) const ;
+  const complex_t Adir  (std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const complex_t Abar  (std::string name, const real_t& mSq12, const real_t& mSq13) const ;
+  const complex_t Abar  (std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 
-  const double    AdirSq(std::string name, const double& mSq12, const double& mSq13) const;
-  const double    AdirSq(std::string name, const double& mSq12, const double& mSq13, const double& mSq23) const;
-  const double    AbarSq(std::string name, const double& mSq12, const double& mSq13) const;
-  const double    AbarSq(std::string name, const double& mSq12, const double& mSq13, const double& mSq23) const;
+  const real_t    AdirSq(std::string name, const real_t& mSq12, const real_t& mSq13) const;
+  const real_t    AdirSq(std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const real_t    AbarSq(std::string name, const real_t& mSq12, const real_t& mSq13) const;
+  const real_t    AbarSq(std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 
-  const complex_t A1    (std::string name, const double& mSq12, const double& mSq13) const ;
-  const complex_t A1    (std::string name, const double& mSq12, const double& mSq13, const double& mSq23) const;
-  const complex_t A2    (std::string name, const double& mSq12, const double& mSq13) const ;
-  const complex_t A2    (std::string name, const double& mSq12, const double& mSq13, const double& mSq23) const;
+  const complex_t A1    (std::string name, const real_t& mSq12, const real_t& mSq13) const ;
+  const complex_t A1    (std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const complex_t A2    (std::string name, const real_t& mSq12, const real_t& mSq13) const ;
+  const complex_t A2    (std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 
-  const double    A1Sq  (std::string name, const double& mSq12, const double& mSq13) const;
-  const double    A1Sq  (std::string name, const double& mSq12, const double& mSq13, const double& mSq23) const;
-  const double    A2Sq  (std::string name, const double& mSq12, const double& mSq13) const;
-  const double    A2Sq  (std::string name, const double& mSq12, const double& mSq13, const double& mSq23) const;
+  const real_t    A1Sq  (std::string name, const real_t& mSq12, const real_t& mSq13) const;
+  const real_t    A1Sq  (std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const real_t    A2Sq  (std::string name, const real_t& mSq12, const real_t& mSq13) const;
+  const real_t    A2Sq  (std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 };
 
 } // namespace DalitzModel

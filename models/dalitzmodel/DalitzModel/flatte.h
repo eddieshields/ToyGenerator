@@ -4,11 +4,10 @@
 // DalitzModel.
 #include "resonance.h"
 #include "msgservice.h"
+#include "types.h"
 
 namespace DalitzModel {
   namespace LineShape {
-
-using complex_t = std::complex<double>;
 
 class Flatte : public Resonance
 {
@@ -25,10 +24,10 @@ private:
   Parameter m_m02a;
   Parameter m_m02b;
 
-  double m_gamma1Sq;
-  double m_gamma2Sq;
-  double m_m02aSq;
-  double m_m02bSq;
+  real_t m_gamma1Sq;
+  real_t m_gamma2Sq;
+  real_t m_m02aSq;
+  real_t m_m02bSq;
 
   static Parameterisation m_parameterisation; 
 public:
@@ -50,12 +49,12 @@ public:
     m_m02aSq = m_m02a * m_m02a;
     m_m02bSq = m_m02b * m_m02b;
   }
-  Flatte(std::string& name, const double& coeff1, const double& coeff2,
+  Flatte(std::string& name, const real_t& coeff1, const real_t& coeff2,
             const int& resoA, const int& resoB,
-            const double& mass, const double& width,
-            const int& l, const double& r,
-            const double& gamma1, const double& gamma2,
-            const double& m02a, const double& m02b) :
+            const real_t& mass, const real_t& width,
+            const int& l, const real_t& r,
+            const real_t& gamma1, const real_t& gamma2,
+            const real_t& m02a, const real_t& m02b) :
     Resonance( name , coeff1 , coeff2 , resoA , resoB , mass , width , l , r ),
     m_gamma1( gamma1 ),
     m_gamma2( gamma2 ),
@@ -81,11 +80,11 @@ public:
   }
   virtual ~Flatte() {}
 
-  virtual const complex_t propagator(const PhaseSpace& ps, const double& mSqAB) const;
+  virtual const complex_t propagator(const PhaseSpace& ps, const real_t& mSqAB) const;
 
-  const complex_t babar2005_propagator(const PhaseSpace& ps, const double& mSqAB) const;
-  const complex_t babar2008_propagator(const PhaseSpace& ps, const double& mSqAB) const;
-  const complex_t babar2010_propagator(const PhaseSpace& ps, const double& mSqAB) const;
+  const complex_t babar2005_propagator(const PhaseSpace& ps, const real_t& mSqAB) const;
+  const complex_t babar2008_propagator(const PhaseSpace& ps, const real_t& mSqAB) const;
+  const complex_t babar2010_propagator(const PhaseSpace& ps, const real_t& mSqAB) const;
 
   Flatte* copy() const;
 
@@ -94,10 +93,10 @@ public:
   Parameter m02a()   const { return m_m02a; }
   Parameter m02b()   const { return m_m02b; }
 
-  double gamma1Sq()  const { return m_gamma1Sq; }
-  double gamma2Sq()  const { return m_gamma2Sq; }
-  double m02aSq()    const { return m_m02aSq; }
-  double m02bSq()    const { return m_m02bSq; }
+  real_t gamma1Sq()  const { return m_gamma1Sq; }
+  real_t gamma2Sq()  const { return m_gamma2Sq; }
+  real_t m02aSq()    const { return m_m02aSq; }
+  real_t m02bSq()    const { return m_m02bSq; }
 
   static void SetParameterisation(std::string parameterisation);
 };

@@ -9,29 +9,22 @@
 #include "random.h"
 #include "descriptor.h"
 #include "fourvector.h"
-
-#include "TGenPhaseSpace.h"
-#include "TLorentzVector.h"
-#include "TRandom.h"
+#include "types.h"
 
 #include <vector>
 #include <array>
 #include <memory>
 
-using real_t = double;
-
 class Generator : public Algorithm
 {
 public:
-  Generator(std::string name) : Algorithm(name), m_phsp() 
+  Generator(std::string name) : Algorithm(name)
   {
     getDecay();
-    TLorentzVector m_mother(0.,0.,0.,gParticleStore(m_particles[0],"mass"));
     FourVector m_m(0.,0.,0.,gParticleStore(m_particles[0],"mass"));
     for (int i = 1; i < m_particles.size(); i++) {
       addToDaughters(m_particles[i]);
     }
-    m_phsp.SetDecay(m_mother,m_daughters.size(),m_daughters.data());
     SetDecay(m_m,m_daughters);
   }
   ~Generator() {}
@@ -41,8 +34,6 @@ public:
   std::vector<FourVector> Generate();
   
 private:
-  TGenPhaseSpace            m_phsp;
-  TLorentzVector            m_mother;
   std::vector<real_t>       m_daughters;
   std::vector<std::string>  m_particles;
   std::vector<int>          m_charges;

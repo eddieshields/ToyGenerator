@@ -92,9 +92,9 @@ void DalitzPlot::setBoundaryOptions(TGraph* boundary)
 TGraph* DalitzPlot::setBoundary(const int& boundary_points)
 {
   // Fill vectors with boundary points.
-  std::vector< double > _mSqABbound, _mSqBCbound;
-  double step = ( m_ps.mSq12max() - m_ps.mSq12min() ) / boundary_points;
-  double mSqAB = m_ps.mSq12min();
+  std::vector< real_t > _mSqABbound, _mSqBCbound;
+  real_t step = ( m_ps.mSq12max() - m_ps.mSq12min() ) / boundary_points;
+  real_t mSqAB = m_ps.mSq12min();
   while ( mSqAB < m_ps.mSq12max() ) {
       _mSqABbound.push_back( mSqAB );
       _mSqBCbound.push_back( m_ps.mSq13max( mSqAB ) );
@@ -166,9 +166,9 @@ void DalitzPlot::lhcbStyle() {
   // Use times new roman, precision 2
   Int_t lhcbFont        = 132;  // Old LHCb style: 62;
   // Line thickness
-  Double_t lhcbWidth    = 2.00; // Old LHCb style: 3.00;
+  real_t lhcbWidth    = 2.00; // Old LHCb style: 3.00;
   // Text size
-  Double_t lhcbTSize    = 0.06;
+  real_t lhcbTSize    = 0.06;
 
   // use plain black on white colors
   gROOT->SetStyle("Plain");

@@ -4,6 +4,8 @@
 // Package.
 #include "phasespace.h"
 #include "amplitude.h"
+#include "types.h"
+#include "types.h"
 
 // SL.
 #include <iostream>
@@ -43,7 +45,7 @@ public:
     lhcbStyle();
   }
   /** Constructor. */
-  DalitzPlot(const double& mMother, const double& m1, const double& m2, const double& m3) :
+  DalitzPlot(const real_t& mMother, const real_t& m1, const real_t& m2, const real_t& m3) :
     m_ps( mMother, m1, m2, m3 )
   {
     lhcbStyle();

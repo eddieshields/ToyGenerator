@@ -3,6 +3,7 @@
 
 #include "particle.h"
 #include "msgservice.h"
+#include "types.h"
 
 #include <vector>
 #include <map>
@@ -24,34 +25,30 @@ public:
   };
   virtual ~Event() {};
 
-  double pdf = {1};
-  double efficiency = {1};
-  double weight = {1};
+  real_t pdf = {1};
+  real_t efficiency = {1};
+  real_t weight = {1};
   bool   Accept = {true};
 
   std::vector<Particle>& particles() { return m_particles; }
   Particle& particle(int index)      { return m_particles[index]; }       
   Particle& mother()                 { return m_particles[0]; }
   Particle& daughter(int index)      { return m_particles[index]; }
-  double* data()                     { makeData(); return m_data.data(); } 
+  real_t* data()                     { makeData(); return m_data.data(); } 
 
-  double&    operator[](std::string name) { return m_v[name]; }
+  real_t&    operator[](std::string name) { return m_v[name]; }
   Particle& operator()(int index)         { return m_particles[index]; }
 
   std::vector<Particle>          m_particles;
-  std::vector<double>            m_data;
-  std::map<std::string,double>   m_v;
+  std::vector<real_t>            m_data;
+  std::map<std::string,real_t>   m_v;
 
   void updateMasses()
-  {  
-    TLorentzVector p1 = m_particles[1].momentum();
-    TLorentzVector p2 = m_particles[2].momentum();
-    TLorentzVector p3 = m_particles[3].momentum();
+  { 
+    FourVector p12 = m_particles[1].momentum() + m_particles[2].momentum();
+    FourVector p13 = m_particles[1].momentum() + m_particles[3].momentum();
+    FourVector p23 = m_particles[2].momentum() + m_particles[3].momentum();
 
-    TLorentzVector p12 = p1 + p2;
-    TLorentzVector p13 = p1 + p3;
-    TLorentzVector p23 = p2 + p3;
-  
     m_v["mSq12"] = p12.M2();
     m_v["mSq13"] = p13.M2();
     m_v["mSq23"] = p23.M2();
@@ -59,7 +56,7 @@ public:
 
   void makeData()
   {
-    std::vector<TLorentzVector> pVec;
+    std::vector<FourVector> pVec;
     for (int i = 0; i < m_particles.size(); i++) {
       pVec.push_back( m_particles[i].momentum() );
     }

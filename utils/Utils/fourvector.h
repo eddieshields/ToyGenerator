@@ -6,33 +6,29 @@
 #include <smmintrin.h>
 #include <cmath>
 
-// Depending on architecture may be able to change this to double
-// if the register is big enough.
-//using real_t = float;
-#ifdef VECTORIZARION
-    using real_t = float;
-#else
-    using real_t = double;
-#endif
+#include <iostream>
+#include "colours.h"
+#include "types.h"
+#include "operations.h"
 
 class FourVector
 {
 private:
   union {
+    __m    v4;                          ///< intrinsic vector that is 128bits wide so can hold the full vector.
     real_t v[4];                         ///< array that stores values.
-    __m128  v4;                           ///< intrinsic vector that is 128bits wide so can hold the full vector.
     struct  { real_t vX, vY, vZ, vT; };  ///< struct of values for elements in the vector.
   };
 
 public:
   FourVector() = default;
   FourVector(const real_t& v1, const real_t& v2, const real_t& v3, const real_t& v4) :
-    vX( v1 ), vY( v2 ), vZ( v3 ), vT( 4 )
+    vX( v1 ), vY( v2 ), vZ( v3 ), vT( v4 )
   {}
   FourVector(const real_t fv[4]) :
-    vX( fv[0] ), vY( fv[1] ), vZ( fv[2] ), vT( fv[4] )
+    vX( fv[0] ), vY( fv[1] ), vZ( fv[2] ), vT( fv[3] )
   {}
-  FourVector(const __m128& fv) :
+  FourVector(const __m& fv) :
     v4( fv )
   {}
   FourVector(const FourVector& fv) :
@@ -84,6 +80,18 @@ public:
   real_t Beta () const;
   real_t Rho  () const;
   void   Boost(const real_t& bx, const real_t& by, const real_t& bz);
+
+  friend std::ostream& operator<<(std::ostream& os, const FourVector& vec)
+  {
+    os << MAGENTA << "Px = " << vec.Px()
+                  << ", Py = " << vec.Py()
+                  << ", Pz = " << vec.Pz()
+                  << ", E  = " << vec.E() << "\n"
+                  << RESET; //<< "(" << std::fixed << std::setprecision(5) << coeff.m_c1.m_state 
+                  //<< "," << std::fixed << std::setprecision(5) << coeff.m_c2.m_state 
+                  //<< ")" << RESET;
+    return os;
+  }
 };
 
 #endif

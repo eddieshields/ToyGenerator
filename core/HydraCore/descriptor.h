@@ -3,6 +3,7 @@
 
 #include "particlestore.h"
 #include "msgservice.h"
+#include "types.h"
 
 #include <vector>
 #include <string>
@@ -19,8 +20,8 @@ struct DecayDescriptor
   const int    getParticleCharge  (std::string particle);
   const int    getParticleFlavour (std::string particle);
   const bool   getChargedConjugate(std::string decay);
-  const double getParticleMass    (std::string particle);
-  const double getParticleMass    (const int particle);
+  const real_t getParticleMass    (std::string particle);
+  const real_t getParticleMass    (const int particle);
   std::string cleanParticle(std::string particle);
 
   std::vector<std::string>&  getParticles()       { return m_particles; }
