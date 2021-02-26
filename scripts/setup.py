@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os, sys
+import subprocess
 from subprocess import check_call
 
 FROM_FILE = os.path.isfile(__file__)
@@ -10,8 +11,9 @@ URL_BASE = 'https://github.com/eddieshields/ToyGenerator'
 REPO = URL_BASE + '.git'
 GIT = 'git'
 BRANCH = 'hackathon'
-QUIET_SHELL = ''>/dev/null 2>&1'
+QUIET_SHELL = '>/dev/null 2>&1'
 
+import argparse
 parser = argparse.ArgumentParser( 'Hydra setup', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('path',help='Path to stack directory',**({'nargs': '?'} if FROM_FILE else {}))
 parser.add_argument('--repo',   '-u', default=REPO,   help='Repository URL')
@@ -25,36 +27,38 @@ def detect_cvmfs():
     check = 0
     if os.path.exists(CVMFS_DIRS[0]):
         print("Detected CVMFS")
-        check = os.system('source {} {} {} {}'}.format(CVMFS_DIRS[1],PYTHON_VERSION,COMPILER,QUIET_SHELL))
+        check = os.system('source {} {} {} {}'.format(CVMFS_DIRS[1],PYTHON_VERSION,COMPILER,QUIET_SHELL))
     if ( check ):
         sys.exit('Could not set up correct environment with CVMFS')
     return
 
 def git(*args, **kwargs):
-    quiet = '--quiet'
-    cwd = utils_dir if args[0] != 'clone' else None
+    quiet = ['--quiet']
+    cwd = None
     cmd = [GIT] + list(args[:1]) + quiet + list(args[1:])
 
     check_call(cmd, cwd=cwd, **kwargs)
 
 def build():
+    cwd = os.getcwd()
+    os.chdir( args.path )
+    print('Building...')
     os.mkdir('build')
-    commands = '''
-    cd buiild
-    cmake ..
-    make
-    cd ..
-    '''
-    process = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    out, err = process.communicate(commands)
-    print out
+    command = 'git submodule update --init --recursive; cd build; cmake ..; make -j 4; cd ..'
+    process = os.system(command)
+    os.system('source setup.sh {}'.format(QUIET_SHELL))
+    if not ( process ): print('Built!')
+    os.chdir( cwd )
     return
 
 def main():
     # Checkout from git.
-    git('clone', args.repo, )
+    if ( os.path.exists( args.path ) ): sys.exit('{} already exists'.format(args.path))
+    print('Fetching repository...')
+    git('clone', args.repo, args.path )
+    os.chdir(args.path)
     if ( args.branch ):
-        get('checkout', args.branch)
+        git('checkout', args.branch)
 
     # Build
     if not ( check_exists('cmake') ): sys.exit('CMake is needed and could not be found')
