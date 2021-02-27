@@ -127,13 +127,13 @@ public:
   }
 
   // Getters.
-  std::string name()  const { return m_name; }
-  real_t      mass()  const { return m_mass.m_state; }
-  real_t      m()     const { return m_mass.m_state; }
-  real_t      mSq()   const { return m_massSq; }
-  real_t      width() const { return m_width.m_state; }
-  real_t      r()     const { return m_r.m_state; }
-  int         l()     const { return m_l; }
+  inline std::string name()  const { return m_name; }
+  inline real_t      mass()  const { return m_mass.m_state; }
+  inline real_t      m()     const { return m_mass.m_state; }
+  inline real_t      mSq()   const { return m_massSq; }
+  inline real_t      width() const { return m_width.m_state; }
+  inline real_t      r()     const { return m_r.m_state; }
+  inline int         l()     const { return m_l; }
 
   const complex_t evaluate(const PhaseSpace& ps, const real_t& mSq12, const real_t& mSq13);
   const complex_t evaluate(const PhaseSpace& ps, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23);

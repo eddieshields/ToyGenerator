@@ -2,5 +2,14 @@ build*/
 .vscode*
 *.pyc
 *.so
-doc/*/
 figs/*
+*.bst
+*.fls
+*.gz
+*.out
+*.toc
+*.log
+*.fdb_latexmk
+*.aux
+*.blg
+*.bbl

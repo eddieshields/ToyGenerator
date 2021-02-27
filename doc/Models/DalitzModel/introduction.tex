@@ -1,0 +1,39 @@
+% !TEX root = notes.tex
+\section{Introduction}
+\label{sec:introduction}
+
+When an experiment publishes a new amplitude analysis of a decay it often follows that it has used it's own parameterisation for the models involved in the amplitude analysis.
+This can be troublesome when trying to recreate amplitude models for various studies. In this we aim to document some of the parameterisations used by different experiments
+so they can be reproduced.
+
+\subsection{Phenomenological parameterization of the D0 decay amplitude}
+
+A three-body decay $\decay{X}{ABC}$ can be described as a superposition of quasi-two-body decays $\decay{X}{RC}$, $\decay{R}{AB}$. 
+We can first describe the general expressiom for the decay of a particle $X$ into daughters $ABC$ amplitude
+
+\begin{equation}
+    d\Gamma = \frac{\bar{|\mathcal{M}|^{2}}}{32(2\pi)^{3}M_{X}^{3}}dm_{BC}^{2}dm_{AC}^{2},
+\end{equation}
+
+where $\mathcal{M}$ is the amplitude at some particular point in phase space, and $\bar{|\mathcal{M}|^{2}}$ is the amplitude averaged over the spin states of $X$.
+
+Let us consider $X$ being a $\Dz$ meson, and look at its amplitude. We can write the amplitude as
+
+\begin{align}
+    \mathcal{M}\left( ABC | R \right) & = \sum_{m_{\lambda}}\langle AB | R_{m_{\lambda}} \rangle  T_{R}\left( \sqrt{ s_{AB} } \right) \langle CR | \Dz \rangle \\
+    & = Z_{\lambda}\left( \vec{p}, \vec{q} \right) B_{\Dz}^{'L} \left( p \right) B_{R}^{'L} \left( q \right) T_{R} \left( \sqrt{s_{AB}} \right).
+\end{align}
+
+Here $\vec{q}$ and $\vec{p}$ are the momenta of $A$ and $C$ in the $R$ and $X$ rest frame respectively. Each term will be described in more detail presently.
+
+When more than one resonance $R$, comtributes to the decay, we sum coherently over the amplitudes for all the intermediate resonances,
+
+\begin{equation}
+    \mathcal{M}\left( ABC \right) = c_{0} + \sum_{R} c_{R} \mathcal{M} \left( ABC | R \right),
+\end{equation}
+
+where $c_{j}$ are the corresponding complex coefficients, and $c_{0}$ is a complex constant modeling no resonant contributions, which is often zero.
+
+The function $Z_{\lambda}\left( \vec{p}, \vec{q} \right)$ describes the angular distribution of the decay products, whule $B_{i}^{L}$ are the form factors, which are commenly parameterised using the Blatt-Weisskopf penetration for factors.
+
+Finally $T_{R}\left( \sqrt{s_{AB}} \right)$ is the propagat, this is where most experiment differ in there parameterisations.
