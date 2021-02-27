@@ -138,9 +138,9 @@ public:
   const complex_t evaluate(const PhaseSpace& ps, const real_t& mSq12, const real_t& mSq13);
   const complex_t evaluate(const PhaseSpace& ps, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23);
 
-  inline const real_t M2AB(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
-  inline const real_t M2AC(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
-  inline const real_t M2BC(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const real_t M2AB(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const real_t M2AC(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  const real_t M2BC(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 
   // Methods.
   /** Kallen function.
