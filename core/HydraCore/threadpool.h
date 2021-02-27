@@ -14,6 +14,7 @@
 
 #include "msgservice.h"
 #include "random.h"
+#include "event.h"
 
 /** ThreadPool holds a pool of threads and excutes jobs in threads.
  * 
@@ -49,7 +50,7 @@ public:
   static int nthreads();
 
   /** Returns the ID of the current thread. */
-  static int ThreadID();
+  inline static int ThreadID();
 
 private:
   /** Container of threads. */
