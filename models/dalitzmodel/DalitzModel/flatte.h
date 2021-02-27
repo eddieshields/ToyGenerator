@@ -88,15 +88,15 @@ public:
 
   Flatte* copy() const;
 
-  Parameter gamma1() const { return m_gamma1; }
-  Parameter gamma2() const { return m_gamma2; }
-  Parameter m02a()   const { return m_m02a; }
-  Parameter m02b()   const { return m_m02b; }
+  inline Parameter gamma1() const { return m_gamma1; }
+  inline Parameter gamma2() const { return m_gamma2; }
+  inline Parameter m02a()   const { return m_m02a; }
+  inline Parameter m02b()   const { return m_m02b; }
 
-  real_t gamma1Sq()  const { return m_gamma1Sq; }
-  real_t gamma2Sq()  const { return m_gamma2Sq; }
-  real_t m02aSq()    const { return m_m02aSq; }
-  real_t m02bSq()    const { return m_m02bSq; }
+  inline real_t gamma1Sq()  const { return m_gamma1Sq; }
+  inline real_t gamma2Sq()  const { return m_gamma2Sq; }
+  inline real_t m02aSq()    const { return m_m02aSq; }
+  inline real_t m02bSq()    const { return m_m02bSq; }
 
   static void SetParameterisation(std::string parameterisation);
 };

@@ -36,7 +36,7 @@ public:
    *   T_{R}\left( m_{AB} \right) = \frac{1}{m_{R}^{2} - m_{AB}^{2} - im_{R}\Gamma_{AB}\left( m_{AB} \right)}
    * \f]
    */
-  const complex_t propagator(const PhaseSpace& ps, const real_t& mSqAB) const
+  inline const complex_t propagator(const PhaseSpace& ps, const real_t& mSqAB) const
   {
     complex_t I( (real_t)0., (real_t)1. );
     return (real_t)1. /( mSq() - mSqAB - ( m() * I * runningWidth(ps,mSqAB) ) );
@@ -50,7 +50,7 @@ public:
    *                                      B_{L}^{'2}\left( q,q_{0} \right)
    * \f]
    */
-  const real_t runningWidth(const PhaseSpace& ps, const real_t& mSqAB) const
+  inline const real_t runningWidth(const PhaseSpace& ps, const real_t& mSqAB) const
   {
     return width() * std::pow( q( ps, mSqAB )/q( ps, mSq() ) , (2*m_l + 1) ) * ( m() / std::sqrt( mSqAB ) ) * std::pow( blattWeisskopfPrime(ps,mSqAB) , 2 );
   }
