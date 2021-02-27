@@ -15,7 +15,7 @@ QUIET_SHELL = '>/dev/null 2>&1'
 
 import argparse
 parser = argparse.ArgumentParser( 'Hydra setup', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('path',help='Path to stack directory',**({'nargs': '?'} if FROM_FILE else {}))
+parser.add_argument('path',help='Path to directory',**({'nargs': '?'} if FROM_FILE else {}))
 parser.add_argument('--repo',   '-u', default=REPO,   help='Repository URL')
 parser.add_argument('--branch', '-b', default=BRANCH, help='Branch')
 args = parser.parse_args()
@@ -40,8 +40,6 @@ def git(*args, **kwargs):
     check_call(cmd, cwd=cwd, **kwargs)
 
 def build():
-    cwd = os.getcwd()
-    os.chdir( args.path )
     print('Building...')
     os.mkdir('build')
     command = 'git submodule update --init --recursive; cd build; cmake ..; make -j 4; cd ..'
