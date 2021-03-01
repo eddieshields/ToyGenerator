@@ -74,50 +74,38 @@ Resonance* Amplitude::get(std::string res) const
 
 const complex_t Amplitude::Adir(const real_t& mSq12, const real_t& mSq13) const
 {
-  std::vector<complex_t> A;
-  const auto n = m_resonances.size();
-  A.resize( n );
-  // Make vectorizable.
-  for (std::size_t i = 0; i < n; ++i) {
-    A[i] = m_resonances[i]->evaluate( m_ps , mSq12 , mSq13);
+  complex_t A(0.,0.);
+  for (const auto& res : m_resonances) {
+    A += res->evaluate( m_ps , mSq12 , mSq13 );
   }
-  return std::accumulate(A.begin(),A.end(),complex_t());
+  return A;
 }
 
 const complex_t Amplitude::Adir(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
 {
-  std::vector<complex_t> A;
-  const auto n = m_resonances.size();
-  A.resize( n );
-  // Make vectorizable.
-  for (std::size_t i = 0; i < n; ++i) {
-    A[i] = m_resonances[i]->evaluate( m_ps , mSq12 , mSq13 , mSq23 );
+  complex_t A(0.,0.);
+  for (const auto& res : m_resonances) {
+    A += res->evaluate( m_ps , mSq12 , mSq13 , mSq23 );
   }
-  return std::accumulate(A.begin(),A.end(),complex_t());
+  return A;
 }
 
 const complex_t Amplitude::Abar(const real_t& mSq12, const real_t& mSq13) const
 {
-  std::vector<complex_t> A;
-  const auto n = m_resonances.size();
-  A.resize( n );
-  // Make vectorizable.
-  for (std::size_t i = 0; i < n; ++i) {
-    A[i] = m_cnjresonances[i]->evaluate( m_ps , mSq12 , mSq13 );
+  complex_t A(0.,0.);
+  for (const auto& res : m_cnjresonances) {
+    A += res->evaluate( m_ps , mSq12 , mSq13 );
   }
-  return std::accumulate(A.begin(),A.end(),complex_t());
+  return A;
 }
 
 const complex_t Amplitude::Abar(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
 {
-  std::vector<complex_t> A;
-  const auto n = m_resonances.size();
-  A.resize( n );
-  // Make vectorizable.
-  for (std::size_t i = 0; i < n; ++i) {
-    A[i] = m_cnjresonances[i]->evaluate( m_ps , mSq12 , mSq13 , mSq23 );
+  complex_t A(0.,0.);
+  for (const auto& res : m_cnjresonances) {
+    A += res->evaluate( m_ps , mSq12 , mSq13 , mSq23 );
   }
-  return std::accumulate(A.begin(),A.end(),complex_t());
+  return A;
 }
 
 const real_t Amplitude::AdirSq(const real_t& mSq12, const real_t& mSq13) const
