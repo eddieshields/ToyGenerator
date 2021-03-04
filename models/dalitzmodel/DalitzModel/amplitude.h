@@ -81,6 +81,9 @@ public:
   const real_t    A2Sq  (const real_t& mSq12, const real_t& mSq13) const;
   const real_t    A2Sq  (const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 
+  const real_t    ASq   (const real_t& mSq12, const real_t& mSq13) const;
+  const real_t    ASq   (const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+
   // Individual resonances.
   const complex_t Adir  (std::string name, const real_t& mSq12, const real_t& mSq13) const ;
   const complex_t Adir  (std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
@@ -101,6 +104,9 @@ public:
   const real_t    A1Sq  (std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
   const real_t    A2Sq  (std::string name, const real_t& mSq12, const real_t& mSq13) const;
   const real_t    A2Sq  (std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+
+  const real_t    ASq   (std::string name, const real_t& mSq12, const real_t& mSq13) const;
+  const real_t    ASq   (std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 };
 
 } // namespace DalitzModel

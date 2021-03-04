@@ -169,6 +169,15 @@ const real_t Amplitude::A2Sq(const real_t& mSq12, const real_t& mSq13, const rea
   return std::norm( this->A2( mSq12 , mSq13 , mSq23 ) );
 }
 
+const real_t Amplitude::ASq(const real_t& mSq12, const real_t& mSq13) const
+{
+  return ( this->AdirSq( mSq12 , mSq13 ) + this->AbarSq( mSq12 , mSq13 ) ) / (real_t)2.;
+}
+const real_t Amplitude::ASq(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
+{
+  return ( this->AdirSq( mSq12 , mSq13 ) + this->AbarSq( mSq12 , mSq13 , mSq23 ) ) / (real_t)2.;
+}
+
 // Individual resonances.
 const complex_t Amplitude::Adir(std::string name, const real_t& mSq12, const real_t& mSq13) const
 {
@@ -249,4 +258,13 @@ const real_t Amplitude::A2Sq(std::string name, const real_t& mSq12, const real_t
 const real_t Amplitude::A2Sq(std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
 {
   return std::norm( this->A2( name, mSq12 , mSq13 , mSq23 ) );
+}
+
+const real_t Amplitude::ASq(std::string name, const real_t& mSq12, const real_t& mSq13) const
+{
+  return ( this->AdirSq( name , mSq12 , mSq13 ) + this->AbarSq( name , mSq12 , mSq13 ) ) / (real_t)2.;
+}
+const real_t Amplitude::ASq(std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
+{
+  return ( this->AdirSq( name , mSq12 , mSq13 ) + this->AbarSq( name , mSq12 , mSq13 , mSq23 ) ) / (real_t)2.;
 }

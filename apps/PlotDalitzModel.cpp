@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     for (int j = 1; j < hist->GetNbinsY() + 1; j++) {
       mSq12 = hist->GetXaxis()->GetBinCenter(i);
       mSq13 = hist->GetYaxis()->GetBinCenter(j);
-      real_t A = amp.AdirSq(mSq12,mSq13);
+      real_t A = amp.ASq(mSq12,mSq13);
       hist->SetBinContent(i,j,A);
     }
   }
