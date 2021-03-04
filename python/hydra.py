@@ -1,24 +1,27 @@
 import ROOT as r 
 r.gSystem.Load('build/libHYDRA')
 
-# Import ROOT random engine
-from ROOT import gRandom
 
 # Import core Hydra.
 from ROOT import ( Hydra,
-                   Clock,
                    DecayDescriptor,
                    Event,
                    Particle,
                    ParticleStore,
-                   PyAlgorithm,
-                   Random,
-                   Sequence
+                   Sequence,
+                   DistributeTask,
+                   ThreadPool
+                 )
+
+# Import Utils.
+from ROOT import ( Clock,
+                   CorrelationUtils,
+                   FourVector,
+                   Random
                  )
   
 # Import Algorithms.
 from ROOT import ( Accept,
-                   Amplitude,
                    CompositeParam,
                    D02K3Pi,
                    Decay3Body,
@@ -29,6 +32,17 @@ from ROOT import ( Accept,
                    ParticleParam,
                    Tupling
                  )
+
+# Import Dalitz Model.
+from ROOT.DalitzModel import ( Amplitude,
+                               Coefficient,
+                               ConfigFile,
+                               ConfigureAmplitude,
+                               LineShape,
+                               Parameter,
+                               PhaseSpace,
+                               Resonance
+                             )
 
 # Create Hydra object.
 Hydra = Hydra()
