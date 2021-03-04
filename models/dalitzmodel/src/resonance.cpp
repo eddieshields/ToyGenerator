@@ -12,6 +12,7 @@ Resonance* Resonance::cnj_copy() const
     int noRes = 6 - this->m_resoA - this->m_resoB;
     reso->m_resoA = this->m_resoA;
     reso->m_resoB = noRes;
+    reso->m_noRes = this->m_resoB;
   }
   reso->m_name = this->m_name + "_cnj";
   return reso;
