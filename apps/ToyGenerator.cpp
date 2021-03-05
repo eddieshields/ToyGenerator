@@ -6,10 +6,12 @@
 #include "sequence.h"
 #include "d02k3pi.h"
 #include "decay3body.h"
+#include "decay3bodymixing.h"
 #include "tupling.h"
 #include "algorithm.h"
 #include "clock.h"
 #include "hydra.h"
+#include "random.h"
 
 #include <iostream>
 
@@ -20,19 +22,24 @@ int main(int argc, char *argv[])
   cxxopts::Options options("ToyGenerator", "Program to generate D0->KsKK toys");
   options.add_options()
     ("m,model", "Model", cxxopts::value<std::string>()->default_value("belle2010"))
+    //("s,seed", "Random seed", cxxopts::value<int>()->default_value(0))
     ;
   auto parser = options.parse(argc, argv);
 
   Hydra hy;
   hy.setDecay("D0 => KS0 K+ K-");
   
+  //Random::setSeed( parser["seed"].as<int>() );
+
   Generator gen("Generator");
-  Decay3Body amp("Amplitude","cfg/"+parser["model"].as<std::string>()+".cfg");
+  Decay3BodyMixing amp("Amplitude","cfg/"+parser["model"].as<std::string>()+".cfg");
   Accept acc("Accept");
   acc.setMaxPdf(624);
   Tupling tup("Tupling");
   tup.addMass();
   tup.addCompositeMass();
+  tup.addCharge();
+  tup.addTime();
   tup.printParams();
 
   Sequence flow;
@@ -42,7 +49,7 @@ int main(int argc, char *argv[])
   flow.addAlgorithm(tup);
   flow.printAlgorithmSequence();
 
-  hy().EvtMax = 100000;
+  hy().EvtMax = 1000000;
   hy().TreeName = "d02kskk";
   hy().AlgoSequence = flow;
   hy().NThreads = -1;
