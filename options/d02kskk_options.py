@@ -7,7 +7,7 @@ SetDecay("D0 => KS0 K+ K-")
 # Generate events according to decay.
 gen = r.Generator("Generator")
 # Set event pdf value according to an amplitude model with mixing.
-amp = r.Decay3BodyMixing("D02KSKKAmplitude","cfg/besiii2020.cfg")
+amp = r.Decay3BodyMixing("D02KSKKAmplitude","cfg/belle2010.cfg")
 # Accept or reject event.
 acc = r.Accept("Accept")
 acc.setMaxPdf(652.23)
