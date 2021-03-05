@@ -29,7 +29,7 @@ seq.printAlgorithmSequence()
 # Configure Hydra.
 Hydra().EvtMax = 10000
 Hydra().AlgoSequence = seq
-Hydra().Variables = tup.getVariables() 
+Hydra().Variables = tup.getVariables()
 Hydra().NThreads = -1
 Hydra().TreeName = "d02kskk"
 Hydra().OutputLocation = "d02kskk.root"
