@@ -135,25 +135,90 @@ public:
   inline real_t      r()     const { return m_r.m_state; }
   inline int         l()     const { return m_l; }
 
-  const complex_t evaluate(const PhaseSpace& ps, const real_t& mSq12, const real_t& mSq13);
-  const complex_t evaluate(const PhaseSpace& ps, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23);
+  inline const complex_t evaluate(const PhaseSpace& ps, const real_t& mSq12, const real_t& mSq13) const
+  {
+    real_t mSq23 = ps.mSqSum() - mSq12 - mSq13;
+    return evaluate(ps, mSq12, mSq13, mSq23);
+  }
 
-  const real_t M2AB(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
-  const real_t M2AC(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
-  const real_t M2BC(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+  inline const complex_t evaluate(const PhaseSpace& ps, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
+  {
+    if ( !ps.contains(mSq12, mSq13) ) return (real_t)0.;
+    real_t mSqAB = M2AB(mSq12, mSq13, mSq23);
+    real_t mSqAC = M2AC(mSq12, mSq13, mSq23);
+    real_t mSqBC = M2BC(mSq12, mSq13, mSq23);
+    return m_coeff * propagator( ps , mSqAB ) * angular( ps , mSqAB , mSqAC , mSqBC);
+  }
+
+  inline const real_t M2AB(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
+  {
+    switch ( m_noRes )
+    {
+    case 3:
+      return mSq12;
+    case 2:
+      return mSq13;
+    case 1:
+      return mSq23;
+    default:
+      WARNING("noRes (" << m_noRes << ") poorly defined");
+    }
+    return 0.;
+  }
+
+  inline const real_t M2AC(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
+  {
+    switch ( m_resoB )
+    {
+    case 3:
+      return mSq12;
+    case 2:
+      return mSq13;
+    case 1:
+      return mSq23;
+    default:
+      WARNING("resoB (" << m_resoB << ") poorly defined");
+    }
+    return 0.;
+  }
+
+  inline const real_t M2BC(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
+  {
+    switch ( m_resoA )
+    {
+    case 3:
+      return mSq12;
+    case 2:
+      return mSq13;
+    case 1:
+      return mSq23;
+    default:
+      WARNING("resoA (" << m_resoA << ") poorly defined");
+    }
+    return 0.;
+  }
 
   // Methods.
   /** Kallen function.
    * 
    *  Returns lambda( x, y, z ) = x^2 + y^2 + z^2 - 2xy - 2xz - 2yz.
    */
-  real_t kallen              (const real_t& x, const real_t& y, const real_t& z) const;
+  inline real_t kallen              (const real_t& x, const real_t& y, const real_t& z) const
+  {
+    return std::pow( x , 2 ) + std::pow( y , 2 ) + std::pow( z , 2) - 2*x*y - 2*x*z - 2*y*z;
+  }
   /** Momentum of a resonant particle in the rest frame of the resonant pair.
    */
-  real_t q                   (const PhaseSpace& ps, const real_t& mSqAB) const;
+  inline real_t q                   (const PhaseSpace& ps, const real_t& mSqAB) const
+  {
+    return std::sqrt( kallen( mSqAB, ps.mSq( m_resoA ), ps.mSq( m_resoB ) ) )/( 2*std::sqrt(mSqAB) );
+  }
   /** Momentum of the non-resonant particle in the rest frame of the resonant pair.
    */
-  real_t p                   (const PhaseSpace& ps, const real_t& mSqAB) const;
+  inline real_t p                   (const PhaseSpace& ps, const real_t& mSqAB) const
+  {
+    return std::sqrt( kallen( mSqAB, ps.mSqMother(), ps.mSq( m_noRes ) ) )/( 2*std::sqrt(mSqAB) );
+  }
   /** Phase space factor
    * 
    * 2 q / m, where q is the momentum of a resonant particle in the
@@ -161,21 +226,119 @@ public:
    * \param mSq1 Squared mass of first particle is resonant pair.
    * \param mSq2 Squared mass of second particle in resonance pair.
    */
-  real_t rho                 (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSq1, const real_t& mSq2) const;
+  inline real_t rho                 (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSq1, const real_t& mSq2) const
+  {
+    return std::sqrt( kallen( mSqAB, mSq1 , mSq2 ) )/mSqAB;
+  }
   /** Phase space factor
    * 
    * 2 q / m, where q is the momentum of a resonant particle in the
    * rest frame of the resonant pair, and m is the invariant mass of the resonant pair.
    */
-  real_t rho                 (const PhaseSpace& ps, const real_t& mSqAB) const;
+  inline real_t rho                 (const PhaseSpace& ps, const real_t& mSqAB) const
+  {
+    return std::sqrt( kallen( mSqAB, ps.mSq( m_resoA ) , ps.mSq( m_resoB ) ) )/mSqAB;
+  }
+
   /** Zemach tensor.
    */
-  real_t zemach              (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC) const;
-  real_t helicity            (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC) const;
-  real_t blattWeisskopfPrime (const PhaseSpace& ps, const real_t& mSqAB) const;
-  real_t blattWeisskopfPrimeP(const PhaseSpace& ps, const real_t& mSqAB) const;
-  real_t blattWeisskopf      (const PhaseSpace& ps, const real_t& mSqAB) const;
-  real_t angular             (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC) const;
+  inline real_t zemach              (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC) const
+  {
+    if ( m_l == 0 ) return (real_t)1.;
+
+    // Squared mass differences that some terms depend on.
+    const real_t diffSqMC = ps.mSqMother()    - ps.mSq( m_noRes );
+    const real_t diffSqAB = ps.mSq( m_resoA ) - ps.mSq( m_resoB );
+
+    // Zemach tensor for l = 1.
+    const real_t zemach1  = mSqAC - mSqBC - diffSqMC * diffSqAB / mSqAB;
+
+    if ( m_l == 1 ) return zemach1;
+
+    if ( m_l == 2 ) {
+      // Squared mass sums that some terms depend on.
+      const real_t sumSqMC = ps.mSqMother()    + ps.mSq( m_noRes );
+      const real_t sumSqAB = ps.mSq( m_resoA ) + ps.mSq( m_resoB );
+
+      real_t first  = mSqAB - 2. * sumSqMC + std::pow( diffSqMC, 2 ) / mSqAB;
+      real_t second = mSqAB - 2. * sumSqAB + std::pow( diffSqAB, 2 ) / mSqAB;
+
+      return std::pow( zemach1, 2 ) - first * second / 3.f;
+    }
+    return (real_t)0.;
+  }
+
+  inline real_t helicity            (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC) const
+  {
+    if ( m_l == 0 ) return (real_t)1.;
+
+    // Squared mass differences that some terms depend on.
+    const real_t diffSqMC = ps.mSqMother()    - ps.mSq( m_noRes );
+    const real_t diffSqAB = ps.mSq( m_resoA ) - ps.mSq( m_resoB );
+
+    // Zemach tensor for l = 1.
+    const real_t hel1  = mSqAC - mSqBC - diffSqMC * diffSqAB / mSq();
+
+    if ( m_l == 1 ) return hel1;
+
+    if ( m_l == 2 ) {
+      // Squared mass sums that some terms depend on.
+      const real_t sumSqMC = ps.mSqMother()    + ps.mSq( m_noRes );
+      const real_t sumSqAB = ps.mSq( m_resoA ) + ps.mSq( m_resoB );
+
+      real_t first  = mSqAB - 2. * sumSqMC + std::pow( diffSqMC, 2 ) / mSq();
+      real_t second = mSqAB - 2. * sumSqAB + std::pow( diffSqAB, 2 ) / mSq();
+
+      return std::pow( hel1, 2 ) - first * second / 3.f;
+    }
+    return (real_t)0.;
+  }
+
+  inline real_t blattWeisskopfPrime (const PhaseSpace& ps, const real_t& mSqAB) const
+  {
+    if ( m_l == 0 ) return (real_t)1.;
+
+    real_t q0 = q( ps, mSq() );
+    real_t qm = q( ps, mSqAB );
+    real_t rq0Sq = std::pow( r()*q0 , 2 );
+    real_t rqmSq = std::pow( r()*qm , 2 );
+
+    if ( m_l == 1 ) return std::sqrt( ( 1 + rq0Sq )/( 1 + rqmSq ) );
+    if ( m_l == 2 ) return std::sqrt( ( 9 + 3*rq0Sq + std::pow( rq0Sq , 2 ) )/( 9 + 3*rqmSq + std::pow( rqmSq , 2 ) ) );
+    return (real_t)1.;
+  }
+
+  inline real_t blattWeisskopfPrimeP(const PhaseSpace& ps, const real_t& mSqAB) const
+  {
+    if ( m_l == 0 ) return (real_t)1.;
+
+    real_t p0 = p( ps, this->mSq() );
+    real_t pm = p( ps, mSqAB       );
+    real_t rp0Sq = std::pow( r()*p0 , 2 );
+    real_t rpmSq = std::pow( r()*pm , 2 );
+
+    if ( m_l == 1 ) return std::sqrt( ( 1 + rp0Sq )/( 1 + rpmSq ) );
+    if ( m_l == 2 ) return std::sqrt( ( 9 + 3*rp0Sq + std::pow( rp0Sq , 2 ) )/( 9 + 3*rpmSq + std::pow( rpmSq , 2 ) ) );
+    return (real_t)0.;
+  }
+
+  inline real_t blattWeisskopf      (const PhaseSpace& ps, const real_t& mSqAB) const
+  {
+    if ( m_l == 0 ) return (real_t)1.;
+
+    real_t qm = q( ps, mSqAB );
+    real_t rqmSq = std::pow( r()*qm , 2 );
+
+    if ( m_l == 1 ) return std::sqrt( ( 2 * rqmSq )/( 1 + rqmSq ) );
+    if ( m_l == 2 ) return std::sqrt( ( 13 * std::pow( rqmSq , 2 ) )/( 9 + 3*rqmSq + std::pow( rqmSq , 2 ) ) );
+    return (real_t)0.;
+  }
+
+  inline real_t angular             (const PhaseSpace& ps, const real_t& mSqAB, const real_t& mSqAC, const real_t& mSqBC) const
+  {
+    if ( m_helicity ) return helicity(ps, mSqAB, mSqAC, mSqBC) * blattWeisskopfPrime(ps, mSqAB);
+    return zemach(ps, mSqAB, mSqAC, mSqBC) * blattWeisskopfPrime(ps, mSqAB);
+  }
 
 };
 
