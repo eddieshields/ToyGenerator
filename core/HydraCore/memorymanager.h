@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <map>
 #include <thread>
+#include <new>
 
 #include "msgservice.h"
 
@@ -42,7 +43,12 @@ public:
   // Assign enough memory for
   void expandPool(int max)
   {
-    m_pool = (T*) ::malloc(max*sizeof(T));
+    try {
+    //m_pool = (T*) ::malloc(max*sizeof(T));
+    m_pool = reinterpret_cast<T*>(new char[max*sizeof(T)]);
+    } catch (std::bad_alloc& badAlloc) {
+      FATAL("Not enough memory: " << badAlloc.what());
+    }
     shiftOffsets();
   }
 
