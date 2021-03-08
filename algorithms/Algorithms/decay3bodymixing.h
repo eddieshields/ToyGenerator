@@ -25,6 +25,7 @@ public:
   const real_t               y() const { return m_y; }
   const real_t               p() const { return m_p; }
   const real_t               q() const { return m_q; }
+  // z = -(y+ix)
   const complex_t z() const { return m_z; }
 
   // Setters.
