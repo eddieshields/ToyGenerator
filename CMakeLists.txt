@@ -69,3 +69,7 @@ target_link_libraries(ToyGenerator ${PACKAGE})
 ###--- Create an executable
 add_executable(PlotDalitzModel ${CMAKE_SOURCE_DIR}/apps/PlotDalitzModel.cpp)
 target_link_libraries(PlotDalitzModel ${PACKAGE})
+
+###--- Create an executable
+add_executable(CalculateFraction ${CMAKE_SOURCE_DIR}/apps/CalculateFraction.cpp)
+target_link_libraries(CalculateFraction ${PACKAGE})
