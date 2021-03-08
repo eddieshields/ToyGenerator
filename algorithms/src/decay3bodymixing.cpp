@@ -27,12 +27,10 @@ void Decay3BodyMixing::operator()(Event& ev)
 
 const complex_t Decay3BodyMixing::gp(const real_t& t)
 {
-  complex_t I(0,1);
-  return std::cos( - I * z() * ( t/2 ) );
+  return std::cosh( z() * ( t/2 ) );
 }
 
 const complex_t Decay3BodyMixing::gm(const real_t& t)
 {
-  complex_t I(0,1);
-  return std::sin( - I * z() * ( t/2 ) );
+  return std::sinh( z() * ( t/2 ) );
 }

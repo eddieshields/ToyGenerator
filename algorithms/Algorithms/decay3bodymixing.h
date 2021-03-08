@@ -28,8 +28,8 @@ public:
   const complex_t z() const { return m_z; }
 
   // Setters.
-  void setX(real_t x) { m_x = x; m_z = complex_t(m_x,m_y); }
-  void setY(real_t y) { m_y = y; m_z = complex_t(m_x,m_y); }
+  void setX(real_t x) { m_x = x; m_z = complex_t(-m_y,-m_x); }
+  void setY(real_t y) { m_y = y; m_z = complex_t(-m_y,-m_x); }
   void setP(real_t p) { m_p = p; }
   void setQ(real_t q) { m_q = q; }
 
@@ -43,7 +43,7 @@ private:
   real_t m_y = {0.006};
   real_t m_p = {1};
   real_t m_q = {1};
-  complex_t m_z = {complex_t(0.004,0.006)};
+  complex_t m_z = {complex_t(-0.006,-0.004)};
 
   // Mixing functions.
   const complex_t gp(const real_t& t);
