@@ -12,8 +12,10 @@ void Decay3BodyMixing::operator()(Event& ev)
    *   A = | gm(t)*p/q*Adir + gp(t)*Abar |^2
    * 
    * where
-   * gp(t) = cos(-i(x+iy)t/2)
-   * gm(t) = sin(-i(x+iy)t/2)
+   * gp(t) = cosh( z * t/2 )
+   * gm(t) = sinh( z * t/2 )
+   * 
+   * and z = - ( y + ix )
    * 
    * Not that the lifetimes are normalized to 1. So the Gamma terms are not needed.
    */
@@ -27,12 +29,10 @@ void Decay3BodyMixing::operator()(Event& ev)
 
 const complex_t Decay3BodyMixing::gp(const real_t& t)
 {
-  complex_t I(0,1);
-  return std::cos( - I * z() * ( t/2 ) );
+  return std::cosh( z() * ( t/2 ) );
 }
 
 const complex_t Decay3BodyMixing::gm(const real_t& t)
 {
-  complex_t I(0,1);
-  return std::sin( - I * z() * ( t/2 ) );
+  return std::sinh( z() * ( t/2 ) );
 }

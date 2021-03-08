@@ -20,7 +20,7 @@ void Generator::operator()(Event& ev)
     ev.daughter(i).SetMomentum( daughts[i-1] );
   }
   // Set decay time.
-  if ( !ev.mother().charge() ) ev.mother().flavour() = ( Random::Bool() ? -1 : 1 );
+  if ( !ev.mother().charge() ) ev.mother().flavour() = ( Random::Bool() ? 1 : -1 );
   ev.mother().isStable() = false;
   ev.mother().truetime() = ev.mother().time() = Random::exponential();
 
