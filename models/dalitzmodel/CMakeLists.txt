@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 set(DALITZMODEL DalitzModel)
 project(${DALITZMODEL})
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -march=native -flto")
+
 # Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 #--- Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
