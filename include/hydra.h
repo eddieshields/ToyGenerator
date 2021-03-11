@@ -11,6 +11,8 @@
 #include <vector>
 #include <map>
 #include <thread>
+#include <queue>
+#include <mutex>
 
 // Dirty fix, should try fix in compilation instead.
 //#define BOOST_NO_CXX11_SCOPED_ENUMS
@@ -55,9 +57,10 @@ public:
 
   Configuration m_configuration;
   Configuration& operator()() { return m_configuration; }
-  std::vector<Event> runSequence();
+  void runSequence();
   void run();
   void make_tree();
+  void fill_tree();
   void addToList(std::vector<Event> tmp) { m_list.insert( m_list.end(), tmp.begin(), tmp.end() ); }
   void setDecay(std::string decay) { gDescriptor(decay); }
 
@@ -69,6 +72,8 @@ private:
   void addToList(Event ev) { m_list.push_back(ev); } 
   unsigned int m_counter = {0};
 
+  std::map<std::thread::id,std::queue<Event>> m_queue;
+  std::mutex                                  m_mutex;
 };
 
 #endif

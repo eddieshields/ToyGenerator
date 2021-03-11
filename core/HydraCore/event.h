@@ -72,15 +72,15 @@ public:
     }
   }
 
-  void* operator new (size_t size)
-  {
-    return gEventMemoryManager.allocate(size);
-  }
+  //void* operator new (size_t size)
+  //{
+  //  return gEventMemoryManager.allocate(size);
+  //}
 
-  void operator delete (void* pointerToDelete)
-  {
-    gEventMemoryManager.free(pointerToDelete);
-  }
+  //void operator delete (void* pointerToDelete)
+  //{
+  //  gEventMemoryManager.free(pointerToDelete);
+  //}
 
 };
 

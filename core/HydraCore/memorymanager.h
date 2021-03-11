@@ -8,6 +8,8 @@
 
 #include "msgservice.h"
 
+#define POOLSIZE 1500
+
 class IMemoryManager
 {
 public:
@@ -22,6 +24,9 @@ template<class T>
 class MemoryManager : public IMemoryManager
 {
 private:
+  struct FreeStore {
+    FreeStore* next;
+  };
   T* m_pool = nullptr;
 
   int m_n;

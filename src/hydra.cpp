@@ -13,21 +13,30 @@ void Hydra::run()
   INFO("Requested to generate " << m_configuration.EvtMax << " Events");
   INFO("Will use " << m_configuration.NThreads << " threads");
   Clock::Start();
-  DistributeTask execute(m_configuration.NThreads);
+  DistributeTask pool(m_configuration.NThreads);
   // Create a task to be passed to the threadpool.
   auto func = [&](){return this->runSequence();};
   // Pass task to threadpool and get evets from return.
-  m_list = execute(func);
+  pool.submit(func);
+  // Fill tree here.
+  fill_tree();
+  // Once tree is filled join threads.
+  pool.get();
   Clock::Stop();
   Clock::Print("generate "+std::to_string(m_configuration.EvtMax)+" events");
-
+  return;
   // Put events into ttree.
-  make_tree();
+  //make_tree();
 }
 
-std::vector<Event> Hydra::runSequence()
+void Hydra::runSequence()
 {
-  std::vector<Event> list;
+  std::thread::id thread_id = std::this_thread::get_id();
+  // Add thread queue to queues.
+  m_mutex.lock();
+  m_queue.insert( std::pair<std::thread::id,std::queue<Event>>( thread_id , std::queue<Event>() ) );
+  m_mutex.unlock();
+
   unsigned int counter = 0;
   while ( counter < m_configuration.EvtMax/m_configuration.NThreads ) {
     Event* ev = new Event();
@@ -37,14 +46,53 @@ std::vector<Event> Hydra::runSequence()
       algo->operator()(*ev);
       algo = algo->next;
     }
+    // If event is accepted, add to queue.
     if ( ev->Accept ) {
       counter++;
-      list.push_back( std::move(*ev) );
+      m_mutex.lock();
+      m_queue[thread_id].push( std::move( *ev ) );
+      m_mutex.unlock();
     }
     // Accepted events are saved in list, so events can be deleted.
     delete ev;
   }
-  return list;
+  return;
+}
+
+void Hydra::fill_tree()
+{
+  TFile* tfile = new TFile(m_configuration.OutputLocation.c_str(),"RECREATE");
+  tfile->cd();
+
+  // Set up tree branches.
+  TTree* tree = new TTree(m_configuration.TreeName.c_str(),m_configuration.TreeTitle.c_str());
+  std::map<std::string,double> m_mapping;
+  for (auto& var : m_configuration.Variables) {
+    m_mapping[var] = 0.0;
+    tree->Branch(var.c_str(),&m_mapping[var],(var+"/D").c_str());
+  }
+
+  int q_max = 0;
+  int counter = 0;
+  while ( counter < m_configuration.EvtMax ) {
+    // Loop over threads queues adding to tree.
+    for (auto& q : m_queue ) {
+      if ( q.second.empty() ) continue;
+      for (auto& var : m_configuration.Variables) {
+        m_mapping[var] = q.second.front()[var];
+      }
+      // Fill tree.
+      tree->Fill();
+      // Increase counter.
+      counter++;
+      // Remove from queue.
+      q.second.pop();
+    }
+  }
+  tree->Write();
+  tfile->Close();
+  INFO("Tree saved to: " << m_configuration.OutputLocation);
+  return;
 }
 
 void Hydra::make_tree()

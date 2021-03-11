@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
   flow.addAlgorithm(tup);
   flow.printAlgorithmSequence();
 
-  hy().EvtMax = 1000000;
+  hy().EvtMax = 4000000;
   hy().TreeName = "d02kskk";
   hy().AlgoSequence = flow;
   hy().NThreads = -1;
