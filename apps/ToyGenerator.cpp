@@ -22,14 +22,14 @@ int main(int argc, char *argv[])
   cxxopts::Options options("ToyGenerator", "Program to generate D0->KsKK toys");
   options.add_options()
     ("m,model", "Model", cxxopts::value<std::string>()->default_value("belle2010"))
-    //("s,seed", "Random seed", cxxopts::value<int>()->default_value(0))
+    ("s,seed", "Random seed", cxxopts::value<int>()->default_value("1"))
     ;
   auto parser = options.parse(argc, argv);
 
   Hydra hy;
   hy.setDecay("D0 => KS0 K+ K-");
   
-  //Random::setSeed( parser["seed"].as<int>() );
+  Random::setSeed( parser["seed"].as<int>() );
 
   Generator gen("Generator");
   Decay3BodyMixing amp("Amplitude","cfg/"+parser["model"].as<std::string>()+".cfg");
