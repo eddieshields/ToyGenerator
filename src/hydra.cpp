@@ -72,6 +72,9 @@ void Hydra::fill_tree()
     tree->Branch(var.c_str(),&m_mapping[var],(var+"/D").c_str());
   }
 
+  // Create progress bar.
+  ProgressBar pb( m_configuration.EvtMax );
+
   int q_max = 0;
   int counter = 0;
   while ( counter < m_configuration.EvtMax ) {
@@ -87,6 +90,8 @@ void Hydra::fill_tree()
       counter++;
       // Remove from queue.
       q.second.pop();
+      // Update progress bar.
+      ++pb;
     }
   }
   tree->Write();

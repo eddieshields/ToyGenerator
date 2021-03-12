@@ -7,6 +7,7 @@
 #include "distributetask.h"
 #include "descriptor.h"
 #include "clock.h"
+#include "progressbar.h"
 
 #include <vector>
 #include <map>

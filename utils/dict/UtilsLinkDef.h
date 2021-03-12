@@ -9,5 +9,6 @@
 #pragma link C++ class Clock+;
 #pragma link C++ class Random+;
 #pragma link C++ class CorrelationUtils+;
+#pragma link C++ class ProgressBar+;
 
 #endif
