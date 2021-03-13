@@ -8,7 +8,7 @@
 
 #include "msgservice.h"
 
-#define POOLSIZE 1500
+#define POOLSIZE 15000
 
 class IMemoryManager
 {
@@ -24,9 +24,6 @@ template<class T>
 class MemoryManager : public IMemoryManager
 {
 private:
-  struct FreeStore {
-    FreeStore* next;
-  };
   T* m_pool = nullptr;
 
   int m_n;
@@ -50,7 +47,7 @@ public:
   {
     try {
     //m_pool = (T*) ::malloc(max*sizeof(T));
-    m_pool = reinterpret_cast<T*>(new char[max*sizeof(T)]);
+    m_pool = reinterpret_cast<T*>(new char[POOLSIZE*sizeof(T)]);
     } catch (std::bad_alloc& badAlloc) {
       FATAL("Not enough memory: " << badAlloc.what());
     }
@@ -62,7 +59,7 @@ public:
   {
     int counter = 0;
     for (auto& p : m_free) {
-      p.second = m_pool + ( ( m_n / m_free.size() ) * counter );
+      p.second = m_pool + ( ( POOLSIZE / m_free.size() ) * counter );
       counter++;
     }
   }
