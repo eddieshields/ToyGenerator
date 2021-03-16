@@ -13,6 +13,7 @@
 #pragma link C++ class Decay3BodyMixing+;
 #pragma link C++ class Efficiency+;
 #pragma link C++ class EventParam+;
+#pragma link C++ class EvtGenAmplitude+;
 #pragma link C++ class Generator+;
 #pragma link C++ class Param+;
 #pragma link C++ class ParticleParam+;

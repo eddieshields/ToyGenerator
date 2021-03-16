@@ -17,8 +17,16 @@ include_directories(${ROOT_INCLUDE_DIRS})
 file(GLOB_RECURSE HEADERS ${ALGORITHMS}/*.h)
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
+#--- EvtGen.
+if (EVTGEN_BUILD)
+    include_directories(${CMAKE_SOURCE_DIR}/EvtGen/include)
+    #add_library(EvtGen SHARED IMPORTED)
+    #set_target_properties(EvtGen PROPERTIES IMPORTED_LOCATION /afs/cern.ch/user/e/eshields/cernbox/ToyGenerator/EvtGen/lib64/libEvtGen.so)
+    find_library(EVTGEN EvtGen /afs/cern.ch/user/e/eshields/cernbox/ToyGenerator/EvtGen/lib64/)
+endif()
+
 ROOT_GENERATE_DICTIONARY(G__${ALGORITHMS} ${HEADERS} LINKDEF dict/${ALGORITHMS}LinkDef.h)
 
 #--- Generate library with ROOT dictionary
 add_library(${ALGORITHMS} SHARED ${SOURCES} ${} G__${ALGORITHMS}.cxx)
-target_link_libraries(${ALGORITHMS} HydraCore Utils DalitzModel ${ROOT_LIBRARIES} ${CMAKE_DL_LIBS})
+target_link_libraries(${ALGORITHMS} HydraCore Utils DalitzModel ${EVTGEN} ${ROOT_LIBRARIES} ${CMAKE_DL_LIBS})
