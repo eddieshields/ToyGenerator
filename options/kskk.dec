@@ -1,0 +1,37 @@
+Decay D0
+  1.0 K_S0 K+ K- PTO3P
+     MAXPDF   6.0
+     # SCANPDF 1000000
+
+     # If you want to add a non-resonant/flat, coherent component, it goes in like this:
+     #AMPLITUDE    PHASESPACE
+     #COEFFICIENT  POLAR_RAD   0.1    0.0
+
+     # K0bar a0(980)0 -- sub-threshold and has to be NBW else EvtGen crashes
+     AMPLITUDE    RESONANCE   BC     a_00
+                  ANGULAR     AC
+                  TYPE        NBW
+     COEFFICIENT  POLAR_RAD   1.0    0.0
+
+     # K0bar phi(1020) -- using relativistic Zemach propagator
+     AMPLITUDE    RESONANCE   BC     phi
+                  ANGULAR     AC
+                  TYPE        RBW_ZEMACH
+     COEFFICIENT  POLAR_RAD   0.437  1.91
+
+     # K- a0(980)+ -- sub-threshold and has to be NBW else EvtGen crashes
+     AMPLITUDE    RESONANCE   AB     a_0+
+                  ANGULAR     CA
+                  TYPE        NBW
+     COEFFICIENT  POLAR_RAD   0.460  3.59
+
+     # K0bar f0(1400) -- using relativistic Zemach propagator
+     AMPLITUDE    RESONANCE   BC     f'_0
+                  ANGULAR     AC
+                  TYPE        RBW_ZEMACH
+     COEFFICIENT  POLAR_RAD   0.435  -2.65
+   ;
+Enddecay
+CDecay anti-D0
+#
+End

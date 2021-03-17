@@ -48,14 +48,15 @@ int main(int argc, char *argv[])
   EvtId id = EvtPDL::getId( mother );
 
   // Set up TTree.
-  double qAB,qBC,qCA;
+  double qAB,qBC,qCA,amp;
   TTree* t = new TTree();
   t->Branch("mSqAB",&qAB,"mSqAB/D");
   t->Branch("mSqBC",&qBC,"mSqBC/D");
   t->Branch("mSqAC",&qCA,"mSqAC/D");
+  t->Branch("Amp",&amp,"Amp/D");
   
   Clock::Start();
-  int N = 1e7;
+  int N = 1e3;
   int count = 1;
   do {
     EvtVector4R p_init( EvtPDL::getMass( id ), 0.0, 0.0, 0.0 );
@@ -70,6 +71,7 @@ int main(int argc, char *argv[])
       qAB = ( p0 + p1 ).mass2();
       qBC = ( p1 + p2 ).mass2();
       qCA = ( p2 + p0 ).mass2();  
+      amp = *root_part->decayProb();
     }  
     root_part->deleteTree();
     t->Fill(); 
