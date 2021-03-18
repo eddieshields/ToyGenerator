@@ -8,6 +8,7 @@
 #include "descriptor.h"
 #include "clock.h"
 #include "progressbar.h"
+#include "concurrentqueue.h"
 
 #include <vector>
 #include <map>
@@ -73,8 +74,8 @@ private:
   void addToList(Event ev) { m_list.push_back(ev); } 
   unsigned int m_counter = {0};
 
-  std::map<std::thread::id,std::queue<Event>> m_queue;
-  std::mutex                                  m_mutex;
+  moodycamel::ConcurrentQueue<Event> m_queue;
+  std::mutex                         m_mutex;
 };
 
 #endif

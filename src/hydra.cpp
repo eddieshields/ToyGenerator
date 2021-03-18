@@ -31,12 +31,6 @@ void Hydra::run()
 
 void Hydra::runSequence()
 {
-  std::thread::id thread_id = std::this_thread::get_id();
-  // Add thread queue to queues.
-  m_mutex.lock();
-  m_queue.insert( std::pair<std::thread::id,std::queue<Event>>( thread_id , std::queue<Event>() ) );
-  m_mutex.unlock();
-
   unsigned int counter = 0;
   while ( counter < m_configuration.EvtMax/m_configuration.NThreads ) {
     Event* ev = new Event();
@@ -49,9 +43,7 @@ void Hydra::runSequence()
     // If event is accepted, add to queue.
     if ( ev->Accept ) {
       counter++;
-      m_mutex.lock();
-      m_queue[thread_id].push( std::move( *ev ) );
-      m_mutex.unlock();
+      m_queue.enqueue( std::move( *ev ) );
     }
     // Accepted events are saved in list, so events can be deleted.
     delete ev;
@@ -77,23 +69,22 @@ void Hydra::fill_tree()
 
   int q_max = 0;
   int counter = 0;
+  Event ev;
+  bool found;
   while ( counter < m_configuration.EvtMax ) {
-    // Loop over threads queues adding to tree.
-    for (auto& q : m_queue ) {
-      if ( q.second.empty() ) continue;
-      for (auto& var : m_configuration.Variables) {
-        m_mapping[var] = q.second.front()[var];
-      }
-      // Fill tree.
-      tree->Fill();
-      // Increase counter.
-      counter++;
-      // Remove from queue.
-      q.second.pop();
-      // Update progress bar.
-      ++pb;
+    found = m_queue.try_dequeue( ev );
+    if ( !found ) continue;
+    for (auto& var : m_configuration.Variables) {
+      m_mapping[var] = ev[var];
     }
+    // Fill tree.
+    tree->Fill();
+    // Increase counter.
+    counter++;;
+    // Update progress bar.
+    ++pb;
   }
+  
   tree->Write();
   tfile->Close();
   INFO("Tree saved to: " << m_configuration.OutputLocation);
