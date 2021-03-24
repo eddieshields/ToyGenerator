@@ -26,17 +26,19 @@ int main(int argc, char *argv[])
     ;
   auto parser = options.parse(argc, argv);
 
-  Random::setSeed( parser["seed"].as<int>() );
-  if ( parser["seed"].as<int>() != 1 ) DalitzModel::Parameter::ParameterUncertainty = DalitzModel::Uncertainty::Floating;
-
+  //Random::setSeed( parser["seed"].as<int>() );
+  //if ( parser["seed"].as<int>() != 1 ) DalitzModel::Parameter::ParameterUncertainty = DalitzModel::Uncertainty::Floating;
+  INFO("HERE");
   DalitzModel::Coefficient::CoordinatesSystem = DalitzModel::Coordinates::Rectangular;
+  INFO(1);
   DalitzModel::ConfigureAmplitude configure("cfg/"+parser["model"].as<std::string>()+".cfg");
+  INFO(2);
   DalitzModel::Amplitude amp = configure();
-
+  INFO("Here");
  // Amplitudes [ ON : 0, OFF : 1 ][ A1 : 0, A2 : 1 ]
   real_t A[2][2];
-  real_t step12 = ( amp.ps().mSq12max() - amp.ps().mSq12min() )/1000.;
-  real_t step13 = ( amp.ps().mSq13max() - amp.ps().mSq13min() )/1000.;
+  real_t step12 = ( amp.ps().mSq12max() - amp.ps().mSq12min() )/10000.;
+  real_t step13 = ( amp.ps().mSq13max() - amp.ps().mSq13min() )/10000.;
 
   for (real_t mSq12 = amp.ps().mSq12min(); mSq12 < amp.ps().mSq12max(); mSq12 += step12 ) {
     for (real_t mSq13 = amp.ps().mSq13min(); mSq13 < amp.ps().mSq13max(); mSq13 += step13 ) {
