@@ -78,16 +78,6 @@ public:
   //  return gEventMemoryManager.allocate(size);
   //}
 
-  //void* operator new[] (size_t size)
-  //{
-  //  return gEventMemoryManager.allocate_array(size);
-  //}
-
-  //void* operator new (size_t size, void* pointer)
-  //{
-  //  return pointer;
-  //}
-
   //void operator delete (void* pointerToDelete)
   //{
   //  gEventMemoryManager.free(pointerToDelete);

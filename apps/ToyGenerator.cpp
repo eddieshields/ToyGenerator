@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
   hy().TreeName = "d02kskk";
   hy().AlgoSequence = flow;
   hy().NThreads = -1;
-  hy().OutputLocation = "/eos/lhcb/user/e/eshields/D02KSKK/data/toys/Generator/d02kskk_"+std::to_string(parser["seed"].as<int>())+".root";
+  hy().OutputLocation = "d02kskk_" + std::to_string( parser["seed"].as<int>() ) + ".root";
   hy().Variables = tup.getVariables();
   hy.run();
 }
