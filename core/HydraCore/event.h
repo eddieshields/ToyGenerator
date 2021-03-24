@@ -78,7 +78,6 @@ public:
   //  return gEventMemoryManager.allocate(size);
   //}
 
-<<<<<<< HEAD
   //void* operator new[] (size_t size)
   //{
   //  return gEventMemoryManager.allocate_array(size);
@@ -89,8 +88,6 @@ public:
   //  return pointer;
   //}
 
-=======
->>>>>>> Add EvtGen changes
   //void operator delete (void* pointerToDelete)
   //{
   //  gEventMemoryManager.free(pointerToDelete);
