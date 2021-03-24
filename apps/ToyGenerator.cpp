@@ -49,11 +49,11 @@ int main(int argc, char *argv[])
   flow.addAlgorithm(tup);
   flow.printAlgorithmSequence();
 
-  hy().EvtMax = 4000000;
+  hy().EvtMax = 1000000;
   hy().TreeName = "d02kskk";
   hy().AlgoSequence = flow;
   hy().NThreads = -1;
-  hy().OutputLocation = "d02kskk.root";
+  hy().OutputLocation = "/eos/lhcb/user/e/eshields/D02KSKK/data/toys/Generator/d02kskk_"+std::to_string(parser["seed"].as<int>())+".root";
   hy().Variables = tup.getVariables();
   hy.run();
 }

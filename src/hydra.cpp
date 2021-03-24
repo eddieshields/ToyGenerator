@@ -7,8 +7,6 @@ void Hydra::run()
   if ( m_configuration.NThreads == -1 || m_configuration.NThreads > std::thread::hardware_concurrency() ) {
     m_configuration.NThreads = std::thread::hardware_concurrency();
   }
-  // Pass on information to memory manager.
-  gEventMemoryManager.setN(m_configuration.EvtMax);
   // Run sequence.
   INFO("Requested to generate " << m_configuration.EvtMax << " Events");
   INFO("Will use " << m_configuration.NThreads << " threads");
@@ -84,7 +82,7 @@ void Hydra::fill_tree()
     // Update progress bar.
     ++pb;
   }
-  
+
   tree->Write();
   tfile->Close();
   INFO("Tree saved to: " << m_configuration.OutputLocation);

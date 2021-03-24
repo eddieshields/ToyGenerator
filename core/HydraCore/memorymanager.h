@@ -5,10 +5,12 @@
 #include <map>
 #include <thread>
 #include <new>
+#include <mutex>
 
 #include "msgservice.h"
+#include "concurrentqueue.h"
 
-#define POOLSIZE 15000
+#define POOLSIZE 32
 
 class IMemoryManager
 {
@@ -24,56 +26,64 @@ template<class T>
 class MemoryManager : public IMemoryManager
 {
 private:
-  T* m_pool = nullptr;
+  /**
+   * Use ConcuuretnQueue as the memory pool.
+   * This has the advantage of being able to be accessed by any thread at any time with no locks.
+   * The principle is to store the memory in the queue and then release it when it is needed.
+   * When the pbject is destroyed, the memory is returned to the queue.
+   */
+  moodycamel::ConcurrentQueue<T*> m_pool;
 
-  int m_n;
-  std::map<std::thread::id,T*> m_free;
 public:
   MemoryManager() = default;
   ~MemoryManager() {}
 
-  void setN(int max)
-  {
-    m_n = max;
-  }
-
-  void addThread(std::thread::id thread)
-  {
-    m_free.insert( std::pair<std::thread::id,T*>{ thread , nullptr } );
-  }
 
   // Assign enough memory for
-  void expandPool(int max)
+  void expandPool()
   {
-    try {
-    //m_pool = (T*) ::malloc(max*sizeof(T));
-    m_pool = reinterpret_cast<T*>(new char[POOLSIZE*sizeof(T)]);
-    } catch (std::bad_alloc& badAlloc) {
-      FATAL("Not enough memory: " << badAlloc.what());
+    //T** t = reinterpret_cast<T**>( new char[1500*sizeof(T)] );
+    //bool success = m_pool.enqueue_bulk(t,1500);
+    T* t = ::new T();
+    bool success = m_pool.enqueue( t );
+    if ( !success ) {
+      FATAL("Not enough memory!");
     }
-    shiftOffsets();
-  }
-
-  // Offset pointer in each thread to a different chunk if the memory pool.
-  void shiftOffsets()
-  {
-    int counter = 0;
-    for (auto& p : m_free) {
-      p.second = m_pool + ( ( POOLSIZE / m_free.size() ) * counter );
-      counter++;
-    }
+    return;
   }
 
   inline void* allocate(size_t size)
   {
-    if ( m_pool == nullptr ) expandPool( m_n );
-    m_free.find( std::this_thread::get_id() )->second++;
-    return m_free.find( std::this_thread::get_id() )->second;
+
+    T* free;
+    // Check if enough memory exists.
+    bool available = m_pool.try_dequeue( free );
+    // If there is no memory left in the queue then expand the queue and retry.
+    if ( !available ) {
+      expandPool();
+      // Try again.
+      INFO("Looking for more memory");
+      allocate(size);
+    }
+
+    return free;
+  }
+
+  inline void* allocate_array(size_t size)
+  {
+    T* free;
+    bool available = m_pool.try_dequeue_bulk( free , size/sizeof(T*) );
+    // If there is no memory left in the queue then expand the queue and retry.
+    if ( !available ) {
+      expandPool();
+      allocate(size);
+    }
+    return free;
   }
 
   inline void free(void* deleted)
   {
-    m_free.find( std::this_thread::get_id() )->second--;
+    m_pool.enqueue( reinterpret_cast<T*>( deleted ) );
   }
 };
 
