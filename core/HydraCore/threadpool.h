@@ -14,7 +14,6 @@
 
 #include "msgservice.h"
 #include "random.h"
-#include "event.h"
 
 /** ThreadPool holds a pool of threads and excutes jobs in threads.
  * 
