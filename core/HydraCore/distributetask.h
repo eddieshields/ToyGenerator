@@ -25,6 +25,10 @@
 class DistributeTask 
 {
 public:
+  DistributeTask() : 
+    m_pool( std::thread::hardware_concurrency() ),
+    m_nthreads( std::thread::hardware_concurrency() )
+  {}
   DistributeTask(int& nthreads) :
     m_pool( nthreads ),
     m_nthreads( nthreads )
@@ -35,27 +39,26 @@ public:
   ~DistributeTask() {};
 
   template<class F, class... Args>
-  auto operator()(F&& f, Args&&... args) -> typename std::result_of<F(Args...)>::type
+  void submit(F&& f, Args&&... args)
   {
     INFO("Submitting tasks to Thread pool");
-    // Need to generalise this class for template output.
-    std::vector<std::future<std::vector<Event>>> thread_futures;
+    std::vector<std::future<void>> thread_futures;
     for (int i = 0; i < m_nthreads; i++) {
-      std::future<std::vector<Event>> out = m_pool.submit(f,args...);
+      auto out = m_pool.submit(f,args...);
       thread_futures.push_back( std::move( out ) );
     }
-    for (int i = 0; i < m_nthreads; i++) {
-      std::vector<Event> tmp = thread_futures[i].get();
-      m_list.insert(m_list.end(),tmp.begin(),tmp.end());
-    }
-    return m_list;
   }
 
-  std::vector<Event> list() { return m_list; }
+  void get()
+  {
+    //for (int i = 0; i < m_nthreads; i++) {
+    //  thread_futures[i].get();
+    //}
+  }
+
 private:
   ThreadPool         m_pool;
   const int          m_nthreads;
-  std::vector<Event> m_list;
 };
 
 #endif

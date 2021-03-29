@@ -7,6 +7,9 @@
 #include <new>
 
 #include "msgservice.h"
+#include "concurrentqueue.h"
+
+#define POOLSIZE 32
 
 class IMemoryManager
 {
@@ -22,56 +25,40 @@ template<class T>
 class MemoryManager : public IMemoryManager
 {
 private:
-  T* m_pool = nullptr;
+  moodycamel::ConcurrentQueue<T*> m_queue;
 
-  int m_n;
-  std::map<std::thread::id,T*> m_free;
 public:
   MemoryManager() = default;
   ~MemoryManager() {}
 
-  void setN(int max)
+  inline void expandPool()
   {
-    m_n = max;
-  }
-
-  void addThread(std::thread::id thread)
-  {
-    m_free.insert( std::pair<std::thread::id,T*>{ thread , nullptr } );
-  }
-
-  // Assign enough memory for
-  void expandPool(int max)
-  {
+    // TODO: Fix bug that won't allow bulk allocation.
     try {
-    //m_pool = (T*) ::malloc(max*sizeof(T));
-    m_pool = reinterpret_cast<T*>(new char[max*sizeof(T)]);
+    T* n = ::new T();
+    m_queue.enqueue( n );
     } catch (std::bad_alloc& badAlloc) {
       FATAL("Not enough memory: " << badAlloc.what());
     }
-    shiftOffsets();
   }
 
-  // Offset pointer in each thread to a different chunk if the memory pool.
-  void shiftOffsets()
-  {
-    int counter = 0;
-    for (auto& p : m_free) {
-      p.second = m_pool + ( ( m_n / m_free.size() ) * counter );
-      counter++;
-    }
-  }
+  // Add overlaods for arrays.
 
   inline void* allocate(size_t size)
   {
-    if ( m_pool == nullptr ) expandPool( m_n );
-    m_free.find( std::this_thread::get_id() )->second++;
-    return m_free.find( std::this_thread::get_id() )->second;
+    T* free;
+    bool success = m_queue.try_dequeue( free );
+    if ( !success ) {
+      expandPool();
+      return allocate( size );
+    }
+    return free;
   }
 
   inline void free(void* deleted)
   {
-    m_free.find( std::this_thread::get_id() )->second--;
+    // Pass memory to back of queue.
+    m_queue.enqueue( reinterpret_cast<T*>( deleted ) );
   }
 };
 

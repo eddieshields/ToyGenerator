@@ -46,7 +46,6 @@ ThreadPool::ThreadPool(size_t threads)
     );
     ids.insert( std::pair<std::thread::id,int>{ workers.back().get_id() , workers.size()-1} );
     Random::addThread( workers.back().get_id() , i );
-    gEventMemoryManager.addThread( workers.back().get_id() );
   }
 }
 
