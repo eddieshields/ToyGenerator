@@ -13,7 +13,7 @@ using json = nlohmann::json;
 struct ParticleStore {
   ParticleStore()
   {
-    std::ifstream i("particles.json");
+    std::ifstream i("/Users/eddieshields/Documents/LHCb/projects/ToyGenerator/particles.json");
     i >> m_particles;
   }
 
