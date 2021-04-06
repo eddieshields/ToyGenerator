@@ -105,6 +105,9 @@ public:
   const real_t    A2Sq  (std::string name, const real_t& mSq12, const real_t& mSq13) const;
   const real_t    A2Sq  (std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
 
+  const real_t    ASq(std::string name, const real_t& mSq12, const real_t& mSq13) const;
+  const real_t    ASq(std::string name, const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const;
+
   const real_t getMax() const;
 };
 

@@ -87,6 +87,15 @@ const real_t Amplitude::getMax() const
   return maxPdf;
 }
 
+const complex_t Amplitude::Adir(const real_t& mSq12, const real_t& mSq13) const
+{
+  complex_t A(0.,0.);
+  for (const auto& res : m_resonances) {
+    A += res->evaluate( m_ps , mSq12 , mSq13 );
+  }
+  return A;
+}
+
 const complex_t Amplitude::Adir(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
 {
   complex_t A(0.,0.);
