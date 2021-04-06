@@ -72,13 +72,19 @@ Resonance* Amplitude::get(std::string res) const
   return nullptr;
 }
 
-const complex_t Amplitude::Adir(const real_t& mSq12, const real_t& mSq13) const
+const real_t Amplitude::getMax() const
 {
-  complex_t A(0.,0.);
-  for (const auto& res : m_resonances) {
-    A += res->evaluate( m_ps , mSq12 , mSq13 );
+  int nsteps = 1000;
+  real_t mSq12Step = ( m_ps.mSq12max() - m_ps.mSq12min() ) / nsteps;
+  real_t mSq13Step = ( m_ps.mSq13max() - m_ps.mSq13min() ) / nsteps;
+  real_t maxPdf = 0;
+  for (real_t mSq12 = m_ps.mSq12min(); mSq12 < m_ps.mSq12max(); mSq12 += mSq12Step) {
+    for (real_t mSq13 = m_ps.mSq13min(); mSq13 < m_ps.mSq13max(); mSq13 += mSq13Step) {
+      real_t a = AdirSq( mSq12 , mSq13 );
+      if ( a > maxPdf ) maxPdf = a;
+    }
   }
-  return A;
+  return maxPdf;
 }
 
 const complex_t Amplitude::Adir(const real_t& mSq12, const real_t& mSq13, const real_t& mSq23) const
