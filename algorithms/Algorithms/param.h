@@ -12,6 +12,7 @@ public:
   enum Type {
     W,
     PDF,
+    PID,
     Q,
     T,     //Time.
     M,     //Mass.

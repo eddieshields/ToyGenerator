@@ -11,7 +11,7 @@ void DecayDescriptor::decodeDecayDescriptor(std::string decay)
     } else {
       m_flavours.push_back( getParticleFlavour(m_particles[i]) );
     }
-    m_particles[i] = cleanParticle(m_particles[i]);
+    m_pids.push_back( getParticlePID(m_particles[i]) );
   }
   m_chcnj = getChargedConjugate(decay);
   printDecayDescriptor();
@@ -21,15 +21,7 @@ void DecayDescriptor::printDecayDescriptor()
 {
   std::string decay = m_particles[0]+" => ";
   for (int i = 1; i < m_particles.size(); i++) {
-    if ( m_charges[i] == +1 ) {
-      decay += m_particles[i] + "+ ";
-    } else if ( m_charges[i] == -1 ) {
-      decay += m_particles[i] + "- ";
-    } else if ( m_flavours[i] == -1 ) {
-      decay += m_particles[i] + "bar ";
-    } else {
-      decay += m_particles[i] + " ";
-    }
+    decay += m_particles[i] + " ";
   }
   INFO("Decay = "+decay);
 }
@@ -38,6 +30,7 @@ void DecayDescriptor::getMotherName(std::string decay)
 {
   std::string mother = decay.replace(decay.find("=>") - 1,decay.size() - decay.find("=>") + 1, "");
   m_particles.push_back(mother);
+  m_clean_particles.push_back( cleanParticle( mother ) );
 }
 
 void DecayDescriptor::getDaughtersNames(std::string decay)
@@ -48,6 +41,7 @@ void DecayDescriptor::getDaughtersNames(std::string decay)
   std::string daughter;
   while ( ss >> daughter ) {
     m_particles.push_back(daughter);
+    m_clean_particles.push_back( cleanParticle( daughter ) );
   }
 }
 
@@ -86,12 +80,22 @@ const bool DecayDescriptor::getChargedConjugate(std::string decay)
 
 const real_t DecayDescriptor::getParticleMass(std::string particle)
 {
-  return gParticleStore(particle,"mass");
+  return gParticleStore(particle)->Mass();
 }
 
 const real_t DecayDescriptor::getParticleMass(const int particle)
 {
-  return gParticleStore(m_particles[particle],"mass");
+  return gParticleStore(m_particles[particle])->Mass();
+}
+
+const int DecayDescriptor::getParticlePID(std::string particle)
+{
+  return gParticleStore(particle)->PdgCode();
+}
+
+const int DecayDescriptor::getParticlePID(const int particle)
+{
+  return gParticleStore(m_particles[particle])->PdgCode();
 }
 
 std::string DecayDescriptor::cleanParticle(std::string particle)

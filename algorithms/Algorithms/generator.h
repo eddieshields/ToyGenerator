@@ -21,7 +21,7 @@ public:
   Generator(std::string name) : Algorithm(name)
   {
     getDecay();
-    FourVector m_m(0.,0.,0.,gParticleStore(m_particles[0],"mass"));
+    FourVector m_m(0.,0.,0.,gParticleStore(m_particles[0])->Mass());
     for (int i = 1; i < m_particles.size(); i++) {
       addToDaughters(m_particles[i]);
     }
@@ -38,6 +38,7 @@ private:
   std::vector<std::string>  m_particles;
   std::vector<int>          m_charges;
   std::vector<int>          m_flavours;
+  std::vector<int>          m_pids;
   bool                      m_chcnj;
 
   int    m_nt       = {0} ;
@@ -46,13 +47,14 @@ private:
   real_t m_wtMax    = {0.};
 
   real_t q(real_t a, real_t b, real_t c) const;
-  void addToDaughters(std::string daughter) { m_daughters.push_back( gParticleStore(daughter,"mass") ); }
+  void addToDaughters(std::string daughter) { m_daughters.push_back( gParticleStore(daughter)->Mass() ); }
 
   void getDecay()
   {
     m_particles = gDescriptor.getParticles();
     m_charges = gDescriptor.getCharges();
     m_flavours = gDescriptor.getFlavours();
+    m_pids = gDescriptor.getPIDs();
     m_chcnj = gDescriptor.getChargeConjugate();
   }
   

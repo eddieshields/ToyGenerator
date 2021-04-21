@@ -13,12 +13,6 @@ if (DEBUG)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
 endif()
 
-# Fix this section of compilation for lxplus.
-include_directories(external/json/single_include)
-if (APPLE)
-    include_directories(external/json/single_include)
-endif()
-
 #--- Include Utils
 include_directories(utils/Utils)
 add_subdirectory(utils)

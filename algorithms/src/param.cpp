@@ -7,6 +7,8 @@ const Param::Type Param::getParamFromString(std::string param)
     return Param::W;
   } else if ( param == "pdf" || param == "Pdf" ) {
     return Param::PDF;
+  } else if ( param == "pid" || param == "PID" ) {
+    return Param::PID;
   } else if ( param == "q" || param == "Q" ) {
     return Param::Q;
   } else if ( param == "t" || param == "time" ) {
@@ -41,6 +43,8 @@ const std::string Param::getName(Param::Type param)
     return "weight";
   case Param::PDF:
     return "pdf";
+  case Param::PID:
+    return "pid";
   case Param::Q:
     return "Q";
   case Param::T:

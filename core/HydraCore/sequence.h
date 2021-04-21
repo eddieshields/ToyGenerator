@@ -8,47 +8,34 @@
 
 class Sequence
 {
+private:
+  std::vector<Algorithm*> m_algorithms;
+
 public:
   Sequence() = default;
-  Sequence(Sequence& other)
-  {
-    head = other.head;
-    tail = other.tail;
-  }
+  Sequence(Sequence& other) :
+    m_algorithms( other.m_algorithms )
+  {}
   ~Sequence() {};
 
   template <typename IN_TYPE>
   void addAlgorithm(IN_TYPE& input)
   {
-    Algorithm* tmp = nullptr ;
-    tmp = static_cast<Algorithm*>(&input);
-    tmp->next=nullptr ;
-    if ( head == nullptr ) {
-      head=tmp;
-      tail=tmp;
-      tmp=nullptr ;
-    } else {
-      tail->next=tmp;
-      tail=tmp;
-    }
+    m_algorithms.push_back( static_cast<Algorithm*>(&input) );
   }
 
   void printAlgorithmSequence()
   {
     std::string alg_str = "Sequence = ";
-    Algorithm* tmp = nullptr;
-    tmp = head;
-    while ( tmp != nullptr ){
-      alg_str += tmp->name()+", ";
-			tmp=tmp->next;
+    for (auto algo : m_algorithms ) {
+      alg_str += algo->name()+", ";
 		}
     alg_str.replace(alg_str.size()-2,2,"");
     INFO(alg_str);
     return;
   }
-  
-  Algorithm* head = {nullptr};
-  Algorithm* tail = {nullptr};
+
+  inline const std::vector<Algorithm*>& operator()() const { return m_algorithms; }
 };
 
 extern Sequence gSequence;

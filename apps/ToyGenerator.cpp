@@ -27,21 +27,22 @@ int main(int argc, char *argv[])
   auto parser = options.parse(argc, argv);
 
   Hydra hy;
-  hy.setDecay("D0 => KS0 K+ K-");
+  hy.setDecay("D0 => K_S0 K+ K-");
   
   Random::setSeed( parser["seed"].as<int>() );
-
+  
   Generator gen("Generator");
   Decay3BodyMixing amp("Amplitude","cfg/"+parser["model"].as<std::string>()+".cfg");
   Accept acc("Accept");
-  acc.setMaxPdf(624);
+  acc.setMaxPdf(645);
   Tupling tup("Tupling");
   tup.addMass();
   tup.addCompositeMass();
   tup.addCharge();
   tup.addTime();
+  tup.addPID();
   tup.printParams();
-
+  
   Sequence flow;
   flow.addAlgorithm(gen);
   flow.addAlgorithm(amp);
@@ -49,7 +50,7 @@ int main(int argc, char *argv[])
   flow.addAlgorithm(tup);
   flow.printAlgorithmSequence();
 
-  hy().EvtMax = 4000000;
+  hy().EvtMax = 1000000;
   hy().TreeName = "d02kskk";
   hy().AlgoSequence = flow;
   hy().NThreads = -1;
