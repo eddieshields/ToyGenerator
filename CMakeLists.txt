@@ -66,3 +66,7 @@ target_link_libraries(PlotDalitzModel ${PACKAGE})
 ###--- Create an executable
 add_executable(CalculateFraction ${CMAKE_SOURCE_DIR}/apps/CalculateFraction.cpp)
 target_link_libraries(CalculateFraction ${PACKAGE})
+
+if ( BUILD_TESTS )
+    add_subdirectory(test)
+endif()

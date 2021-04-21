@@ -9,8 +9,10 @@
 #pragma link C++ class CompositeParam+;
 #pragma link C++ class CustomParam+;
 #pragma link C++ class D02K3Pi+;
+#pragma link C++ class DalitzPlotEfficiency+;
 #pragma link C++ class Decay3Body+;
 #pragma link C++ class Decay3BodyMixing+;
+#pragma link C++ class DecayTimeEfficiency+;
 #pragma link C++ class Efficiency+;
 #pragma link C++ class EventParam+;
 #pragma link C++ class Generator+;
