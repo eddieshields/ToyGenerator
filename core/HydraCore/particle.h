@@ -18,6 +18,7 @@ protected:
   real_t      m_true_ctau;
   int         m_q;
   int         m_flavour;
+  int         m_pid;
   bool        m_stable;
 public:
   Particle() {};
@@ -29,6 +30,7 @@ public:
   inline FourVector&      momentum()     { return m_p; }
   inline int&             charge()       { return m_q; }
   inline int&             flavour()      { return m_flavour; }
+  inline int&             pid()          { return m_pid; }
 
   inline void SetMomentum(FourVector& p) { m_p = std::move(p); }
 

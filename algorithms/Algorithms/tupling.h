@@ -31,6 +31,7 @@ public:
   void addTime();
   void addCharge();
   void addEventInfo();
+  void addPID();
   void addParam(Param* param);
   void addParam(Param& param);
   template<typename PARAM>
