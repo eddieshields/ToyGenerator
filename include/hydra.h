@@ -4,17 +4,22 @@
 #include "event.h"
 #include "algorithm.h"
 #include "sequence.h"
-#include "threads.h"
+#include "distributetask.h"
 #include "descriptor.h"
 #include "clock.h"
+#include "progressbar.h"
+#include "concurrentqueue.h"
 
 #include <vector>
 #include <map>
+#include <thread>
+#include <queue>
+#include <mutex>
 
 // Dirty fix, should try fix in compilation instead.
-#define BOOST_NO_CXX11_SCOPED_ENUMS
-#include <boost/filesystem.hpp>
-#undef BOOST_NO_CXX11_SCOPED_ENUMS
+//#define BOOST_NO_CXX11_SCOPED_ENUMS
+//#include <boost/filesystem.hpp>
+//#undef BOOST_NO_CXX11_SCOPED_ENUMS
 
 #include "TFile.h"
 #include "TTree.h"
@@ -49,30 +54,15 @@ struct Configuration {
 class Hydra
 {
 public:
-  Hydra() : m_runner( this ) {WelcomeMessage();}
+  Hydra() {WelcomeMessage();}
   virtual ~Hydra() {}
 
-  // Wrapper struct that is passed to threads for execution.
-  struct Exec {
-    Exec(Hydra* _base) : base( _base ) {}
-    ~Exec() {}
-
-    std::vector<Event> operator()(int& thread)
-    {
-      return base->runSequence(thread);
-    }
-    Hydra* base;
-  };
-
   Configuration m_configuration;
-  Exec          m_runner;
-
   Configuration& operator()() { return m_configuration; }
-  std::vector<Event> runSequence(int& thread);
+  void runSequence();
   void run();
-  TTree* tree();
-  void temporary_tree(int& thread, std::vector<Event>& list);
-  void merge_tree();
+  void make_tree();
+  void fill_tree();
   void addToList(std::vector<Event> tmp) { m_list.insert( m_list.end(), tmp.begin(), tmp.end() ); }
   void setDecay(std::string decay) { gDescriptor(decay); }
 
@@ -84,6 +74,8 @@ private:
   void addToList(Event ev) { m_list.push_back(ev); } 
   unsigned int m_counter = {0};
 
+  moodycamel::ConcurrentQueue<Event> m_queue;
+  std::mutex                         m_mutex;
 };
 
 #endif

@@ -34,14 +34,10 @@ before_install:
   - eval "${MATRIX_EVAL}"
   - chmod +x .ci/build_root_${TRAVIS_OS_NAME}.sh
 
-# Dont need to build root until build itself is fixed.
-#  - source .ci/build_root_${TRAVIS_OS_NAME}.sh 
-
 # Build your code e.g. by calling make
 script:
   - chmod +x .ci/travis_${TRAVIS_OS_NAME}.sh
-  
-#  - source .ci/travis_${TRAVIS_OS_NAME}.sh
+  - source .ci/travis_${TRAVIS_OS_NAME}.sh
 
 # Generate and deploy documentation
 after_success:

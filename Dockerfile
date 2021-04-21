@@ -1,13 +1,21 @@
-FROM python:3.8-slim-buster
+# Base image with gcc compiler and cmake.
+FROM mazurov/cern-root
+ARG version="0.01"
+LABEL author="Edward Shields"
+LABEL description="Hydra build"
+LABEL version="${version}"
 
-ENV VIRTUAL_ENV=/opt/venv
-RUN python3 -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+# Set workdir.
+WORKDIR /usr/src
 
-# Install dependencies:
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+# Copy everything to workdir.
+COPY . toygen
 
-# Run the application:
-COPY python/d02k3pi_options.py .
-CMD ["python", "python/d02k3pi_options.py"]
+# Move to workdir.
+# TODO: Add a build.
+RUN if [[ -d /usr/src/toygen/build ]]; then rm -rf /usr/src/toygen/build; fi \
+    && mkdir /usr/src/toygen/build \
+    && cd /usr/src/toygen/build \
+    && cmake .. \
+    && make \
+    && cd .. 

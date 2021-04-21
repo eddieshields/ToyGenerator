@@ -3,8 +3,10 @@
 echo "Fetching external libraries..."
 git submodule update --init --recursive
 
-echo "Setting lxplus environment..."
-source /cvmfs/sft.cern.ch/lcg/views/setupViews.sh LCG_97python3 x86_64-centos7-gcc8-opt]
+if [[ $(hostname -s) = lxplus* ]]; then
+  echo "Setting lxplus environment..."
+  source /cvmfs/sft.cern.ch/lcg/views/setupViews.sh LCG_97python3 x86_64-centos7-gcc8-opt
+fi
 
 echo "Building..."
 mkdir build
@@ -14,4 +16,4 @@ make
 cd ..
 
 echo "Setup..."
-. setup.sh
+source setup.sh

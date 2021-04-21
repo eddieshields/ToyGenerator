@@ -1,0 +1,7 @@
+<lcgdict>
+
+  <class name="Clock" />
+  <class name="FourVector" />
+  <class name="Random" />
+
+</lcgdict>

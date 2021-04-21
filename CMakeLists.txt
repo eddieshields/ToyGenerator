@@ -1,77 +1,72 @@
 # CMakeLists.txt for ToyGenerator module. It creates a library with dictionary and a main program
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
-set(PACKAGE ToyGen)
+set(PACKAGE HYDRA)
 project(${PACKAGE})
 
-set (CMAKE_CXX_STANDARD 17)
-option(TOYGEN_DEBUG "AmpGen Debug printout")
-SET(USE_OPENMP TRUE CACHE BOOL "USE_OPENMP")
+#--- Options
+option(DEBUG "Debug" OFF)
 
-# Tell CMake where to find ROOT.
+#--- Add compiler optimization flags.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -march=native -flto")
+
+if (DEBUG)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
+endif()
+
+#--- Include Utils
+include_directories(utils/Utils)
+add_subdirectory(utils)
+
+#--- Include Core
+include_directories(core/HydraCore)
+add_subdirectory(core)
+
+##--- Include DalitzModel
+include_directories(models/dalitzmodel/DalitzModel)
+add_subdirectory(models)
+
+##--- Include Algorithms
+include_directories(algorithms/Algorithms)
+add_subdirectory(algorithms)
+
+## Tell CMake where to find ROOT.
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
-#--- Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
-find_package(ROOT REQUIRED COMPONENTS Core RIO Hist Graf Graf3d Postscript Gpad
-                             RooFit RooFitCore Tree MathCore Foam Physics
-                             Proof ProofBench ProofDraw ProofPlayer)
 
-#--- Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
+##--- Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
+find_package(ROOT REQUIRED COMPONENTS Core RooFit RooFitCore Tree MathCore Physics Hist)
+
+##--- Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS})
 
-#--- Use Boost
-find_package(Boost COMPONENTS system filesystem REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
+##--- Define the header and src directories
+file(GLOB_RECURSE HEADERS include/*.h)
+file(GLOB_RECURSE SOURCES src/*.cpp)
 
-#--- Use Python
-find_package(PythonLibs REQUIRED)
-include_directories(${PYTHON_INCLUDE_DIRS})
+include_directories(include)
+ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${HEADERS} LINKDEF dict/${PACKAGE}LinkDef.h)
 
-#--- Define the headers list
-include_directories(include src dict algorithms models/dalitzmodel  ${CMAKE_SOURCE_DIR})
+##--- Generate library with ROOT dictionary
+add_library(${PACKAGE} SHARED ${SOURCES} ${} G__${PACKAGE}.cxx)
 
-if (APPLE)
-    include_directories(external/json/single_include)
-endif()
+##--- Link libraries
+target_link_libraries(${PACKAGE} Utils HydraCore DalitzModel Algorithms ${ROOT_LIBRARIES} ${CMAKE_DL_LIBS})
 
-#--- Define the headers and src directories
-file(GLOB_RECURSE sources src/*.cpp algorithms/*.cpp models/dalitzmodel/*.cpp)
-file(GLOB_RECURSE headers include/*.h algorithms/*.h models/dalitzmodel/*.h)
-#file(GLOB_RECURSE json external/json/single_include/*)
+##--- Link libraries
+include_directories(external/cxxopts/include)
 
-ROOT_GENERATE_DICTIONARY(G__${PACKAGE} ${headers} LINKDEF dict/${PACKAGE}LinkDef.h)
-
-#--- Generate ROOT library from dictionary
-add_library(HYDRA SHARED ${sources} ${} G__${PACKAGE}.cxx)
-
-#-- Generate general library
-add_library(${PACKAGE} SHARED ${sources} ${headers})
-
-#--- Use OpenMP
-if ( USE_OPENMP )
-    find_package(OpenMP)
-    if (OpenMP_CXX_FOUND)
-        target_link_libraries(${PACKAGE} PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-        target_link_libraries(HYDRA      PUBLIC OpenMP::OpenMP_CXX ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-    else()
-        message(STATUS "OpenMP not found for CXX, you might have forgotten lb-run ROOT bash or CXX=`which g++` in CERN stack")
-    endif()
-else()
-    target_link_libraries(${PACKAGE} ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-    target_link_libraries(HYDRA      ${ROOT_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_DL_LIBS} ${PYTHON_LIBRARIES})
-endif()
-
-#--- External library for reading json files.
-target_include_directories(${PACKAGE} PUBLIC external/json/single_include)
-target_include_directories(HYDRA PUBLIC external/json/single_include)
-
-#--- Create an executable
+###--- Create an executable
 add_executable(ToyGenerator ${CMAKE_SOURCE_DIR}/apps/ToyGenerator.cpp)
-target_link_libraries(ToyGenerator HYDRA)
+target_link_libraries(ToyGenerator ${PACKAGE})
 
-if (OpenMP_CXX_FOUND)
-    add_executable(getMaxThreads ${CMAKE_SOURCE_DIR}/apps/getMaxThreads.cpp)
-    target_link_libraries(getMaxThreads PUBLIC OpenMP::OpenMP_CXX)
+###--- Create an executable
+add_executable(PlotDalitzModel ${CMAKE_SOURCE_DIR}/apps/PlotDalitzModel.cpp)
+target_link_libraries(PlotDalitzModel ${PACKAGE})
+
+###--- Create an executable
+add_executable(CalculateFraction ${CMAKE_SOURCE_DIR}/apps/CalculateFraction.cpp)
+target_link_libraries(CalculateFraction ${PACKAGE})
+
+if ( BUILD_TESTS )
+    add_subdirectory(test)
 endif()
-
-#--- Create Hydra
-execute_process(COMMAND chmod +x ${CMAKE_SOURCE_DIR}/Hydra)
