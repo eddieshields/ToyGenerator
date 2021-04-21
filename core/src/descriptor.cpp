@@ -30,6 +30,7 @@ void DecayDescriptor::getMotherName(std::string decay)
 {
   std::string mother = decay.replace(decay.find("=>") - 1,decay.size() - decay.find("=>") + 1, "");
   m_particles.push_back(mother);
+  m_clean_particles.push_back( cleanParticle( mother ) );
 }
 
 void DecayDescriptor::getDaughtersNames(std::string decay)
@@ -40,6 +41,7 @@ void DecayDescriptor::getDaughtersNames(std::string decay)
   std::string daughter;
   while ( ss >> daughter ) {
     m_particles.push_back(daughter);
+    m_clean_particles.push_back( cleanParticle( daughter ) );
   }
 }
 

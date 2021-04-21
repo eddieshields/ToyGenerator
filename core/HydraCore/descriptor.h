@@ -27,6 +27,7 @@ struct DecayDescriptor
   std::string cleanParticle(std::string particle);
 
   std::vector<std::string>&  getParticles()       { return m_particles; }
+  std::vector<std::string>&  getCleanParticles()  { return m_clean_particles; }
   std::vector<int>&          getCharges()         { return m_charges; }
   std::vector<int>&          getFlavours()        { return m_flavours; }
   std::vector<int>&          getPIDs()            { return m_pids; }
@@ -36,6 +37,7 @@ struct DecayDescriptor
   DecayDescriptor operator=(std::string decay) { decodeDecayDescriptor(decay); return *this; }
 private:
   std::vector<std::string>  m_particles;
+  std::vector<std::string>  m_clean_particles;
   std::vector<int>          m_charges;
   std::vector<int>          m_flavours;
   std::vector<int>          m_pids;
