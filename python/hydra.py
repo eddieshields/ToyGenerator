@@ -5,6 +5,7 @@ r.gSystem.Load('build/libHYDRA')
 # Import core Hydra.
 from ROOT import ( Hydra,
                    DecayDescriptor,
+                   gDescriptor,
                    Event,
                    Particle,
                    ParticleStore,
