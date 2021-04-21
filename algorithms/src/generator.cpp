@@ -5,12 +5,12 @@ const int kMAXP = 18;
 void Generator::operator()(Event& ev)
 {
   // Add particles.
-  int cnj = 1;
-  if ( Random::Bool() ) cnj *= -1;
+  int cnj = ( Random::Bool() ? 1 : -1 );
   for (int i = 0; i < m_particles.size(); i++) {
     ev.particles().push_back( Particle() );
     ev.particle(i).charge() = m_charges[i] * cnj;
-    ev.particle(i).flavour() = m_flavours[i];
+    ev.particle(i).flavour() = m_flavours[i] * cnj;
+    ev.particle(i).pid() = m_pids[i] * cnj;
   }
 
   // Generate event.
@@ -20,7 +20,6 @@ void Generator::operator()(Event& ev)
     ev.daughter(i).SetMomentum( daughts[i-1] );
   }
   // Set decay time.
-  if ( !ev.mother().charge() ) ev.mother().flavour() = ( Random::Bool() ? 1 : -1 );
   ev.mother().isStable() = false;
   ev.mother().truetime() = ev.mother().time() = Random::exponential();
 

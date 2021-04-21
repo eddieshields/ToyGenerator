@@ -1,25 +1,33 @@
 #ifndef TOYGEN_PARTICLESTORE_H
 #define TOYGEN_PARTICLESTORE_H
 
+#include "msgservice.h"
 #include "types.h"
 
-// json.
-#include "nlohmann/json.hpp"
-using json = nlohmann::json;
+#include "TDatabasePDG.h"
+#include "TParticlePDG.h"
 
 #include <string>
 #include <fstream>
 
 struct ParticleStore {
-  ParticleStore()
-  {
-    std::ifstream i("/Users/eddieshields/Documents/LHCb/projects/ToyGenerator/particles.json");
-    i >> m_particles;
+private:
+  TDatabasePDG m_pdg;
+public:
+  ParticleStore() :
+    m_pdg()
+  {}
+  ~ParticleStore() {}
+
+  TParticlePDG* operator()(std::string name) { checkExists( name ); return m_pdg.GetParticle(name.c_str()); }
+  bool checkExists(std::string name)
+  { 
+    if ( m_pdg.GetParticle(name.c_str()) == nullptr ) {
+      FATAL("Particle " << name << " is not recognised!");
+      return false; 
+    }
+    return true;
   }
-
-  json m_particles;
-
-  real_t operator()(std::string name, std::string variable) { return m_particles[name][variable].get<real_t>(); }
 };
 
 extern ParticleStore gParticleStore;

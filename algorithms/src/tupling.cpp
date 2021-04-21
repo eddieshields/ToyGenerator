@@ -129,6 +129,14 @@ void Tupling::addCompositeMass(int index1, int index2)
   }
 }
 
+void Tupling::addPID()
+{
+  std::string name = "_"+std::to_string(0)+"_"+gDescriptor.getParticles()[0]+"_pid_";
+  ParticleParam* param = new ParticleParam(name,"PID",0);
+  m_variables.push_back( param );
+  addParamToList(m_variables[m_variables.size()-1]);
+}
+
 std::vector<std::string> Tupling::getVariables()
 {
   std::vector<std::string> names;

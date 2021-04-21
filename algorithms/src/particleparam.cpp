@@ -5,6 +5,8 @@ const real_t ParticleParam::eval(Particle& part)
   
   switch (m_type)
   {
+  case Param::PID:
+    return part.pid();
   case Param::Q:
     return part.charge();
   case Param::T:

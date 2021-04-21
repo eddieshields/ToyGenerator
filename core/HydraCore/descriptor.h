@@ -22,11 +22,14 @@ struct DecayDescriptor
   const bool   getChargedConjugate(std::string decay);
   const real_t getParticleMass    (std::string particle);
   const real_t getParticleMass    (const int particle);
+  const int    getParticlePID     (std::string particle);
+  const int    getParticlePID     (const int particle);
   std::string cleanParticle(std::string particle);
 
   std::vector<std::string>&  getParticles()       { return m_particles; }
   std::vector<int>&          getCharges()         { return m_charges; }
   std::vector<int>&          getFlavours()        { return m_flavours; }
+  std::vector<int>&          getPIDs()            { return m_pids; }
   bool&                      getChargeConjugate() { return m_chcnj; }
 
   void operator()(std::string decay) { decodeDecayDescriptor(decay); }
@@ -35,6 +38,7 @@ private:
   std::vector<std::string>  m_particles;
   std::vector<int>          m_charges;
   std::vector<int>          m_flavours;
+  std::vector<int>          m_pids;
   bool                      m_chcnj;
 };
 
