@@ -6,6 +6,7 @@
 #include "random.h"
 
 #include "TH1.h"
+#include "TFile.h"
 
 class DecayTimeEfficiency : public Algorithm
 {
@@ -19,7 +20,7 @@ public:
   {
     m_max = m_acceptance->GetMaximum();
   };
-  DalitzPlotEfficiency(std::string name, std::string path, std::string hist_name) :
+  DecayTimeEfficiency(std::string name, std::string path, std::string hist_name) :
     Algorithm(name)
   {
     TFile* file = TFile::Open(path.c_str());
