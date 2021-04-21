@@ -23,26 +23,20 @@ from ROOT import ( Clock,
 # Import Algorithms.
 from ROOT import ( Accept,
                    CompositeParam,
+                   CustomParam,
                    D02K3Pi,
+                   DalitzPlotEfficiency,
                    Decay3Body,
                    Decay3BodyMixing,
+                   DecayTimeEfficiency,
                    Efficiency,
                    EventParam,
                    Generator,
+                   Param,
                    ParticleParam,
+                   Secondaries,
                    Tupling
                  )
-
-# Import Dalitz Model.
-from ROOT.DalitzModel import ( Amplitude,
-                               Coefficient,
-                               ConfigFile,
-                               ConfigureAmplitude,
-                               LineShape,
-                               Parameter,
-                               PhaseSpace,
-                               Resonance
-                             )
 
 # Create Hydra object.
 Hydra = Hydra()

@@ -5,6 +5,8 @@
 #pragma link off all functions;
 #pragma link C++ nestedclasses;
 
+#pragma link C++ class Algorithm+;
+#pragma link C++ class DecayDescriptor+;
 #pragma link C++ class Event+;
 #pragma link C++ class Particle+;
 #pragma link C++ class Sequence+;

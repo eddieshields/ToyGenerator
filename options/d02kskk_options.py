@@ -1,25 +1,25 @@
 from hydra import *
 
-SetDecay("D0 => KS0 K+ K-")
+SetDecay("D0 => K_S0 K+ K-")
 
 
 # Configure algorithms.
 # Generate events according to decay.
-gen = r.Generator("Generator")
+gen = Generator("Generator")
 # Set event pdf value according to an amplitude model with mixing.
-amp = r.Decay3BodyMixing("D02KSKKAmplitude","cfg/belle2010.cfg")
+amp = Decay3BodyMixing("D02KSKKAmplitude","cfg/belle2010.cfg")
 # Accept or reject event.
-acc = r.Accept("Accept")
+acc = Accept("Accept")
 acc.setMaxPdf(652.23)
 # Add variables to be saved in ntuple.
-tup = r.Tupling("Tupling")
+tup = Tupling("Tupling")
 tup.addCharge()
 tup.addTime()
 tup.addCompositeMass()
 
 
 # Create sequence.
-seq = r.Sequence()
+seq = Sequence()
 seq.addAlgorithm(gen)
 seq.addAlgorithm(amp)
 seq.addAlgorithm(acc)
