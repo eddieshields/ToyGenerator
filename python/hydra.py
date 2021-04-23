@@ -58,4 +58,3 @@ def MakeSequence(*args):
 
 def SetSeed(seed):
     Random.setSeed(seed)
-    gRandom.SetSeed(seed)

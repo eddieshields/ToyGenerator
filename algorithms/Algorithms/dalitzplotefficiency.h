@@ -49,7 +49,7 @@ public:
     m_mSqAC = mSqAC;
   }
 
-  virtual void operator() (Event& ev);
+  void operator() (Event& ev) override final;
 };
 
 #endif
