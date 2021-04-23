@@ -24,7 +24,7 @@ public:
   {}
   ~Tupling() {}
 
-  virtual void operator() (Event& ev);
+  void operator() (Event& ev) override;
 
   void addMomentum();
   void addMass();

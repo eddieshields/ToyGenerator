@@ -3,15 +3,16 @@
 
 #include "particleparam.h"
 
-class CompositeParam : public ParticleParam 
+template <Param::Type P>
+class CompositeParam : public ParticleParam<P>
 {
 public:
   CompositeParam() :
-    ParticleParam()
+    ParticleParam<P>()
   {}
   template<typename... ARGS>
   CompositeParam(std::string name, std::string param, int index, ARGS... indices) :
-    ParticleParam(name,param,index)
+    ParticleParam<P>(name,param,index)
   {
     addIndex(indices...);
   }
@@ -28,7 +29,14 @@ public:
     m_particles_indices.push_back(index);
   }
 
-  virtual void operator()(Event& ev);
+  inline void operator()(Event& ev) override final
+  {
+    Particle part = ev.particle(ParticleParam<P>::m_particle_index);
+    for (auto& i : m_particles_indices) {
+      part += ev.particle(i);
+    }
+    ev[ParticleParam<P>::m_name] = ParticleParam<P>::m_evaluation(part);
+  }
 private:
   std::vector<int> m_particles_indices;
 };

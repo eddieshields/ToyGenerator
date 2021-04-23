@@ -24,6 +24,9 @@ public:
     P,     //Momentum.
     E      //Energy.
   };
+  static const Param::Type getParamFromString(std::string param);
+  static const std::string getName(Param::Type param);
+
   Param() :
     Algorithm(""),
     m_type(Param::Q)
@@ -38,14 +41,12 @@ public:
   {}
   ~Param() {};
 
-  virtual void operator()(Event& ev) = 0; 
+  void operator()(Event& ev) = 0; 
   //Param operator=(Param& param) { return *this; }
   Param* next;
 protected:
   const Param::Type m_type;
 
-  const Param::Type getParamFromString(std::string param);
-  const std::string getName(Param::Type param);
 };
 
 #endif
