@@ -54,10 +54,10 @@ TEST_CASE( "Test FourVector", "[FourVector]" ) {
     FourVector v7(1,2,3,4);
     REQUIRE( v7.P()    == (real_t)std::sqrt(14) );
     REQUIRE( v7.Pt()   == (real_t)std::sqrt(5)  );
-    REQUIRE( v7.M()    == 2  );
-    REQUIRE( v7.M2()   == 4  );
-    REQUIRE( v7.Mag()  == 2  );
-    REQUIRE( v7.Mag2() == 4  );
+    REQUIRE( v7.M()    == (real_t)std::sqrt(2)  );
+    REQUIRE( v7.M2()   == 2  );
+    REQUIRE( v7.Mag()  == (real_t)std::sqrt(2)  );
+    REQUIRE( v7.Mag2() == 2  );
   }
 
   SECTION("Check setters") {

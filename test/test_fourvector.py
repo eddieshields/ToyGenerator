@@ -53,10 +53,10 @@ class TestFourVector(unittest.TestCase):
         v7 = FourVector(1,2,3,4)
         self.assertEqual( v7.P()    == math.sqrt(14) )
         self.assertEqual( v7.Pt()   == math.sqrt(5) )
-        self.assertEqual( v7.M()    == 2 )
-        self.assertEqual( v7.M2()   == 4 )
-        self.assertEqual( v7.Mag()  == 2 )
-        self.assertEqual( v7.Mag2() == 4 )
+        self.assertEqual( v7.M()    == math.sqrt(2) )
+        self.assertEqual( v7.M2()   == 2 )
+        self.assertEqual( v7.Mag()  == math.sqrt(2) )
+        self.assertEqual( v7.Mag2() == 2 )
 
     def test_setters(self):
         v8 = FourVector(1,1,1,1)
