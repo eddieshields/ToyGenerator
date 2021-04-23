@@ -5,7 +5,7 @@ void Hydra::run()
 {
   // If threads are wanted set them to the maximum available.
   if ( m_configuration.NThreads == -1 || m_configuration.NThreads > std::thread::hardware_concurrency() ) {
-    m_configuration.NThreads = std::thread::hardware_concurrency() - 1;
+    m_configuration.NThreads = std::thread::hardware_concurrency();
   }
   // Run sequence.
   INFO("Requested to generate " << m_configuration.EvtMax << " Events");
@@ -29,8 +29,8 @@ void Hydra::run()
 
 void Hydra::runSequence()
 {
-  unsigned int counter = 0;
-  while ( counter < m_configuration.EvtMax/m_configuration.NThreads + 1 ) {
+  INFO( m_counter );
+  while ( m_counter < m_configuration.EvtMax ) {
     Event* ev = new Event();
     
     for(auto algo : m_configuration.AlgoSequence()) {
@@ -38,7 +38,7 @@ void Hydra::runSequence()
     }
     // If event is accepted, add to queue.
     if ( ev->Accept ) {
-      counter++;
+      ++m_counter;
       m_queue.enqueue( std::move( *ev ) );
     }
     // Accepted events are saved in list, so events can be deleted.

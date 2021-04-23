@@ -15,6 +15,7 @@
 #include <thread>
 #include <queue>
 #include <mutex>
+#include <atomic>
 
 // Dirty fix, should try fix in compilation instead.
 //#define BOOST_NO_CXX11_SCOPED_ENUMS
@@ -54,7 +55,7 @@ struct Configuration {
 class Hydra
 {
 public:
-  Hydra() {WelcomeMessage();}
+  Hydra() : {WelcomeMessage();}
   virtual ~Hydra() {}
 
   Configuration m_configuration;
@@ -72,10 +73,10 @@ public:
 private:
   std::vector<Event> m_list;
   void addToList(Event ev) { m_list.push_back(ev); } 
-  unsigned int m_counter = {0};
 
   moodycamel::ConcurrentQueue<Event> m_queue;
   std::mutex                         m_mutex;
+  std::atomic<int>                   m_counter;
 };
 
 #endif
