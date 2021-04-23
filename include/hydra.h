@@ -55,7 +55,7 @@ struct Configuration {
 class Hydra
 {
 public:
-  Hydra() : {WelcomeMessage();}
+  Hydra() {WelcomeMessage();}
   virtual ~Hydra() {}
 
   Configuration m_configuration;
