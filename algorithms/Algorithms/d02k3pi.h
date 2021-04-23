@@ -47,7 +47,7 @@ public:
   {}
   ~D02K3Pi() {}
 
-  virtual void operator() (Event& ev);
+  void operator() (Event& ev) override final;
 
 
   const real_t getR(Generator& gen);

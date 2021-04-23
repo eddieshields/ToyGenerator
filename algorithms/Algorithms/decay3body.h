@@ -18,7 +18,7 @@ public:
   }
   ~Decay3Body() {}
 
-  virtual void operator() (Event& ev);
+  void operator() (Event& ev) override final;
 
   DalitzModel::Amplitude amp() { return m_amp; }
 private:

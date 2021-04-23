@@ -50,34 +50,54 @@ void Tupling::addParamToList(Param* param)
 
 void Tupling::addMomentum()
 {
-  std::vector<std::string> mvars = {"Px","Py","Pz","Pt","P"};
   for (int i = 1; i < gDescriptor.getCleanParticles().size(); i++) {
-    for (auto& var : mvars) {
-      std::string name = "_"+std::to_string(i)+"_"+gDescriptor.getCleanParticles()[i]+"_"+var+"_";
-      Param* param = new ParticleParam(name,var,i);
-      m_variables.push_back( param );
-      addParamToList(m_variables[m_variables.size()-1]);
-    }
+    std::string name_px = "_"+std::to_string(i)+"_"+gDescriptor.getCleanParticles()[i]+"_Px_";
+    Param* param_px = new ParticleParam<Param::PX>(name_px,"Px",i);
+    m_variables.push_back( param_px );
+    addParamToList(m_variables[m_variables.size()-1]);
+      
+    std::string name_py = "_"+std::to_string(i)+"_"+gDescriptor.getCleanParticles()[i]+"_Py_";
+    Param* param_py = new ParticleParam<Param::PY>(name_px,"Py",i);
+    m_variables.push_back( param_py );
+    addParamToList(m_variables[m_variables.size()-1]);
+
+    std::string name_pz = "_"+std::to_string(i)+"_"+gDescriptor.getCleanParticles()[i]+"_Pz_";
+    Param* param_pz = new ParticleParam<Param::PZ>(name_pz,"Pz",i);
+    m_variables.push_back( param_px );
+    addParamToList(m_variables[m_variables.size()-1]);
+
+    std::string name_pt = "_"+std::to_string(i)+"_"+gDescriptor.getCleanParticles()[i]+"_Pt_";
+    Param* param_pt = new ParticleParam<Param::PT>(name_pt,"Pt",i);
+    m_variables.push_back( param_pt );
+    addParamToList(m_variables[m_variables.size()-1]);
+
+    std::string name_p = "_"+std::to_string(i)+"_"+gDescriptor.getCleanParticles()[i]+"_P_";
+    Param* param_p = new ParticleParam<Param::P>(name_p,"P",i);
+    m_variables.push_back( param_p );
+    addParamToList(m_variables[m_variables.size()-1]);
   }
 }
 
 void Tupling::addMass()
 {
-  std::vector<std::string> mvars = {"M","MSq"};
+  std::map<std::string,Param::Type> mvars = {{"M",Param::M},{"MSq",Param::MSq}};
   for (int i = 1; i < gDescriptor.getCleanParticles().size(); i++) {
-    for (auto& var : mvars) {
-      std::string name = "_"+std::to_string(i)+"_"+gDescriptor.getCleanParticles()[i]+"_"+var+"_";
-      Param* param = new ParticleParam(name,var,i);
-      m_variables.push_back( param );
-      addParamToList(m_variables[m_variables.size()-1]);
-    }
+    std::string name_m = "_"+std::to_string(i)+"_"+gDescriptor.getCleanParticles()[i]+"_M_";
+    Param* param_m = new ParticleParam<Param::M>(name_m,"M",i);
+    m_variables.push_back( param_m );
+    addParamToList(m_variables[m_variables.size()-1]);
+
+    std::string name_msq = "_"+std::to_string(i)+"_"+gDescriptor.getCleanParticles()[i]+"_MSq_";
+    Param* param_msq = new ParticleParam<Param::MSq>(name_msq,"MSq",i);
+    m_variables.push_back( param_msq );
+    addParamToList(m_variables[m_variables.size()-1]);
   }
 }
 
 void Tupling::addTime()
 {
   std::string name = "_0_"+gDescriptor.getCleanParticles()[0]+"_T_";
-  Param* param = new ParticleParam(name,"t",0);
+  Param* param = new ParticleParam<Param::T>(name,"t",0);
   m_variables.push_back( param );
   addParamToList(m_variables[m_variables.size()-1]);
 }
@@ -86,7 +106,7 @@ void Tupling::addCharge()
 {
   for (int i = 1; i < gDescriptor.getCleanParticles().size(); i++) {
     std::string name = "_"+std::to_string(i)+"_"+gDescriptor.getCleanParticles()[i]+"_Q_";
-    Param* param = new ParticleParam(name,"Q",i);
+    Param* param = new ParticleParam<Param::Q>(name,"Q",i);
     m_variables.push_back( param );
     addParamToList(m_variables[m_variables.size()-1]);
   }
@@ -94,37 +114,46 @@ void Tupling::addCharge()
 
 void Tupling::addEventInfo()
 {
-  std::vector<std::string> mvars = {"pdf","weight"};
-  for (auto& var : mvars) {
-    std::string name = "_"+var+"_";
-    EventParam* param = new EventParam(name,var);
-    m_variables.push_back( param );
-    addParamToList(m_variables[m_variables.size()-1]);
-  }
+  std::string name_w = "_weight_";
+  Param* param_w = new EventParam<Param::W>(name_w,"w");
+  m_variables.push_back( param_w );
+  addParamToList(m_variables[m_variables.size()-1]);
+
+  std::string name_p = "_pdf_";
+  Param* param_p = new EventParam<Param::PDF>(name_p,"pdf");
+  m_variables.push_back( param_p );
+  addParamToList(m_variables[m_variables.size()-1]);
 }
 
 void Tupling::addCompositeMass()
 {
-  std::vector<std::string> mvars = {"M","MSq"};
   for (int i = 1; i < gDescriptor.getCleanParticles().size(); i++) {
     for (int j = i+1; j < gDescriptor.getCleanParticles().size(); j++) {
-      for (auto& var : mvars) {
-        std::string name = "_"+std::to_string(i)+std::to_string(j)+"_"+gDescriptor.getCleanParticles()[i]+gDescriptor.getCleanParticles()[j]+"_"+var+"_";
-        CompositeParam* param = new CompositeParam(name,var,i,j);
-        m_variables.push_back( param );
-        addParamToList(m_variables[m_variables.size()-1]);
-      }
+      std::string name_m = "_"+std::to_string(i)+std::to_string(j)+"_"+gDescriptor.getCleanParticles()[i]+gDescriptor.getCleanParticles()[j]+"_M_";
+      Param* param_m = new CompositeParam<Param::M>(name_m,"M",i,j);
+      m_variables.push_back( param_m );
+      addParamToList(m_variables[m_variables.size()-1]);
+      
+      std::string name_msq = "_"+std::to_string(i)+std::to_string(j)+"_"+gDescriptor.getCleanParticles()[i]+gDescriptor.getCleanParticles()[j]+"_MSq_";
+      Param* param_msq = new CompositeParam<Param::MSq>(name_msq,"MSq",i,j);
+      m_variables.push_back( param_msq );
+      addParamToList(m_variables[m_variables.size()-1]);
     }
   }
 }
 
 void Tupling::addCompositeMass(int index1, int index2)
 {
-  std::vector<std::string> mvars = {"M","MSq"};
-  for (auto& var : mvars) {
-    std::string name = "_"+std::to_string(index1)+std::to_string(index2)+"_"+gDescriptor.getCleanParticles()[index1]+gDescriptor.getCleanParticles()[index2]+"_"+var+"_";
-    CompositeParam* param = new CompositeParam(name,var,index1,index2);
-    m_variables.push_back( param );
+  std::map<std::string,Param::Type> mvars = {{"M",Param::M},{"MSq",Param::MSq}};
+  for (const auto& var : mvars) {
+    std::string name_m = "_"+std::to_string(index1)+std::to_string(index2)+"_"+gDescriptor.getCleanParticles()[index1]+gDescriptor.getCleanParticles()[index2]+"_M_";
+    Param* param_m = new CompositeParam<Param::M>(name_m,"M",index1,index2);
+    m_variables.push_back( param_m );
+    addParamToList(m_variables[m_variables.size()-1]);
+
+    std::string name_msq = "_"+std::to_string(index1)+std::to_string(index2)+"_"+gDescriptor.getCleanParticles()[index1]+gDescriptor.getCleanParticles()[index2]+"_MSq_";
+    Param* param_msq = new CompositeParam<Param::MSq>(name_msq,"MSq",index1,index2);
+    m_variables.push_back( param_msq );
     addParamToList(m_variables[m_variables.size()-1]);
   }
 }
@@ -132,7 +161,7 @@ void Tupling::addCompositeMass(int index1, int index2)
 void Tupling::addPID()
 {
   std::string name = "_"+std::to_string(0)+"_"+gDescriptor.getCleanParticles()[0]+"_pid_";
-  ParticleParam* param = new ParticleParam(name,"PID",0);
+  Param* param = new ParticleParam<Param::PID>(name,"PID",0);
   m_variables.push_back( param );
   addParamToList(m_variables[m_variables.size()-1]);
 }

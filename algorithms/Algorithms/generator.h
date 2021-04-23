@@ -28,7 +28,7 @@ public:
     SetDecay(m_m,m_daughters);
   }
   ~Generator() {}
-  virtual void operator() (Event& ev);
+  void operator() (Event& ev) override;
 
   bool SetDecay(FourVector& P, std::vector<real_t>& masses);
   std::vector<FourVector> Generate();

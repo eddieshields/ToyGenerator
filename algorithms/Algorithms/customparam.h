@@ -18,14 +18,14 @@ public:
   {}
   CustomParam(std::string name, std::function<const real_t(Event&)> func) :
     Param( name ),
-    m_func( func )
+    m_evaluation( func )
   {}
   ~CustomParam() {};
 
-  virtual void operator() (Event& ev) { ev[m_name] = m_func(ev); }
+  inline void operator() (Event& ev) override final { ev[m_name] = m_evaluation(ev); }
 
 private:
-  std::function<const real_t(Event&)> m_func;
+  std::function<const real_t(Event&)> m_evaluation;
 };
 
 #endif

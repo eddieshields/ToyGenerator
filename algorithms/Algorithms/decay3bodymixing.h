@@ -35,7 +35,7 @@ public:
   void setQ(real_t q) { m_q = q; }
 
   // Operator.
-  virtual void operator() (Event& ev);
+  void operator() (Event& ev) override final;
 private:
   DalitzModel::Amplitude m_amp;
 
