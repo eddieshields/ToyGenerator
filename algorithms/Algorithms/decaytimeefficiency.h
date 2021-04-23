@@ -35,7 +35,7 @@ public:
   };
   ~DecayTimeEfficiency() {};
 
-  virtual void operator() (Event& ev);
+  void operator() (Event& ev) override final;
 };
 
 #endif

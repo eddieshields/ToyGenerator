@@ -5,6 +5,7 @@
 #include "param.h"
 #include "types.h"
 
+template<Param::Type P>
 class EventParam : public Param
 {
 public:
@@ -16,9 +17,19 @@ public:
   {}
   ~EventParam() {}
 
-  virtual void operator()(Event& ev) { ev[m_name] = eval( ev ); }
+  inline void operator()(Event& ev) override { ev[m_name] = m_evaluation( ev ); }
 private:
-  const real_t eval(Event& ev);
+  inline real_t m_evaluation(Event& ev) const { return 0; } 
 };
+
+template<> inline real_t EventParam<Param::W>::m_evaluation(Event& ev) const
+{
+  return ev.weight;
+}
+
+template<> inline real_t EventParam<Param::PDF>::m_evaluation(Event& ev) const
+{
+  return ev.pdf;
+}
 
 #endif

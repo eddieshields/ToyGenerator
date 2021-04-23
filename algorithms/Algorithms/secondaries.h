@@ -30,7 +30,7 @@ public:
   void LoadHistogram(std::string hist_file, std::string hist_obj);
   void LoadFraction (std::string frac_file, std::string frac_obj, std::string res_obj = "");
 
-  virtual void operator() (Event& ev);
+  void operator() (Event& ev) override;
 
   const real_t fraction (const real_t& t_reco);
   const real_t true_time(const real_t& t_reco);
