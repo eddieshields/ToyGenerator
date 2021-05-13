@@ -19,6 +19,7 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 
 #--- EvtGen.
 if (EVTGEN_BUILD)
+    message("-- Building with EvtGen")
     include_directories(${CMAKE_SOURCE_DIR}/EvtGen/include)
     #add_library(EvtGen SHARED IMPORTED)
     #set_target_properties(EvtGen PROPERTIES IMPORTED_LOCATION /afs/cern.ch/user/e/eshields/cernbox/ToyGenerator/EvtGen/lib64/libEvtGen.so)

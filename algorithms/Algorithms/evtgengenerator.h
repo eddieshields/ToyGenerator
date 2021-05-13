@@ -22,7 +22,7 @@ public:
     Algorithm( name ),
     m_eng( new EvtSimpleRandomEngine() ),
     m_radCorrEngine( 0 ),
-    m_generator( decfile , "/afs/cern.ch/user/e/eshields/cernbox/ToyGenerator/EvtGen/share/evt.pdl" ,
+    m_generator( decfile.c_str() , "/afs/cern.ch/user/e/eshields/cernbox/ToyGenerator/EvtGen/share/evt.pdl" ,
                  m_eng, m_radCorrEngine, &m_extraModels)
   {
     configureDecFile( m_decfile );
