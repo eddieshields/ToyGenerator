@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
   EvtAbsRadCorr* radCorrEngine = 0;
   std::list<EvtDecayBase*> extraModels;
 
-  EvtGen myGenerator( "options/kskk.dec" ,  "EvtGen/share/evt.pdl" ,
+  EvtGen myGenerator( "options/kskk.dec" ,  "EvtGen/share/EvtGen/evt.pdl" ,
                         eng, radCorrEngine, &extraModels );
   TFile* file = new TFile(("EvtGenAmplitudeD02KsKK_"+std::to_string(parser["seed"].as<int>())+".root").c_str(),"RECREATE");
   file->cd();
