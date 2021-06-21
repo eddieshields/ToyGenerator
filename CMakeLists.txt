@@ -1,5 +1,5 @@
 # CMakeLists.txt for ToyGenerator module. It creates a library with dictionary and a main program
-cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 set(PACKAGE HYDRA)
 project(${PACKAGE})
 
